@@ -1,0 +1,9 @@
+
+//to get access to something in the root
+Toolbar toolbar =  view.getRootView().findViewById(R.id.toolbar);
+toolbar.setTitle("New Spending");
+
+
+FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+fragmentTransaction.add(R.id.nav_overView, new TestFragment());
+fragmentTransaction.commit();
