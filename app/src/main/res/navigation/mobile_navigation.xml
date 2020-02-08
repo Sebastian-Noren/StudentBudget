@@ -36,9 +36,15 @@
         tools:layout="@layout/fragment_settings" />
 
     <fragment
-        android:id="@+id/nav_test"
-        android:name="HKR.studentbudget.test.TestFragment"
-        android:label="@string/menu_test"
-        tools:layout="@layout/fragment_test" />
+    android:id="@+id/nav_test"
+    android:name="HKR.studentbudget.test.TestFragment"
+    android:label="@string/menu_test"
+    tools:layout="@layout/fragment_test" />
+
+    <fragment
+        android:id="@+id/nav_spending"
+        android:name="HKR.studentbudget.transactions.SpendingFragment"
+        android:label="@string/view_spending"
+        tools:layout="@layout/fragment_spending" />
 
 </navigation>
