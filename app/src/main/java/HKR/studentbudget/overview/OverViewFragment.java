@@ -57,8 +57,7 @@ public class OverViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(tag, "Open minus Transaction");
-                //TODO get this shit working
-                navController.navigate(R.id.nav_test);
+                navController.navigate(R.id.nav_spending);
 
             }
         });
@@ -71,12 +70,14 @@ public class OverViewFragment extends Fragment {
         isMenuOpen = !isMenuOpen;
         fabMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fabPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
+        fabMain.animate().rotation(45f).setInterpolator(interpolator).setDuration(300).start();
     }
 
     private void closeMenu(){
       isMenuOpen =!isMenuOpen;
         fabMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
         fabPlus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+        fabMain.animate().rotation(0f).setInterpolator(interpolator).setDuration(300).start();
     }
 
     private void initFabMenu(View view) {
