@@ -11,6 +11,6 @@ public abstract class SelectListener implements AdapterView.OnItemSelectedListen
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        System.out.println("sucks");
     }
 }
