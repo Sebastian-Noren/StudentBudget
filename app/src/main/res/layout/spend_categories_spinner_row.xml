@@ -9,16 +9,16 @@
 
     <ImageView
         android:id="@+id/image_spinner_spend_icon"
-        android:layout_width="59dp"
-        android:layout_height="53dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_placeholder" />
 
     <TextView
         android:id="@+id/image_spinner_spend_text"
-        android:layout_width="93dp"
-        android:layout_height="55dp"
+        android:layout_width="86dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:gravity="center"
         android:text="TextView"
