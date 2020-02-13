@@ -14,4 +14,6 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_test">Testing</string>
     <string name="view_spending">new Spend</string>
+    <string name="save_button">Save</string>
+    <string name="cancel_button">Cancel</string>
 </resources>
