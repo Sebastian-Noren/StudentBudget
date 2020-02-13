@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.TextView;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +25,7 @@ public class OverViewFragment extends Fragment {
     private String tag = "Info";
     private NavController navController;
     private FloatingActionButton fabMain, fabMinus, fabPlus;
+    private TextView textMinus, textPlus;
     private float tranlationY = 100f;
     private boolean isMenuOpen = false;
     private OvershootInterpolator interpolator = new OvershootInterpolator();
@@ -36,7 +38,6 @@ public class OverViewFragment extends Fragment {
         fabMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (isMenuOpen){
                     closeMenu();
                 }else {
@@ -48,7 +49,8 @@ public class OverViewFragment extends Fragment {
         fabPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(tag, "Open plus transaction");
+                Log.d(tag, "Open plus transaction");
+                closeMenu();
                 //TODO get this shit working
             }
         });
@@ -56,7 +58,8 @@ public class OverViewFragment extends Fragment {
         fabMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(tag, "Open minus Transaction");
+                Log.d(tag, "Open minus Transaction");
+                closeMenu();
                 navController.navigate(R.id.nav_spending);
 
             }
@@ -68,28 +71,38 @@ public class OverViewFragment extends Fragment {
 
     private void openMenu(){
         isMenuOpen = !isMenuOpen;
-        fabMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
-        fabPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
         fabMain.animate().rotation(45f).setInterpolator(interpolator).setDuration(300).start();
+        fabMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+        textMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
+        fabPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
+        textPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
     }
 
     private void closeMenu(){
       isMenuOpen =!isMenuOpen;
-        fabMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
-        fabPlus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
         fabMain.animate().rotation(0f).setInterpolator(interpolator).setDuration(300).start();
+        fabMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
+        textMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
+        fabPlus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
+        textPlus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(300).start();
     }
 
     private void initFabMenu(View view) {
+        textMinus = view.findViewById(R.id.text_spending);
+        textPlus = view.findViewById(R.id.text_income);
         fabMain = view.findViewById(R.id.fabMain);
         fabMinus = view.findViewById(R.id.fabMinus);
         fabPlus = view.findViewById(R.id.fabPlus);
 
         fabMinus.setAlpha(0f);
         fabPlus.setAlpha(0f);
+        textMinus.setAlpha(0f);
+        textPlus.setAlpha(0f);
 
         fabMinus.setTranslationY(tranlationY);
         fabPlus.setTranslationY(tranlationY);
+        textMinus.setTranslationY(tranlationY);
+        textPlus.setTranslationY(tranlationY);
 
     }
 }
