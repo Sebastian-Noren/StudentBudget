@@ -1,29 +1,33 @@
-package HKR.studentbudget.test;
+package HKR.studentbudget.login;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
-import HKR.studentbudget.R;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
+import HKR.studentbudget.R;
 
 /*
 This is made for testing shit out
  */
 
-public class TestFragment extends Fragment {
+public class StartFragment extends Fragment {
     private String tag = "Info";
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_test, container, false);
-        Log.d(tag, "In the TestFragment");
+        View view = inflater.inflate(R.layout.fragment_start, container, false);
+        Log.d(tag, "In the StartFragment");
 
-        // use view to get things from the windows
-        TextView textView = view.findViewById(R.id.textTest);
-        textView.setText("This is text changed by code");
+        TextView textView = view.findViewById(R.id.textStart);
+
+        textView.setText("Yolo Jenkins");
+
 
         return view;
     }
