@@ -23,6 +23,7 @@ public class TestFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
         Log.d(tag, "In the TestFragment");
+
         // use view to get things from the windows
         textView = view.findViewById(R.id.textTest);
         handler = new Handler();
