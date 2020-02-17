@@ -17,12 +17,14 @@
 
     <TextView
         android:id="@+id/image_spinner_spend_text"
-        android:layout_width="86dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:layout_marginStart="8dp"
         android:gravity="center"
+        android:paddingStart="11dp"
         android:text="TextView"
-        android:textSize="16dp"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/image_spinner_spend_icon"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

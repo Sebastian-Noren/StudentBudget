@@ -30,17 +30,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppConstants.applicationInitialization(this.getApplicationContext());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         //Disable the little arrow pointing back to overview and open the menu
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_overView, R.id.nav_budget, R.id.nav_statistics, R.id.nav_expenses,
+                R.id.nav_overView, R.id.nav_budget, R.id.nav_statistics, R.id.nav_expenses, R.id.nav_account,
                 R.id.nav_settings, R.id.nav_test)
                 .setDrawerLayout(drawer)
                 .build();
@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
-
     }
 
     // Makes the menu goes back if open when back button is pressed
@@ -105,5 +104,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.d(tag, "In the onDestroy() event");
     }
+
 
 }
