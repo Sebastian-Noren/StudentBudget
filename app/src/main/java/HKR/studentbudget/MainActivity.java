@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppConstants.applicationInitialization(this.getApplicationContext());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         //Disable the little arrow pointing back to overview and open the menu
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_overView, R.id.nav_budget, R.id.nav_statistics, R.id.nav_expenses,
+                R.id.nav_overView, R.id.nav_budget, R.id.nav_statistics, R.id.nav_expenses, R.id.nav_account,
                 R.id.nav_settings, R.id.nav_test)
                 .setDrawerLayout(drawer)
                 .build();
