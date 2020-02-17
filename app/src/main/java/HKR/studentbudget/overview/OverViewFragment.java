@@ -13,6 +13,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
+import HKR.studentbudget.CreateAccountDialog;
 import androidx.annotation.NonNull;
 
 import androidx.fragment.app.Fragment;
@@ -21,7 +22,9 @@ import HKR.studentbudget.R;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-public class OverViewFragment extends Fragment {
+
+public class OverViewFragment extends Fragment implements CreateAccountDialog.OnSelectedInput {
+
     private String tag = "Info";
     private NavController navController;
     private FloatingActionButton fabMain, fabMinus, fabPlus;
@@ -30,17 +33,20 @@ public class OverViewFragment extends Fragment {
     private boolean isMenuOpen = false;
     private OvershootInterpolator interpolator = new OvershootInterpolator();
 
+    TextView test;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
         Log.d(tag, "In the OverViewFragment");
-        navController = Navigation.findNavController(Objects.requireNonNull(getActivity()),R.id.nav_host_fragment);
+        test = view.findViewById(R.id.overviewTest);
+        navController = Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.nav_host_fragment);
         initFabMenu(view);
         fabMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMenuOpen){
+                if (isMenuOpen) {
                     closeMenu();
-                }else {
+                } else {
                     openMenu();
                 }
             }
@@ -52,6 +58,8 @@ public class OverViewFragment extends Fragment {
                 Log.d(tag, "Open plus transaction");
                 closeMenu();
                 //TODO get this shit working
+
+                openDialog();
             }
         });
 
@@ -69,17 +77,34 @@ public class OverViewFragment extends Fragment {
         return view;
     }
 
-    private void openMenu(){
+    @Override
+    public void inputString(String input, double value, String notes) {
+        test.setText(input + " " + value + " " + notes);
+    }
+
+
+    private void openDialog() {
+        CreateAccountDialog dialog = new CreateAccountDialog();
+        dialog.setTargetFragment(OverViewFragment.this, 1);
+        dialog.show(getFragmentManager(), "dialog");
+
+    }
+
+    private void openMenu() {
         isMenuOpen = !isMenuOpen;
         fabMain.animate().rotation(45f).setInterpolator(interpolator).setDuration(300).start();
         fabMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         textMinus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(300).start();
         fabPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
         textPlus.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
+        fabMinus.setEnabled(true);
+        fabPlus.setEnabled(true);
     }
 
-    private void closeMenu(){
-      isMenuOpen =!isMenuOpen;
+    private void closeMenu() {
+        isMenuOpen = !isMenuOpen;
+        fabMinus.setEnabled(false);
+        fabPlus.setEnabled(false);
         fabMain.animate().rotation(0f).setInterpolator(interpolator).setDuration(300).start();
         fabMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
         textMinus.animate().translationY(tranlationY).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
@@ -98,6 +123,8 @@ public class OverViewFragment extends Fragment {
         fabPlus.setAlpha(0f);
         textMinus.setAlpha(0f);
         textPlus.setAlpha(0f);
+        fabMinus.setEnabled(false);
+        fabPlus.setEnabled(false);
 
         fabMinus.setTranslationY(tranlationY);
         fabPlus.setTranslationY(tranlationY);
@@ -105,4 +132,5 @@ public class OverViewFragment extends Fragment {
         textPlus.setTranslationY(tranlationY);
 
     }
+
 }

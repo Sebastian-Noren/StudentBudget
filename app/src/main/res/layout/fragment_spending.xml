@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="398dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="1dp"
@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Product"
+            android:hint="Description"
             android:inputType="textPersonName" />
 
         <LinearLayout
@@ -68,6 +68,11 @@
             android:layout_width="match_parent"
             android:layout_height="45dp" />
 
+        <Spinner
+            android:id="@+id/transactionsSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,18 +85,25 @@
                 app:srcCompat="@drawable/ic_placeholder" />
 
             <Button
-                android:id="@+id/date_btn"
+                android:id="@+id/btn_date"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="sans-serif"
+                android:gravity="start"
                 android:text="Date"
-                android:textAlignment="viewStart"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="18sp" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_placeholder" />
 
     </LinearLayout>
 
@@ -108,7 +120,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/btn_cancel"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
@@ -122,7 +134,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/save_btn"
+            android:id="@+id/btn_save"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="120dp"
             android:layout_height="wrap_content"

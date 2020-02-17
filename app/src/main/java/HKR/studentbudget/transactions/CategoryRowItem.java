@@ -1,11 +1,11 @@
 package HKR.studentbudget.transactions;
 
-public class SpendingRowItem {
+public class CategoryRowItem {
 
     private String mCategoryName;
     private int mCategoryIcon;
 
-    public SpendingRowItem(String categoryName, int catagoryIcon){
+    public CategoryRowItem(String categoryName, int catagoryIcon){
         this.mCategoryName = categoryName;
         this.mCategoryIcon = catagoryIcon;
     }

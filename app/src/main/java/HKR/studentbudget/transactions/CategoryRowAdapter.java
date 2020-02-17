@@ -14,9 +14,9 @@ import HKR.studentbudget.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class SpendingAdapter extends ArrayAdapter<SpendingRowItem> {
+public class CategoryRowAdapter extends ArrayAdapter<CategoryRowItem> {
 
-    public SpendingAdapter(Context context, ArrayList<SpendingRowItem> spendRowItem) {
+    public CategoryRowAdapter(Context context, ArrayList<CategoryRowItem> spendRowItem) {
         super(context, 0, spendRowItem);
     }
 
@@ -40,7 +40,7 @@ public class SpendingAdapter extends ArrayAdapter<SpendingRowItem> {
         ImageView imageViewSpendIcon = converView.findViewById(R.id.image_spinner_spend_icon);
         TextView textViewSPendName = converView.findViewById(R.id.image_spinner_spend_text);
 
-        SpendingRowItem currentItem = getItem(position);
+        CategoryRowItem currentItem = getItem(position);
         if (currentItem != null) {
             imageViewSpendIcon.setImageResource(currentItem.getmCategoryIcon());
             textViewSPendName.setText(currentItem.getmCategoryName());

@@ -47,4 +47,10 @@
         android:label="@string/view_spending"
         tools:layout="@layout/fragment_spending" />
 
+    <fragment
+        android:id="@+id/nav_account"
+        android:name="HKR.studentbudget.Account.AccountFragment"
+        android:label="@string/menu_account"
+        tools:layout="@layout/fragment_account" />
+
 </navigation>

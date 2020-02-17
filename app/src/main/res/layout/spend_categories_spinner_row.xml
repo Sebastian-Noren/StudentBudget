@@ -17,10 +17,10 @@
 
     <TextView
         android:id="@+id/image_spinner_spend_text"
-        android:layout_width="86dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
-        android:layout_marginStart="8dp"
         android:gravity="center"
+        android:paddingStart="11dp"
         android:text="TextView"
         android:textAlignment="viewStart"
         android:textColor="@android:color/primary_text_light"
