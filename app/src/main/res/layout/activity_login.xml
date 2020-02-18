@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragmentPlaceholder"
-        android:name="HKR.studentbudget.login.StartFragment"
+        android:name="se.hkr.studentbudget.login.StartFragment"
         android:layout_width="0dp"
         android:layout_height="500dp"
         app:layout_constraintBottom_toBottomOf="parent"
