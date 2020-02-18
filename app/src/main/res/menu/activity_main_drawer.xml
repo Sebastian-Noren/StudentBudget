@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_placeholder"
             android:title="@string/menu_overview" />
         <item
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_placeholder"
+            android:title="@string/menu_account" />
+        <item
             android:id="@+id/nav_budget"
             android:icon="@drawable/ic_placeholder"
             android:title="@string/menu_budget" />

@@ -7,49 +7,49 @@
 
     <fragment
         android:id="@+id/nav_overView"
-        android:name="HKR.studentbudget.overview.OverViewFragment"
+        android:name="se.hkr.studentbudget.overview.OverViewFragment"
         android:label="@string/menu_overview"
         tools:layout="@layout/fragment_overview" />
 
     <fragment
         android:id="@+id/nav_budget"
-        android:name="HKR.studentbudget.budget.BudgetFragment"
+        android:name="se.hkr.studentbudget.budget.BudgetFragment"
         android:label="@string/menu_budget"
         tools:layout="@layout/fragment_budget" />
 
     <fragment
         android:id="@+id/nav_expenses"
-        android:name="HKR.studentbudget.expenses.ExpensesFragment"
+        android:name="se.hkr.studentbudget.expenses.ExpensesFragment"
         android:label="@string/menu_expenses"
         tools:layout="@layout/fragment_expenses" />
 
     <fragment
         android:id="@+id/nav_statistics"
-        android:name="HKR.studentbudget.statistics.StatisticsFragment"
+        android:name="se.hkr.studentbudget.statistics.StatisticsFragment"
         android:label="@string/menu_statistics"
         tools:layout="@layout/fragment_statistics" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="HKR.studentbudget.settings.SettingsFragment"
+        android:name="se.hkr.studentbudget.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
 
     <fragment
     android:id="@+id/nav_test"
-    android:name="HKR.studentbudget.test.TestFragment"
+    android:name="se.hkr.studentbudget.test.TestFragment"
     android:label="@string/menu_test"
     tools:layout="@layout/fragment_test" />
 
     <fragment
         android:id="@+id/nav_spending"
-        android:name="HKR.studentbudget.transactions.SpendingFragment"
+        android:name="se.hkr.studentbudget.transactions.SpendingFragment"
         android:label="@string/view_spending"
         tools:layout="@layout/fragment_spending" />
 
     <fragment
         android:id="@+id/nav_account"
-        android:name="HKR.studentbudget.Account.AccountFragment"
+        android:name="se.hkr.studentbudget.account.AccountFragment"
         android:label="@string/menu_account"
         tools:layout="@layout/fragment_account" />
 
