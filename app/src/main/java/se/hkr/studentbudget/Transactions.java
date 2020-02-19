@@ -9,23 +9,18 @@ public class Transactions {
     private double value;
     private String category;
     private String transactionType;
+    private String transactionAccount;
     private Date transactionDate;
 
-    public Transactions(int id, String description, double value, String category, String transactionType, Date transactionDate) {
+
+    public Transactions(int id, String description, double value, String category, String transactionType, String transactionAccount, Date transactionDate) {
         this.id = id;
         this.description = description;
         this.value = value;
         this.category = category;
         this.transactionType = transactionType;
+        this.transactionAccount = transactionAccount;
         this.transactionDate = transactionDate;
-    }
-
-    public String getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(String transactionType) {
-        this.transactionType = transactionType;
     }
 
     public int getId() {
@@ -60,6 +55,21 @@ public class Transactions {
         this.category = category;
     }
 
+    public String getTransactionAccount() {
+        return transactionAccount;
+    }
+
+    public void setTransactionAccount(String transactionAccount) {
+        this.transactionAccount = transactionAccount;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 
     public Date getTransactionDate() {
         return transactionDate;
