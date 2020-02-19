@@ -69,6 +69,20 @@ public class DataBaseAccess {
         }
     }
 
+    //Delete selected account
+    public boolean deleteAccount(String account) {
+
+        String whereClause = ACCOUNT_NAME_COL1 + "='" + account + "'";
+        long result = db.delete(TABLE_ACCOUNT, whereClause, null);
+        if (result == -1) {
+            Log.e(tag, "Could not remove account in database");
+            return false;
+        } else {
+            Log.i(tag, account + " removed completed");
+            return true;
+        }
+    }
+
     //get all saved accounts and return them to app constants
     public ArrayList<Account> getAccount() {
         ArrayList<Account> accountFromDatabase = new ArrayList<>();

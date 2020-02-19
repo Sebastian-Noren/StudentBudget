@@ -20,6 +20,7 @@ public class TestFragment extends Fragment {
     private String tag = "Info";
     private TextView textView;
     private Handler handler;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
         Log.d(tag, "In the TestFragment");
@@ -33,10 +34,8 @@ public class TestFragment extends Fragment {
         return view;
     }
 
-
-
     //Background thread that updates UI
-    private void threadUpdateTextView(){
+    private void threadUpdateTextView() {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {

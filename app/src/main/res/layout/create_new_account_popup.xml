@@ -38,6 +38,7 @@
             android:ems="10"
             android:gravity="center"
             android:hint="***"
+            android:maxLength="20"
             android:inputType="textPersonName" />
 
     </LinearLayout>
@@ -85,7 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:ems="10"
-        android:maxLength="45"
+        android:maxLength="40"
         android:hint="Notes (optional)"
         android:inputType="textPersonName" />
 

@@ -15,6 +15,15 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountItemCardHolder> 
 
     Context context;
     private ArrayList<Account> accounts; // this array lis create a which parameters defiune in our model class;
+    private OnCardItemLongClickListener onCardItemLongClickListener;
+
+    public interface OnCardItemLongClickListener {
+        void onCardItemLongClick(int pos);
+    }
+
+    public void setOnCardItemLongClickListener(OnCardItemLongClickListener listener) {
+        onCardItemLongClickListener = listener;
+    }
 
     public AccountAdapter(Context context, ArrayList<Account> accountArrayList) {
         this.context = context;
@@ -24,9 +33,9 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountItemCardHolder> 
     @NonNull
     @Override
     public AccountItemCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_row,null); // this line inflate the account_card_row
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_row, null); // this line inflate the account_card_row
 
-        return new AccountItemCardHolder(view); // this will return our view to holder class
+        return new AccountItemCardHolder(view, onCardItemLongClickListener); // this will return our view to holder class
     }
 
     @Override
@@ -37,6 +46,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountItemCardHolder> 
         holder.notes.setText(accounts.get(position).getAccountNote());
         holder.image.setImageResource(accounts.get(position).getImgIcon()); // used images resource. will use images
         //in resource folder which is drawable
+
     }
 
     @Override

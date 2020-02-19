@@ -17,4 +17,6 @@
     <string name="view_spending">New Expense</string>
     <string name="save_button">Save</string>
     <string name="cancel_button">Cancel</string>
+    <string name="ok">Ok</string>
+    <string name="delete_account_text">All income and expenses associated with this account will be erased</string>
 </resources>
