@@ -7,11 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import se.hkr.studentbudget.account.Account;
+
 public class DataBaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase db;
     private static DataBaseAccess instance;
-    private Cursor c = null;
     private String tag = "Info";
 
     //Account table values
@@ -48,36 +51,41 @@ public class DataBaseAccess {
 
     //Methods to get results from database
 
+    // insert account into the database
+    public boolean insertAccountInDatabase(String accountName, double accountValue, String accountNotes, int img) {
+        ContentValues accountContent = new ContentValues();
+        accountContent.put(ACCOUNT_NAME_COL1, accountName);
+        accountContent.put(ACCOUNT_VALUE_COL2, accountValue);
+        accountContent.put(ACCOUNT_NOTE_COL3, accountNotes);
+        accountContent.put(ACCOUNT_IMG_COL4, img);
+        long result = db.insert(TABLE_ACCOUNT, null, accountContent);
 
+        if (result == -1) {
+            Log.e(tag, "Could not insert in database");
+            return false;
+        } else {
+            Log.i(tag, "Insert completed");
+            return true;
+        }
+    }
 
-     public boolean inserAccountInDatabase(String accountName, double accountValue, String accountNotes, int img){
-         ContentValues accountContent = new ContentValues();
-         accountContent.put(ACCOUNT_NAME_COL1,accountName);
-         accountContent.put(ACCOUNT_VALUE_COL2,accountValue);
-         accountContent.put(ACCOUNT_NOTE_COL3,accountNotes);
-         accountContent.put(ACCOUNT_IMG_COL4,img);
-
-         long result = db.insert(TABLE_ACCOUNT,null,accountContent);
-
-         if (result == -1){
-             Log.e(tag, "Could not insert in database");
-             return false;
-         }else {
-             Log.i(tag, "Insert completed");
-             return true;
-         }
-     }
-
-    //Example method
-    public String getItem() {
-        c = db.rawQuery("SELECT * FROM account", null);
+    //get all saved accounts and return them to app constants
+    public ArrayList<Account> getAccount() {
+        ArrayList<Account> accountFromDatabase = new ArrayList<>();
+        Cursor c;
+        String query = String.format("SELECT * FROM %s", TABLE_ACCOUNT);
+        c = db.rawQuery(query, null);
 
         while (c.moveToNext()) {
-             Log.i("Info", c.getString(0));
-            Log.i("Info", String.valueOf(c.getDouble(1)));
-            Log.i("Info", c.getString(2));
-            Log.i("Info", String.valueOf(c.getInt(3)));
+            String name = c.getString(0);
+            double value = c.getDouble(1);
+            String notes = c.getString(2);
+            int icon = c.getInt(3);
+
+            Account m = new Account(name, value, notes, icon);
+            accountFromDatabase.add(m);
         }
-        return "";
+
+        return accountFromDatabase;
     }
 }
