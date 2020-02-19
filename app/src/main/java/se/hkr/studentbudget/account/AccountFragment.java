@@ -19,19 +19,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-public class AccountFragment extends Fragment implements CreateAccountDialog.OnSelectedInput {
+public class AccountFragment extends Fragment implements CreateAccountDialog.OnSelectedInput,
+        DeleteAccountDialog.OnDelectClick {
 
     private RecyclerView recyclerView;
     private AccountAdapter accountAdapter;
     private FloatingActionButton fabBtn;
     private CreateAccountDialog dialog;
+    private DeleteAccountDialog deleteDialog;
     private TextView totalSaldo;
-    private int accountSize;
+    private int accountSize, accountRemoveIndex;
     private String tag = "Info";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
-        Log.d(tag, "In the settingsFragment");
+        Log.d(tag, "In the AccountFragment");
         recyclerView = view.findViewById(R.id.account_recycleview);
         fabBtn = view.findViewById(R.id.account_fab);
         totalSaldo = view.findViewById(R.id.account_saldo);
@@ -42,10 +44,19 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
         accountSize = AppConstants.accounts.size();
 
+        accountAdapter.setOnCardItemLongClickListener(new AccountAdapter.OnCardItemLongClickListener() {
+            @Override
+            public void onCardItemLongClick(int pos) {
+                accountRemoveIndex = pos;
+                openDeleteAccount(pos);
+            }
+        });
+
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openCreateAccountDialog();
+
             }
         });
 
@@ -55,13 +66,25 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     }
 
     @Override
+    public void deleteAccountClick() {
+        removeAccount();
+    }
+
+    @Override
     public void saveComplete(String input, double value, String notes) {
         Log.i(tag, "Saves account");
-
         if (!dialog.isRemoving()) {
             addNewAccount(input, value, notes);
             countAnimationSaldo();
         }
+    }
+
+    private void removeAccount() {
+        String account = AppConstants.accounts.get(accountRemoveIndex).getAccountName();
+        AppConstants.accounts.remove(accountRemoveIndex);
+        accountAdapter.notifyItemRemoved(accountRemoveIndex);
+        countAnimationSaldo();
+        deleteAccountInDatabase(account);
     }
 
     private void countAnimationSaldo() {
@@ -74,7 +97,6 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
             }
         });
         animator.start();
-
     }
 
     private void addNewAccount(String input, double value, String notes) {
@@ -84,9 +106,14 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         Account m = new Account(input, value, notes, icon);
         AppConstants.accounts.add(accountSize, m);
         accountAdapter.notifyItemInserted(insertIndex);
+        insertInDatabase(input, value, notes, icon);
+    }
 
-        insertInDatabase(input,value,notes, icon);
-
+    private void openDeleteAccount(int pos) {
+        String account = AppConstants.accounts.get(pos).getAccountName();
+        deleteDialog = new DeleteAccountDialog(account);
+        deleteDialog.setTargetFragment(this, 1);
+        deleteDialog.show(getFragmentManager(), "deleteDialog");
     }
 
     private void openCreateAccountDialog() {
@@ -95,16 +122,39 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         dialog.show(getFragmentManager(), "dialog");
     }
 
-    private void insertInDatabase(String input, double value, String notes, int icon){
-        DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
-        dataBaseAcess.openDatabase();
-        boolean insertData = dataBaseAcess.insertAccountInDatabase(input,value,notes,icon);
-        if (insertData){
-            AppConstants.toastMessage(getContext(),"Data Successfully Inserted!");
-        }else {
-            AppConstants.toastMessage(getContext(),"Something Went Wrong!");
-        }
-        dataBaseAcess.closeDatabe();
+    private void deleteAccountInDatabase(final String input) {
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
+                dataBaseAcess.openDatabase();
+                boolean insertData = dataBaseAcess.deleteAccount(input);
+                if (insertData) {
+                    Log.i(tag, "Account removed from database!");
+                } else {
+                    Log.e(tag, "Something Went Wrong!");
+                }
+                dataBaseAcess.closeDatabe();
+            }
+        });
+        th.start();
     }
 
+    private void insertInDatabase(final String input, final double value, final String notes, final int icon) {
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
+                dataBaseAcess.openDatabase();
+                boolean insertData = dataBaseAcess.insertAccountInDatabase(input, value, notes, icon);
+                if (insertData) {
+                    Log.i(tag, "Account saved to database!");
+                } else {
+                    Log.e(tag, "Something Went Wrong!");
+                }
+                dataBaseAcess.closeDatabe();
+            }
+        });
+        th.start();
+    }
 }

@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 
 public class CreateAccountDialog extends DialogFragment {
     private String tag = "Info";
@@ -56,14 +56,21 @@ public class CreateAccountDialog extends DialogFragment {
                 String str2 = inputAccountValue.getText().toString().trim();
                 String str3 = inputAccountNotes.getText().toString().trim();
 
-
-                if (str2.isEmpty()) {
-                    value = 0;
+                if (!str1.isEmpty()) {
+                    if (!searchName(str1)) {
+                        if (str2.isEmpty()) {
+                            value = 0;
+                        } else {
+                            value = Double.parseDouble(str2);
+                        }
+                        getDialog().dismiss();
+                        onSelectedInput.saveComplete(str1, value, str3);
+                    } else {
+                        AppConstants.toastMessage(getContext(), "Account already exist!");
+                    }
                 } else {
-                    value = Double.parseDouble(str2);
+                    AppConstants.toastMessage(getContext(), "Must enter a Account name!");
                 }
-                getDialog().dismiss();
-                onSelectedInput.saveComplete(str1, value, str3);
             }
         });
 
@@ -78,5 +85,14 @@ public class CreateAccountDialog extends DialogFragment {
             Log.e(tag, e.toString() + " in CreateAccountDialog");
         }
         super.onAttach(context);
+    }
+
+    private boolean searchName(String input) {
+        for (int i = 0; i < AppConstants.accounts.size(); i++) {
+            if (AppConstants.accounts.get(i).getAccountName().equals(input)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
