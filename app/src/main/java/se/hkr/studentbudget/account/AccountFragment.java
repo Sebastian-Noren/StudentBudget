@@ -51,11 +51,6 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
         countAnimationSaldo();
 
-        DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
-        dataBaseAcess.openDatabase();
-        String n = dataBaseAcess.getItem();
-        dataBaseAcess.closeDatabe();
-
         return view;
     }
 
@@ -70,7 +65,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     }
 
     private void countAnimationSaldo() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) AppConstants.countSaldo()); //0 is min number, 600 is max number
+        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) AppConstants.accountTotalSaldo()); //0 is min number, 600 is max number
         animator.setDuration(1000); //Duration is in milliseconds
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -103,7 +98,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     private void insertInDatabase(String input, double value, String notes, int icon){
         DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
         dataBaseAcess.openDatabase();
-        boolean insertData = dataBaseAcess.inserAccountInDatabase(input,value,notes,icon);
+        boolean insertData = dataBaseAcess.insertAccountInDatabase(input,value,notes,icon);
         if (insertData){
             AppConstants.toastMessage(getContext(),"Data Successfully Inserted!");
         }else {

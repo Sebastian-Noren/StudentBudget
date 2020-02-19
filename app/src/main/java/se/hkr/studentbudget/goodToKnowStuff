@@ -7,3 +7,6 @@ toolbar.setTitle("New Spending");
 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 fragmentTransaction.add(R.id.nav_overView, new TestFragment());
 fragmentTransaction.commit();
+
+
+AppConstants is the foundation of the application that initialize everything in the beginning.
