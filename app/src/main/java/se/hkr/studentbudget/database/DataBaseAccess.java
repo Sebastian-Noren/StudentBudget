@@ -24,6 +24,17 @@ public class DataBaseAccess {
     private static final String ACCOUNT_NOTE_COL3 = "account_note";
     private static final String ACCOUNT_IMG_COL4 = "account_imgicon";
 
+    //Transaction table
+    private static final String TABLE_TRANSACTIONS = "transactions";
+    private static final String TRANSAC_ID_COL1 = "id";
+    private static final String TRANSAC_DESCRIPTION_COL2 = "description";
+    private static final String TRANSAC_VALUE_COL3 = "value";
+    private static final String TRANSAC_CATEGORY_COL4 = "category";
+    private static final String TRANSAC_TRANSACTYPE_COL5 = "transactionTYPE";
+    private static final String TRANSAC_ACCOUNT_NAME_COL6 = "account_name";
+    private static final String TRANSAC_DATETIME_COL7 = "dateTime";
+    private static final String TRANSAC_IMG_COL8 = "image";
+
     //private constructor so that object creation rom outside the class is avoided
     private DataBaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
@@ -50,6 +61,29 @@ public class DataBaseAccess {
     }
 
     //Methods to get results from database
+
+    // insert account into the database
+    public boolean insertTransactionInDatabase(String description, double value, String category,
+                                               String transactionType, String transactionAccount, String transactionDate, int image) {
+        ContentValues accountContent = new ContentValues();
+        accountContent.put(TRANSAC_DESCRIPTION_COL2, description);
+        accountContent.put(TRANSAC_VALUE_COL3, value);
+        accountContent.put(TRANSAC_CATEGORY_COL4, category);
+        accountContent.put(TRANSAC_TRANSACTYPE_COL5, transactionType);
+        accountContent.put(TRANSAC_ACCOUNT_NAME_COL6, transactionAccount);
+        accountContent.put(TRANSAC_DATETIME_COL7, transactionDate);
+        accountContent.put(TRANSAC_IMG_COL8, image);
+
+        long result = db.insert(TABLE_TRANSACTIONS, null, accountContent);
+
+        if (result == -1) {
+            Log.e(tag, "Could not insert in database");
+            return false;
+        } else {
+            Log.i(tag, "Insert completed");
+            return true;
+        }
+    }
 
     // insert account into the database
     public boolean insertAccountInDatabase(String accountName, double accountValue, String accountNotes, int img) {
@@ -87,6 +121,7 @@ public class DataBaseAccess {
     public ArrayList<Account> getAccount() {
         ArrayList<Account> accountFromDatabase = new ArrayList<>();
         Cursor c;
+        Account m;
         String query = String.format("SELECT * FROM %s", TABLE_ACCOUNT);
         c = db.rawQuery(query, null);
 
@@ -96,10 +131,10 @@ public class DataBaseAccess {
             String notes = c.getString(2);
             int icon = c.getInt(3);
 
-            Account m = new Account(name, value, notes, icon);
+            m = new Account(name, value, notes, icon);
             accountFromDatabase.add(m);
         }
-
+        c.close();
         return accountFromDatabase;
     }
 }

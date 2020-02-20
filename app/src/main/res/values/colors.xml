@@ -4,5 +4,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#2D2576</color>
-    <color name="colorSpending">#C62828</color>
+    <color name="colorExpense">#C62828</color>
+    <color name="colorIncome">#558B2F</color>
 </resources>
