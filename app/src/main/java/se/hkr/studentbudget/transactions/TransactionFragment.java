@@ -30,7 +30,7 @@ import androidx.navigation.Navigation;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
-import se.hkr.studentbudget.Transactions;
+import se.hkr.studentbudget.database.DataBaseAccess;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
@@ -85,7 +85,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
             }
         });
-
+        // Save all transactions
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +124,9 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         return view;
     }
 
+    //Main method for adding new transactions
     private void addNewTransaction(String text, String value, String clickedCategoryName, String TRANSACTION_TYPE, String clickedAccountName, String selectedDate, int clickedCategoryImage) {
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date date = null;
         double amountValue = 0;
@@ -142,12 +144,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
       //  String str = MessageFormat.format("{0} {1} {2} {3} {4} {5} {6}", text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
       //  AppConstants.toastMessage(getContext(), str);
-
+        insertInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
         Transactions m = new Transactions(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, date, clickedCategoryImage);
         AppConstants.transactions.add(m);
 
         calc.countTransactions();
-        calc.updateAccountAmount(accountChoiceIndex,amountValue);
+        calc.updateAccountAmount(accountChoiceIndex,amountValue, clickedAccountName, getContext());
         //TODO save transaction to database
 
     }
@@ -229,5 +231,22 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         super.onDestroyView();
     }
 
+    private void insertInDatabase(final String text, final double amountValue, final String clickedCategoryName, final String TRANSACTION_TYPE, final String clickedAccountName, final String selectedDate, final int clickedCategoryImage) {
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
+                dataBaseAcess.openDatabase();
+                boolean insertData = dataBaseAcess.insertTransactionInDatabase(text,amountValue,clickedCategoryName,TRANSACTION_TYPE,clickedAccountName,selectedDate,clickedCategoryImage);
+                if (insertData) {
+                    Log.i(tag, "Transaction saved in database!");
+                } else {
+                    Log.e(tag, "Something Went Wrong!");
+                }
+                dataBaseAcess.closeDatabe();
+            }
+        });
+        th.start();
+    }
 
 }

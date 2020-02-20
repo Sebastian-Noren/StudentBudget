@@ -12,6 +12,8 @@ import se.hkr.studentbudget.R;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import static se.hkr.studentbudget.AppConstants.transactions;
+
 /*
 This is made for testing shit out
  */
@@ -28,6 +30,10 @@ public class TestFragment extends Fragment {
         // use view to get things from the windows
         textView = view.findViewById(R.id.textTest);
         handler = new Handler();
+
+        for (int i = 0; i < transactions.size(); i++) {
+            Log.i(tag, transactions.get(i).toString());
+        }
 
         threadUpdateTextView();
 

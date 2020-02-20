@@ -1,4 +1,4 @@
-package se.hkr.studentbudget;
+package se.hkr.studentbudget.transactions;
 
 import java.util.Date;
 
@@ -87,5 +87,19 @@ public class Transactions {
 
     public void setImage(int image) {
         this.image = image;
+    }
+
+    @Override
+    public String toString() {
+        return "Transactions{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", value=" + value +
+                ", category='" + category + '\'' +
+                ", transactionType='" + transactionType + '\'' +
+                ", transactionAccount='" + transactionAccount + '\'' +
+                ", transactionDate=" + transactionDate +
+                ", image=" + image +
+                '}';
     }
 }

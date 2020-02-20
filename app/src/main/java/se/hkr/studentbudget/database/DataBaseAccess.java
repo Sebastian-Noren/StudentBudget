@@ -7,8 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
+import se.hkr.studentbudget.transactions.Transactions;
 import se.hkr.studentbudget.account.Account;
 
 public class DataBaseAccess {
@@ -73,14 +78,61 @@ public class DataBaseAccess {
         accountContent.put(TRANSAC_ACCOUNT_NAME_COL6, transactionAccount);
         accountContent.put(TRANSAC_DATETIME_COL7, transactionDate);
         accountContent.put(TRANSAC_IMG_COL8, image);
-
         long result = db.insert(TABLE_TRANSACTIONS, null, accountContent);
 
+        if (result == -1) {
+            Log.e(tag, "Could not insert transaction in database");
+            return false;
+        } else {
+            Log.i(tag, "Insert completed");
+            return true;
+        }
+    }
+
+    //get all saved accounts and return them to app constants
+    public ArrayList<Transactions> getAllTransactions() {
+        ArrayList<Transactions> transactionsFromDatabase = new ArrayList<>();
+        Cursor c;
+        Transactions m;
+        String query = String.format("SELECT * FROM %s", TABLE_TRANSACTIONS);
+        c = db.rawQuery(query, null);
+        while (c.moveToNext()) {
+
+            int id = c.getInt(0);
+            String textDesc = c.getString(1);
+            double value = c.getDouble(2);
+            String category = c.getString(3);
+            String transactionType = c.getString(4);
+            String transactionAccount = c.getString(5);
+            String transactionDate = c.getString(6);
+            int image = c.getInt(7);
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            Date date = null;
+            try {
+                date = format.parse(transactionDate);
+            } catch (ParseException e) {
+                Log.e(tag, e.getMessage() + "date conversation fail!");
+            }
+            m = new Transactions(textDesc,value,category,transactionType,transactionAccount,date,image);
+            m.setId(id);
+            transactionsFromDatabase.add(m);
+        }
+        c.close();
+        Log.i(tag, "Reading in Transaction completed without problem");
+        return transactionsFromDatabase;
+    }
+
+    public boolean updateAccountInDatabase(double accountValue,String account){
+        String whereClause = ACCOUNT_NAME_COL1 + "='" + account + "'";
+        ContentValues accountContent = new ContentValues();
+        accountContent.put(ACCOUNT_VALUE_COL2, accountValue);
+        long result = db.update(TABLE_ACCOUNT, accountContent,whereClause,null);
         if (result == -1) {
             Log.e(tag, "Could not insert in database");
             return false;
         } else {
-            Log.i(tag, "Insert completed");
+            Log.i(tag, "update completed in database");
             return true;
         }
     }
@@ -93,7 +145,6 @@ public class DataBaseAccess {
         accountContent.put(ACCOUNT_NOTE_COL3, accountNotes);
         accountContent.put(ACCOUNT_IMG_COL4, img);
         long result = db.insert(TABLE_ACCOUNT, null, accountContent);
-
         if (result == -1) {
             Log.e(tag, "Could not insert in database");
             return false;
