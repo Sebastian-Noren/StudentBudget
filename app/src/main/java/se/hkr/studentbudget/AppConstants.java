@@ -10,6 +10,7 @@ import se.hkr.studentbudget.account.Account;
 import se.hkr.studentbudget.database.DataBaseAccess;
 import se.hkr.studentbudget.transactions.CategoryRowAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowItem;
+import se.hkr.studentbudget.transactions.Transactions;
 
 public class AppConstants {
 
@@ -32,9 +33,11 @@ public class AppConstants {
     private static void initList(Context context) {
         transactions = new ArrayList<>();
         initAccounts(context);
+        initTransactions(context);
         //Fills expense category
         fillExpenseCategorySpinner(context);
         fillIncomeCategorySpinner(context);
+
     }
 
 
@@ -43,6 +46,7 @@ public class AppConstants {
         dataBaseAcess.openDatabase();
         accounts = dataBaseAcess.getAccount();
         dataBaseAcess.closeDatabe();
+
     }
 
     private static void fillIncomeCategorySpinner(Context context){
@@ -67,6 +71,19 @@ public class AppConstants {
         expenseList.add(new CategoryRowItem("Pets", R.drawable.ic_placeholder));
         expenseList.add(new CategoryRowItem("Other", R.drawable.ic_placeholder));
         expenseAdapter = new CategoryRowAdapter(context, expenseList);
+    }
+
+    private static void initTransactions(final Context context){
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(context);
+                dataBaseAcess.openDatabase();
+                transactions = dataBaseAcess.getAllTransactions();
+                dataBaseAcess.closeDatabe();
+            }
+        });
+        th.start();
     }
 
     public static void fillAccountSpinner(Context context){
