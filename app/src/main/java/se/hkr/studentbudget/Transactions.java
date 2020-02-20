@@ -11,16 +11,18 @@ public class Transactions {
     private String transactionType;
     private String transactionAccount;
     private Date transactionDate;
+    private int image;
 
 
-    public Transactions(int id, String description, double value, String category, String transactionType, String transactionAccount, Date transactionDate) {
-        this.id = id;
+    public Transactions(String description, double value, String category,
+                        String transactionType, String transactionAccount, Date transactionDate, int image) {
         this.description = description;
         this.value = value;
         this.category = category;
         this.transactionType = transactionType;
         this.transactionAccount = transactionAccount;
         this.transactionDate = transactionDate;
+        this.image = image;
     }
 
     public int getId() {
@@ -77,5 +79,13 @@ public class Transactions {
 
     public void setTransactionDate(Date transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }

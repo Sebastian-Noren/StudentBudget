@@ -42,10 +42,9 @@
     tools:layout="@layout/fragment_test" />
 
     <fragment
-        android:id="@+id/nav_spending"
-        android:name="se.hkr.studentbudget.transactions.SpendingFragment"
-        android:label="@string/view_spending"
-        tools:layout="@layout/fragment_spending" />
+        android:id="@+id/nav_transaction"
+        android:name="se.hkr.studentbudget.transactions.TransactionFragment"
+        tools:layout="@layout/fragment_transactions" />
 
     <fragment
         android:id="@+id/nav_account"

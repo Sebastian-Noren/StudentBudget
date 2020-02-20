@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import se.hkr.studentbudget.AppConstants;
+import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
 import se.hkr.studentbudget.database.DataBaseAccess;
 import androidx.annotation.NonNull;
@@ -88,7 +89,8 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     }
 
     private void countAnimationSaldo() {
-        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) AppConstants.accountTotalSaldo()); //0 is min number, 600 is max number
+        AppMathCalc calc = new AppMathCalc();
+        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) calc.accountTotalSaldo()); //0 is min number, 600 is max number
         animator.setDuration(1000); //Duration is in milliseconds
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -104,7 +106,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         int insertIndex = (accountSize);
         int icon = R.drawable.ic_placeholder;
         Account m = new Account(input, value, notes, icon);
-        AppConstants.accounts.add(accountSize, m);
+        AppConstants.accounts.add(m);
         accountAdapter.notifyItemInserted(insertIndex);
         insertInDatabase(input, value, notes, icon);
     }

@@ -57,9 +57,10 @@ public class OverViewFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(tag, "Open plus transaction");
                 closeMenu();
-                //TODO get this shit working
-
-
+                Bundle bundle = new Bundle();
+                int theme = 2;
+                bundle.putInt("choice",theme);
+                navController.navigate(R.id.nav_transaction,bundle);
             }
         });
 
@@ -68,8 +69,10 @@ public class OverViewFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(tag, "Open minus Transaction");
                 closeMenu();
-                navController.navigate(R.id.nav_spending);
-
+                Bundle bundle = new Bundle();
+                int theme = 1;
+                bundle.putInt("choice",theme);
+                navController.navigate(R.id.nav_transaction,bundle);
             }
         });
 

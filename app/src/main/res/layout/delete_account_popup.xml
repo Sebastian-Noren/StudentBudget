@@ -11,7 +11,7 @@
         android:layout_height="48dp"
         android:text='Delete "account"'
         android:textAlignment="center"
-        android:textColor="@color/colorSpending"
+        android:textColor="@color/colorExpense"
         android:textSize="24sp"
         android:textStyle="bold" />
 

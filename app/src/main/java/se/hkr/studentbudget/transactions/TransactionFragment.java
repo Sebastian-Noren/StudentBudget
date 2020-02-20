@@ -13,10 +13,11 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -27,30 +28,41 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import se.hkr.studentbudget.AppConstants;
+import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.Transactions;
 
-public class SpendingFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
 
-    private Spinner spinner, accountSpinner;
+    private Spinner categorySpinner, accountSpinner;
     private Button saveBtn, cancelBtn, dateCalender;
     private NavController navController;
     private TextView spendTextInput, spendValueInput;
     private String clickedCategoryName = "";
+    private String clickedAccountName = "";
     private String selectedDate;
+    private int clickedCategoryImage;
+    private String TRANSACTION_TYPE = "";
+    private int datePickerStyle;
+    private int choice;
+    private int accountChoiceIndex;
+    AppMathCalc calc = new AppMathCalc();
 
     private String tag = "Info";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_spending, container, false);
-        Log.d(tag, "In the SpendingFragment");
+        View view = inflater.inflate(R.layout.fragment_transactions, container, false);
+        Log.d(tag, "In the TransactionFragment");
         // init view elements
         initFragmentView(view);
 
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+        categorySpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 CategoryRowItem clickedItem = (CategoryRowItem) parent.getItemAtPosition(position);
                 clickedCategoryName = clickedItem.getmCategoryName();
+                clickedCategoryImage = clickedItem.getmCategoryIcon();
             }
 
             @Override
@@ -62,7 +74,10 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
         accountSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                CategoryRowItem clickedItem = (CategoryRowItem) parent.getItemAtPosition(position);
+                clickedAccountName = clickedItem.getmCategoryName();
+                accountChoiceIndex = position;
+                Log.i(tag,String.valueOf(position));
             }
 
             @Override
@@ -79,10 +94,9 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
                 String text = spendTextInput.getText().toString().trim();
 
                 if (value.isEmpty()) {
-                    Toast.makeText(getContext(), "Chose a value", Toast.LENGTH_SHORT).show();
+                    AppConstants.toastMessage(getContext(), "Chose a value");
                 } else {
-
-                    Toast.makeText(getContext(), value + " " + text + " " + clickedCategoryName + " " + selectedDate, Toast.LENGTH_SHORT).show();
+                    addNewTransaction(text, value, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
                     navController.navigate(R.id.nav_overView);
                 }
             }
@@ -92,9 +106,8 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
             @Override
             public void onClick(View v) {
                 //Select theme for datepicker Popup
-                int datePickerStyle = R.style.DatePickerSpendingTheme;
                 DialogFragment datePickerFragment = new DatePickerFragment(datePickerStyle); // creating DialogFragment which creates DatePickerDialog
-                datePickerFragment.setTargetFragment(SpendingFragment.this, 0);  // Passing this fragment DatePickerFragment.
+                datePickerFragment.setTargetFragment(TransactionFragment.this, 0);  // Passing this fragment DatePickerFragment.
                 // display fragment
                 datePickerFragment.show(Objects.requireNonNull(getFragmentManager()), "datePicker");
             }
@@ -103,8 +116,7 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 navController.navigate(R.id.nav_overView);
-
+                navController.navigate(R.id.nav_overView);
 
             }
         });
@@ -112,22 +124,75 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
         return view;
     }
 
+    private void addNewTransaction(String text, String value, String clickedCategoryName, String TRANSACTION_TYPE, String clickedAccountName, String selectedDate, int clickedCategoryImage) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = null;
+        double amountValue = 0;
+        try {
+            date = format.parse(selectedDate);
+
+            if (choice == 1) {
+                amountValue = -Double.parseDouble(value);
+            }else {
+                amountValue = Double.parseDouble(value);
+            }
+        } catch (ParseException e) {
+            Log.e(tag, e.getMessage() + "date/amount conversation fail!");
+        }
+
+      //  String str = MessageFormat.format("{0} {1} {2} {3} {4} {5} {6}", text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
+      //  AppConstants.toastMessage(getContext(), str);
+
+        Transactions m = new Transactions(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, date, clickedCategoryImage);
+        AppConstants.transactions.add(m);
+
+        calc.countTransactions();
+        calc.updateAccountAmount(accountChoiceIndex,amountValue);
+        //TODO save transaction to database
+
+    }
+
     private void initFragmentView(View view) {
-        //Change the color of titlebar
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
-                new ColorDrawable(getResources().getColor(R.color.colorSpending)));
         //Get navvontroler
+        AppConstants.fillAccountSpinner(getContext());
         navController = Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.nav_host_fragment);
-        spinner = view.findViewById(R.id.spinner);
+        categorySpinner = view.findViewById(R.id.category_spinner);
         accountSpinner = view.findViewById(R.id.transactionsSpinner);
         saveBtn = view.findViewById(R.id.btn_save);
         cancelBtn = view.findViewById(R.id.btn_cancel);
         dateCalender = view.findViewById(R.id.btn_date);
         spendTextInput = view.findViewById(R.id.spendingTextInput);
         spendValueInput = view.findViewById(R.id.spendingValueInput);
-        currentDate();
         accountSpinner.setAdapter(AppConstants.accountAdapter);
-        spinner.setAdapter(AppConstants.expenseAdapter);
+        currentDate();
+        choice = getArguments().getInt("choice");
+        switch (choice) {
+            case 1:
+                saveBtn.setBackgroundColor(getResources().getColor(R.color.colorExpense));
+                cancelBtn.setBackgroundColor(getResources().getColor(R.color.colorExpense));
+                datePickerStyle = R.style.DatePickerExpenseTheme;
+
+                //Change the color and text of titlebar
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
+                        new ColorDrawable(getResources().getColor(R.color.colorExpense)));
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Expense");
+                TRANSACTION_TYPE = "expense";
+                categorySpinner.setAdapter(AppConstants.expenseAdapter);
+                break;
+            case 2:
+                saveBtn.setBackgroundColor(getResources().getColor(R.color.colorIncome));
+                cancelBtn.setBackgroundColor(getResources().getColor(R.color.colorIncome));
+                datePickerStyle = R.style.DatePickerIncomeTheme;
+                //Change the color and text of titlebar
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
+                        new ColorDrawable(getResources().getColor(R.color.colorIncome)));
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Income");
+                TRANSACTION_TYPE = "income";
+                categorySpinner.setAdapter(AppConstants.incomeAdapter);
+                break;
+            default:
+                break;
+        }
     }
 
     private void currentDate() {
@@ -163,4 +228,6 @@ public class SpendingFragment extends Fragment implements DatePickerDialog.OnDat
         resetToolbarColor();
         super.onDestroyView();
     }
+
+
 }

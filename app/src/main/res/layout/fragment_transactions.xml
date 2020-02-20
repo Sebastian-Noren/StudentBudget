@@ -7,12 +7,13 @@
     android:background="@drawable/gradient_background">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="1dp"
         android:orientation="vertical"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -44,9 +45,8 @@
                 android:layout_width="195dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center|start"
                 android:text="Kr"
-                android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light" />
 
             <Space
@@ -65,7 +65,7 @@
             android:textColor="@android:color/primary_text_light" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/category_spinner"
             android:layout_width="match_parent"
             android:layout_height="45dp" />
 
@@ -99,10 +99,21 @@
 
         </LinearLayout>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="29dp" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="380dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:background="?android:attr/listDivider" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="407dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
@@ -119,7 +130,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorSpending"
+            android:background="@android:color/darker_gray"
             android:text="@string/cancel_button" />
 
         <Space
@@ -133,7 +144,7 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorSpending"
+            android:background="@android:color/darker_gray"
             android:text="@string/save_button" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

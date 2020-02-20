@@ -13,8 +13,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="DatePickerSpendingTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/colorSpending</item>
+    <style name="DatePickerExpenseTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorExpense</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="DatePickerIncomeTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorIncome</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
