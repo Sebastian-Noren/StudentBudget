@@ -11,12 +11,16 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
 import androidx.fragment.app.Fragment;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.R;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -32,14 +36,31 @@ public class OverViewFragment extends Fragment {
     private boolean isMenuOpen = false;
     private OvershootInterpolator interpolator = new OvershootInterpolator();
 
+    private RecyclerView recyclerView;
+    private MultiViewTypeAdapter multiAdapter;
+    private ArrayList<TestModel> testModels;
 
-    TextView test;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
         Log.d(tag, "In the OverViewFragment");
-        test = view.findViewById(R.id.overviewTest);
         navController = Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.nav_host_fragment);
+        testModels = new ArrayList<>();
+
+        testModels.add(new TestModel(TestModel.CARD1));
+        testModels.add(new TestModel(TestModel.CARD2));
+        testModels.add(new TestModel(TestModel.CARD3));
+
+        multiAdapter = new MultiViewTypeAdapter(getContext(),testModels);
+
+        recyclerView = view.findViewById(R.id.overview_recycler);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // will create recyclerview in linearlayoyt
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(multiAdapter);
+
+
+
         initFabMenu(view);
         fabMain.setOnClickListener(new View.OnClickListener() {
             @Override
