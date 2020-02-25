@@ -60,7 +60,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
             this.notes = itemView.findViewById(R.id.account_notes);
 
         }
-
     }
 
     public static class TransTypeViewHolder extends RecyclerView.ViewHolder {
@@ -134,7 +133,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     TransactionAdapter adapter;
                     ArrayList<Transactions> tractions = new ArrayList<>();
 
-                //    ((TransTypeViewHolder) holder).recyclerView.setNestedScrollingEnabled(false);
 
                     ((TransTypeViewHolder) holder).txtType.setText("Fuck this transactions");
                     ((TransTypeViewHolder) holder).recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -146,7 +144,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     break;
             }
         }
-
     }
 
     @Override
