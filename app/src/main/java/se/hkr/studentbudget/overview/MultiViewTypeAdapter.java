@@ -10,16 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.AppConstants;
+import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
 import se.hkr.studentbudget.transactions.Transactions;
@@ -36,13 +45,18 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
 
-    public static class TextTypeViewHolder extends RecyclerView.ViewHolder {
+    public static class SummaryTypeViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtType;
+        TextView income, expense, total, currentMonth;
+        PieChart mPieChart;
 
-        public TextTypeViewHolder(View itemView) {
+        public SummaryTypeViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.txtType = itemView.findViewById(R.id.textView5);
+            this.currentMonth = itemView.findViewById(R.id.sum_card_month_text);
+            this.income = itemView.findViewById(R.id.sum_income_card);
+            this.expense = itemView.findViewById(R.id.sum_expense_card);
+            this.total = itemView.findViewById(R.id.sum_total_card);
+            this.mPieChart = itemView.findViewById(R.id.overview_pieshart);
 
         }
     }
@@ -51,6 +65,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         ImageView image;
         TextView title, value, notes;
+
 
         public AccountItemTestCardHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,7 +83,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         private TextView txtType;
         private RecyclerView recyclerView;
 
-        public TransTypeViewHolder(View itemView) {
+        public TransTypeViewHolder(@NonNull View itemView) {
             super(itemView);
             this.txtType = itemView.findViewById(R.id.textView5);
             this.recyclerView =itemView.findViewById(R.id.planet_rec);
@@ -83,8 +98,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         View view;
         switch (viewType) {
             case TestModel.CARD1:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.test_card_row, parent, false);
-                return new TextTypeViewHolder(view);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.summary_card_row, parent, false);
+                return new SummaryTypeViewHolder(view);
             case TestModel.CARD2:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_row, parent, false);
                 return new AccountItemTestCardHolder(view);
@@ -122,28 +137,55 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (object != null) {
             switch (object.getType()) {
                 case TestModel.CARD1:
-       //             ((TextTypeViewHolder) holder).txtType.setText("Fuck this code");
+                    AppMathCalc math = new AppMathCalc();
+                    ((SummaryTypeViewHolder) holder).total.setText(String.format("%,.2f kr",math.countTransactions()));
+                    pieChart(((SummaryTypeViewHolder) holder).mPieChart);
                     break;
                 case TestModel.CARD2:
                     ((AccountItemTestCardHolder) holder).title.setText("Wallet");
-                //    ((AccountItemTestCardHolder) holder).value.setText(String.format("%,.2f", 500, 14));
+                   ((AccountItemTestCardHolder) holder).value.setText(String.format("%,.2f", 500.14));
                     ((AccountItemTestCardHolder) holder).notes.setText("THis is a long note");
                     ((AccountItemTestCardHolder) holder).image.setImageResource(R.drawable.ic_placeholder); // used images resource. will use images
                     break;
                 case TestModel.CARD3:
-                  //  TransactionAdapter adapter;
-                  //  ArrayList<Transactions> tractions = new ArrayList<>();
-                    AppConstants.fillTransactions(mContext);
 
+                    AppConstants.fillTransactions(mContext);
                     ((TransTypeViewHolder) holder).recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                    //TODO change so real transaction is here
-                  //  adapter = new TransactionAdapter(mContext, tractions);
                     ((TransTypeViewHolder) holder).recyclerView.setAdapter(AppConstants.transactionAdapter);
                    // createListData(adapter, tractions);
-                   // adapter.notifyDataSetChanged();
                     break;
             }
         }
+    }
+
+
+    private void pieChart(PieChart mPieChart){
+        List<PieEntry> pieEntries = new ArrayList<>();
+
+        // first entry data value, second is data descriptor
+        pieEntries.add(new PieEntry(200.14f,""));
+        pieEntries.add(new PieEntry(4600,""));
+
+       // mPieChart.setVisibility(View.VISIBLE);
+        mPieChart.animateXY(1000,1000);
+        mPieChart.setHoleRadius(1);
+        mPieChart.setTransparentCircleRadius(1);
+        //mPieChart.setUsePercentValues(true);
+        mPieChart.setDrawEntryLabels(false);
+
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,"Test");
+        pieDataSet.setSliceSpace(1);
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setDrawValues(false);
+        PieData pieData = new PieData(pieDataSet);
+        mPieChart.setData(pieData);
+        mPieChart.getLegend().setEnabled(false);
+        mPieChart.getDescription().setEnabled(false);
+        //Description description = new Description();
+        //description.setText("Testing description");
+        //mPieChart.setDescription(description);
+        mPieChart.invalidate();
     }
 
     @Override

@@ -13,12 +13,12 @@ public class AppMathCalc {
 
     private static String tag = "Info";
 
-    public void countTransactions() {
+    public double countTransactions() {
         double saldo = 0;
         for (int i = 0; i < transactions.size(); i++) {
             saldo = saldo + transactions.get(i).getValue();
         }
-        Log.i(tag, String.valueOf(saldo));
+        return saldo;
     }
 
     //count total amount for all accounts.
