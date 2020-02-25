@@ -2,7 +2,6 @@ package se.hkr.studentbudget.overview;
 
 import android.content.Context;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.transactions.TransactionAdapter;
 import se.hkr.studentbudget.transactions.Transactions;
 
 
@@ -29,12 +28,10 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private ArrayList<TestModel> dataSet;
     private Context mContext;
-    private int total_types;
 
     public MultiViewTypeAdapter(Context context, ArrayList<TestModel> data) {
         this.dataSet = data;
         this.mContext = context;
-        total_types = dataSet.size();
     }
 
 
@@ -135,12 +132,13 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     break;
                 case TestModel.CARD3:
                     TransactionAdapter adapter;
-                    ArrayList<Transactions> tractions = new ArrayList<Transactions>();
+                    ArrayList<Transactions> tractions = new ArrayList<>();
 
                 //    ((TransTypeViewHolder) holder).recyclerView.setNestedScrollingEnabled(false);
 
                     ((TransTypeViewHolder) holder).txtType.setText("Fuck this transactions");
                     ((TransTypeViewHolder) holder).recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+                    //TODO change so real transaction is here
                     adapter = new TransactionAdapter(mContext, tractions);
                     ((TransTypeViewHolder) holder).recyclerView.setAdapter(adapter);
                     createListData(adapter, tractions);
