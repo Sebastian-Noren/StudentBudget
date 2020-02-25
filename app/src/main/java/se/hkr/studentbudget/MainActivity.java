@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navController.navigate(R.id.nav_account);
         Log.d(tag, "In the onCreate() event");
     }
 
