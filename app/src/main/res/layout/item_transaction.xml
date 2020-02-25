@@ -35,7 +35,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:text="catergory"
-                    android:textSize="20sp" />
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/trans_item_amount"
@@ -45,6 +46,7 @@
                     android:gravity="right"
                     android:paddingRight="5dp"
                     android:text="-32 256,00 kr "
+                    android:textColor="@android:color/black"
                     android:textStyle="bold" />
             </LinearLayout>
 

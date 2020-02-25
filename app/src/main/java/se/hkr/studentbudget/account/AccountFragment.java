@@ -57,11 +57,14 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
             @Override
             public void onClick(View v) {
                 openCreateAccountDialog();
-
             }
         });
 
         countAnimationSaldo();
+
+        if (!AppConstants.accountExist()) {
+        openCreateAccountDialog();
+        }
 
         return view;
     }
@@ -69,6 +72,9 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     @Override
     public void deleteAccountClick() {
         removeAccount();
+        if (!AppConstants.accountExist()) {
+            openCreateAccountDialog();
+        }
     }
 
     @Override
