@@ -19,6 +19,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
 import se.hkr.studentbudget.transactions.Transactions;
@@ -121,7 +122,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (object != null) {
             switch (object.getType()) {
                 case TestModel.CARD1:
-                    ((TextTypeViewHolder) holder).txtType.setText("Fuck this code");
+       //             ((TextTypeViewHolder) holder).txtType.setText("Fuck this code");
                     break;
                 case TestModel.CARD2:
                     ((AccountItemTestCardHolder) holder).title.setText("Wallet");
@@ -130,16 +131,15 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ((AccountItemTestCardHolder) holder).image.setImageResource(R.drawable.ic_placeholder); // used images resource. will use images
                     break;
                 case TestModel.CARD3:
-                    TransactionAdapter adapter;
-                    ArrayList<Transactions> tractions = new ArrayList<>();
+                  //  TransactionAdapter adapter;
+                  //  ArrayList<Transactions> tractions = new ArrayList<>();
+                    AppConstants.fillTransactions(mContext);
 
-
-                    ((TransTypeViewHolder) holder).txtType.setText("Fuck this transactions");
                     ((TransTypeViewHolder) holder).recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                     //TODO change so real transaction is here
-                    adapter = new TransactionAdapter(mContext, tractions);
-                    ((TransTypeViewHolder) holder).recyclerView.setAdapter(adapter);
-                    createListData(adapter, tractions);
+                  //  adapter = new TransactionAdapter(mContext, tractions);
+                    ((TransTypeViewHolder) holder).recyclerView.setAdapter(AppConstants.transactionAdapter);
+                   // createListData(adapter, tractions);
                    // adapter.notifyDataSetChanged();
                     break;
             }

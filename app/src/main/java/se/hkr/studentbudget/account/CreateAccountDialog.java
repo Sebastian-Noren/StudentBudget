@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 import androidx.annotation.NonNull;
@@ -42,6 +44,11 @@ public class CreateAccountDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.i(tag, "Cancel clicked");
+                if (!AppConstants.accountExist()) {
+                    getDialog().dismiss();
+                    Objects.requireNonNull(getActivity()).finish();
+                    Log.i(tag, "Exit application");
+                }
                 getDialog().dismiss();
             }
         });

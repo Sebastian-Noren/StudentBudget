@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(tag, "In the onCreate() event");
         AppConstants.applicationInitialization(this.getApplicationContext());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,8 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        navController.navigate(R.id.nav_account);
-        Log.d(tag, "In the onCreate() event");
+        if (!AppConstants.accountExist()) {
+            Log.i(tag, "No account exist, creating one.");
+            navController.navigate(R.id.nav_account);
+        }else {
+            Log.i(tag, "Account exist, open Overview.");
+        }
     }
 
     @Override

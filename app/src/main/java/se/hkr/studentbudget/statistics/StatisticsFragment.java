@@ -37,7 +37,7 @@ public class StatisticsFragment extends Fragment {
         textView.setText("Statistics");
 
         mBarChart = view.findViewById(R.id.barchart);
-        mPieChart = view.findViewById(R.id.piechart);
+        mPieChart = view.findViewById(R.id.pieshart);
         pieChart();
 
         return view;
@@ -47,16 +47,24 @@ public class StatisticsFragment extends Fragment {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         // first entry data value, second is data descriptor
-        pieEntries.add(new PieEntry(200.14f,"income"));
-        pieEntries.add(new PieEntry(4600,"expenses"));
+        pieEntries.add(new PieEntry(200.14f,""));
+        pieEntries.add(new PieEntry(4600,""));
 
         mPieChart.setVisibility(View.VISIBLE);
         mPieChart.animateXY(5000,5000);
+        mPieChart.setHoleRadius(1);
+        mPieChart.setTransparentCircleRadius(1);
+        //mPieChart.setUsePercentValues(true);
+        mPieChart.setDrawEntryLabels(false);
+
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries,"Test");
+        pieDataSet.setSliceSpace(1);
         pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieDataSet.setDrawValues(false);
         PieData pieData = new PieData(pieDataSet);
         mPieChart.setData(pieData);
+        mPieChart.getLegend().setEnabled(false);
         Description description = new Description();
         description.setText("Testing description");
         mPieChart.setDescription(description);
