@@ -69,6 +69,5 @@ public class StatisticsFragment extends Fragment {
         description.setText("Testing description");
         mPieChart.setDescription(description);
         mPieChart.invalidate();
-
     }
 }

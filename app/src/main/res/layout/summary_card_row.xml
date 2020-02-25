@@ -21,7 +21,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -31,7 +30,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/sum_card_month_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="February 2020"
@@ -72,7 +71,7 @@
                             android:text="Income:" />
 
                         <TextView
-                            android:id="@+id/textView8"
+                            android:id="@+id/sum_income_card"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -94,7 +93,7 @@
                             android:text="Expenses:" />
 
                         <TextView
-                            android:id="@+id/textView10"
+                            android:id="@+id/sum_expense_card"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -116,7 +115,7 @@
                             android:text="Total:" />
 
                         <TextView
-                            android:id="@+id/textView12"
+                            android:id="@+id/sum_total_card"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

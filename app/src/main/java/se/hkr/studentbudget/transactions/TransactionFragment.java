@@ -148,7 +148,6 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         Transactions m = new Transactions(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, date, clickedCategoryImage);
         AppConstants.transactions.add(m);
 
-        calc.countTransactions();
         calc.updateAccountAmount(accountChoiceIndex,amountValue, clickedAccountName, getContext());
         //TODO save transaction to database
 
