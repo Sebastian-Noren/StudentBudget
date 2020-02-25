@@ -1,4 +1,4 @@
-package se.hkr.studentbudget.overview;
+package se.hkr.studentbudget.transactions;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.R;
-import se.hkr.studentbudget.transactions.Transactions;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionHolder> {
 
