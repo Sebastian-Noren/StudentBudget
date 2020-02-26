@@ -123,7 +123,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private void changeActivity() {
         Intent intent = new Intent(this, MainActivity.class);
+        //Kills LoginActivity so can´t go back by pressing back button
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        this.finish();
     }
 
     private boolean newUser() {
