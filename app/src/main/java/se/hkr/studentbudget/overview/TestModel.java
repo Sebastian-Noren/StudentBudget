@@ -2,9 +2,10 @@ package se.hkr.studentbudget.overview;
 
 public class TestModel {
 
-    public static final int CARD1=0;
-    public static final int CARD2=1;
-    public static final int CARD3=2;
+    public static final int CARD0 = 0;
+    public static final int CARD1 = 1;
+    public static final int CARD2 = 2;
+    public static final int CARD3 = 3;
 
     private int type;
 

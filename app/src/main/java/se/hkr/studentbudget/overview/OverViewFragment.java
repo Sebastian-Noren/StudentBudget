@@ -49,6 +49,7 @@ public class OverViewFragment extends Fragment {
         testModels = new ArrayList<>();
 
         testModels.add(new TestModel(TestModel.CARD1));
+        testModels.add(new TestModel(TestModel.CARD0));
         testModels.add(new TestModel(TestModel.CARD2));
         testModels.add(new TestModel(TestModel.CARD3));
 

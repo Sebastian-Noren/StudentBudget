@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import se.hkr.studentbudget.account.Account;
 import se.hkr.studentbudget.database.DataBaseAccess;
+import se.hkr.studentbudget.transactions.AccountOverviewAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowItem;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
@@ -20,6 +21,7 @@ public class AppConstants {
     private static String tag = "Info";
     public static CategoryRowAdapter expenseAdapter, accountAdapter, incomeAdapter;
     public static TransactionAdapter transactionAdapter;
+    public static AccountOverviewAdapter accountOverviewAdapter;
     public static ArrayList<Account> accounts;
     public static ArrayList<Transactions> transactions;
 
@@ -86,24 +88,22 @@ public class AppConstants {
                 dataBaseAcess.openDatabase();
                 transactions = dataBaseAcess.getAllTransactions();
                 dataBaseAcess.closeDatabe();
-                //Sort transaction with latest first
-                Collections.sort(transactions, new Comparator<Transactions>() {
-                    @Override
-                    public int compare(Transactions o1, Transactions o2) {
-                        if (o1.getTransactionDate() == null || o2.getTransactionDate() == null) {
-                            return 0;
-                        }
-                        return o2.getTransactionDate().compareTo(o1.getTransactionDate());
-                    }
-                });
-                Log.i(tag, "Sorting transactions done");
+                sortTransactions();
+
             }
         });
         th.start();
     }
 
+    public static void fillAccountsOverview(Context context){
+        accountOverviewAdapter = new AccountOverviewAdapter(context, accounts);
+        accountOverviewAdapter.notifyDataSetChanged();
+    }
+
+
     public static void fillTransactions(Context context){
-        transactionAdapter = new TransactionAdapter(context,transactions);
+        sortTransactions();
+        transactionAdapter = new TransactionAdapter(context, transactions);
         transactionAdapter.notifyDataSetChanged();
         Log.i(tag,"TransactionAdapter complete!");
 
@@ -119,8 +119,21 @@ public class AppConstants {
         accountAdapter = new CategoryRowAdapter(context, accountList);
     }
 
-    public static boolean accountExist(){
+    private static void sortTransactions(){
+        //Sort transaction with latest first
+        Collections.sort(transactions, new Comparator<Transactions>() {
+            @Override
+            public int compare(Transactions o1, Transactions o2) {
+                if (o1.getTransactionDate() == null || o2.getTransactionDate() == null) {
+                    return 0;
+                }
+                return o2.getTransactionDate().compareTo(o1.getTransactionDate());
+            }
+        });
+        Log.i(tag, "Sorting transactions done");
+    }
 
+    public static boolean accountExist(){
         return accounts.size() > 0;
     }
 }

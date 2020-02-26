@@ -33,7 +33,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountItemCardHolder> 
     @NonNull
     @Override
     public AccountItemCardHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_row, null); // this line inflate the account_card_row
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card, null); // this line inflate the account_card
 
         return new AccountItemCardHolder(view, onCardItemLongClickListener); // this will return our view to holder class
     }

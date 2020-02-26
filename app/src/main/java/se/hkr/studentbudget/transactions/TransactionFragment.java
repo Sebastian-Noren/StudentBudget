@@ -77,7 +77,6 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 CategoryRowItem clickedItem = (CategoryRowItem) parent.getItemAtPosition(position);
                 clickedAccountName = clickedItem.getmCategoryName();
                 accountChoiceIndex = position;
-                Log.i(tag,String.valueOf(position));
             }
 
             @Override
@@ -96,8 +95,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 if (value.isEmpty()) {
                     AppConstants.toastMessage(getContext(), "Chose a value");
                 } else {
-                    addNewTransaction(text, value, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
-                    navController.navigate(R.id.nav_overView);
+                    if ((AppConstants.accounts.get(accountChoiceIndex).getAccountValue() - Double.parseDouble(value)) <=0){
+                        AppConstants.toastMessage(getContext(), "No money in this account!");
+                    }else {
+                        addNewTransaction(text, value, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
+                        navController.navigate(R.id.nav_overView);
+                    }
                 }
             }
         });
@@ -127,29 +130,26 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     //Main method for adding new transactions
     private void addNewTransaction(String text, String value, String clickedCategoryName, String TRANSACTION_TYPE, String clickedAccountName, String selectedDate, int clickedCategoryImage) {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         Date date = null;
         double amountValue = 0;
         try {
             date = format.parse(selectedDate);
-
+            Log.e(tag, selectedDate);
             if (choice == 1) {
                 amountValue = -Double.parseDouble(value);
-            }else {
+            } else {
                 amountValue = Double.parseDouble(value);
             }
         } catch (ParseException e) {
             Log.e(tag, e.getMessage() + "date/amount conversation fail!");
         }
 
-      //  String str = MessageFormat.format("{0} {1} {2} {3} {4} {5} {6}", text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
-      //  AppConstants.toastMessage(getContext(), str);
         insertInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
         Transactions m = new Transactions(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, date, clickedCategoryImage);
         AppConstants.transactions.add(m);
 
-        calc.updateAccountAmount(accountChoiceIndex,amountValue, clickedAccountName, getContext());
-        //TODO save transaction to database
+        calc.updateAccountAmount(accountChoiceIndex, amountValue, clickedAccountName, getContext());
 
     }
 
@@ -201,20 +201,22 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        selectedDate = setDateFormat(year, month, day);
-        dateCalender.setText(selectedDate);
+        selectedDate = setDateFormat(year, month, day, "yyyy-MM-dd HH:mm:ss");
+        String strDate = setDateFormat(year, month, day, "yyyy-MM-dd");
+        dateCalender.setText(strDate);
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        selectedDate = setDateFormat(year, month, day);
-        dateCalender.setText(selectedDate);
+        selectedDate = setDateFormat(year, month, day, "yyyy-MM-dd HH:mm:ss");
+        String strDate = setDateFormat(year, month, day, "yyyy-MM-dd");
+        dateCalender.setText(strDate);
     }
 
-    private String setDateFormat(int year, int month, int day) {
+    private String setDateFormat(int year, int month, int day, String s) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat(s, Locale.getDefault());
         return dateFormatter.format(calendar.getTime());
     }
 
@@ -236,7 +238,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             public void run() {
                 DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
                 dataBaseAcess.openDatabase();
-                boolean insertData = dataBaseAcess.insertTransactionInDatabase(text,amountValue,clickedCategoryName,TRANSACTION_TYPE,clickedAccountName,selectedDate,clickedCategoryImage);
+                boolean insertData = dataBaseAcess.insertTransactionInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
                 if (insertData) {
                     Log.i(tag, "Transaction saved in database!");
                 } else {
