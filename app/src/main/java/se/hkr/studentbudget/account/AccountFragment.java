@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
@@ -65,6 +67,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         if (!AppConstants.accountExist()) {
         openCreateAccountDialog();
         }
+
 
         return view;
     }

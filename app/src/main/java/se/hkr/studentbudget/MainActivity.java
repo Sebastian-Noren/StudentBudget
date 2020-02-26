@@ -112,5 +112,4 @@ public class MainActivity extends AppCompatActivity {
         Log.d(tag, "In the onDestroy() event");
     }
 
-
 }

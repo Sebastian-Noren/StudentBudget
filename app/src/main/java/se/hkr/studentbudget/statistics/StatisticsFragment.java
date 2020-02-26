@@ -38,11 +38,9 @@ public class StatisticsFragment extends Fragment {
         // use view to get things from the windows
         TextView textView = view.findViewById(R.id.textTest);
         textView.setText("Statistics");
-
         mBarChart = view.findViewById(R.id.barchart);
         mPieChart = view.findViewById(R.id.pieshart);
         pieChart();
-
         return view;
     }
 
@@ -61,7 +59,6 @@ public class StatisticsFragment extends Fragment {
         mBarChart.animateY(3000);
         mBarChart.setData(barData);
         mBarChart.setFitBars(true);
-
         mBarChart.invalidate();
 
     }

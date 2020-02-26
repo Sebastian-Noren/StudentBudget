@@ -1,6 +1,5 @@
 package se.hkr.studentbudget.account;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -102,4 +101,12 @@ public class CreateAccountDialog extends DialogFragment {
         }
         return false;
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(tag, "In the onDestroyView() event");
+        if (!AppConstants.accountExist()) Objects.requireNonNull(getActivity()).finish();
+    }
+
 }
