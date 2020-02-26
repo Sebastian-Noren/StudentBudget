@@ -95,7 +95,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 if (value.isEmpty()) {
                     AppConstants.toastMessage(getContext(), "Chose a value");
                 } else {
-                    if ((AppConstants.accounts.get(accountChoiceIndex).getAccountValue() - Double.parseDouble(value)) <=0){
+                    if ((AppConstants.accounts.get(accountChoiceIndex).getAccountValue() - Double.parseDouble(value)) <=0 && TRANSACTION_TYPE.equals("expense")){
                         AppConstants.toastMessage(getContext(), "No money in this account!");
                     }else {
                         addNewTransaction(text, value, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
