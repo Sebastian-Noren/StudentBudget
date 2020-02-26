@@ -3,6 +3,11 @@ package se.hkr.studentbudget;
 import android.content.Context;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import se.hkr.studentbudget.database.DataBaseAccess;
 
 import static se.hkr.studentbudget.AppConstants.accounts;
@@ -13,10 +18,51 @@ public class AppMathCalc {
 
     private static String tag = "Info";
 
-    public double countTransactions() {
+    public double countTransactionsTotal() {
         double saldo = 0;
         for (int i = 0; i < transactions.size(); i++) {
             saldo = saldo + transactions.get(i).getValue();
+        }
+        return saldo;
+    }
+
+    public double countTransactionsExpense(){
+        double saldo = 0;
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getTransactionType().equals("expense")) {
+                saldo = saldo + transactions.get(i).getValue();
+            }
+        }
+        return saldo;
+    }
+
+    public int countTransactionExpense(Date currentDay){
+        double saldo = 0;
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(currentDay);
+        for (int i = 0; i < transactions.size(); i++) {
+            cal2.setTime(transactions.get(i).getTransactionDate());
+            if (transactions.get(i).getTransactionType().equals("expense") && sameDay(cal1,cal2) ) {
+                saldo = saldo + transactions.get(i).getValue();
+            }
+        }
+        return (int)saldo;
+    }
+
+    private boolean sameDay(Calendar cal1, Calendar cal2){
+
+        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
+                cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
+                cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    public double countTransactionsIncome(){
+        double saldo = 0;
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getTransactionType().equals("income")) {
+                saldo = saldo + transactions.get(i).getValue();
+            }
         }
         return saldo;
     }

@@ -107,7 +107,7 @@ public class DataBaseAccess {
             String transactionDate = c.getString(6);
             int image = c.getInt(7);
 
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             Date date = null;
             try {
                 date = format.parse(transactionDate);

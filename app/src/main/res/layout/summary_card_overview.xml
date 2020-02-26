@@ -45,8 +45,9 @@
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/overview_pieshart"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp" >
+                    android:layout_width="80dp"
+                    android:layout_gravity="center"
+                    android:layout_height="80dp">
 
                 </com.github.mikephil.charting.charts.PieChart>
 
