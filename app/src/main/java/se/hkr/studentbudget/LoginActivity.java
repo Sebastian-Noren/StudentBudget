@@ -6,9 +6,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -18,6 +20,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import se.hkr.studentbudget.database.DataBaseAccess;
 import se.hkr.studentbudget.login.LoginFragment;
 import se.hkr.studentbudget.login.StartFragment;
 
@@ -37,12 +40,19 @@ public class LoginActivity extends AppCompatActivity {
         //3. Log in with Pin
         //Existing users start on 3.
 
+        DataBaseAccess dba = DataBaseAccess.getInstance(getApplicationContext());
+        dba.openDatabase();
+        dba.readUsers();
+        dba.closeDatabe();
+
         Button buttonContinue = findViewById(R.id.buttonContinue);
 
         //Select which fragment that should be displayed first
         if (newUser()) {
             //Display Start Fragment
-            changeFragment(new StartFragment());
+            StartFragment startFragment = new StartFragment();
+            startFragment.changeToStartText(findViewById(R.id.textStart));
+            changeFragment(startFragment);
             setCurrentFragment(1);
         } else {
             //Display Login Fragment to login
@@ -51,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-
         buttonContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //New user, check so format is ok
                 if (getCurrentFragment() == 1) {
 
@@ -72,11 +82,16 @@ public class LoginActivity extends AppCompatActivity {
                         //Hash and save to database
                         try {
                             savePinToDatabase(hashPin(pin));
+
                         } catch (Exception e) {
 
                         }
                         //Display success msg.
-                        setCurrentFragment(3);
+                        view.clearFocus();
+                        changeActivity();
+                        Toast.makeText(getApplicationContext(),"Success, welcome!",Toast.LENGTH_SHORT).show();
+                        //Clear textBox and change guide-text
+
                     } else {
                         //Display what input is wrong format
                     }
@@ -84,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     //Existing user, Check so pin is correct
                     EditText textPin = findViewById(R.id.textPin);
                     String pin = textPin.getText().toString();
+
 
                     //Insert checkPin when it is complete
                     boolean isValid = false;
@@ -95,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     if (isValid) {
                         //Go to Main Activity
+                        view.clearFocus();
                         changeActivity();
                     } else {
                         //Else stay on Login
@@ -104,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     public int getCurrentFragment() {
@@ -130,17 +148,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean newUser() {
+
+        DataBaseAccess dba = DataBaseAccess.getInstance(getApplicationContext());
+        dba.openDatabase();
+
+        boolean exist = dba.existingUser();
+        dba.closeDatabe();
         //Check database if any user, True if correct/False if not
-        return true;
+        return !exist;
     }
 
     private boolean checkPin(String pinToCheck) throws Exception {
 
-        String dbPin = generateHash("2222"); //temporary
+        DataBaseAccess dba = DataBaseAccess.getInstance(getApplicationContext());
+        dba.openDatabase();
+        String pinFromDb = dba.getPinFromDatabase();
+        dba.closeDatabe();
 
-        boolean isValid = validatePin(pinToCheck,dbPin);
+        //temporary
 
-        return isValid;
+        return validatePin(pinToCheck, pinFromDb);
     }
 
     private boolean checkInputFormat() {
@@ -155,13 +182,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private void savePinToDatabase(String hashedPin) {
 
+        DataBaseAccess dba = DataBaseAccess.getInstance(getApplicationContext());
+        dba.openDatabase();
+        dba.insertPinToDatabase(hashedPin);
+        dba.closeDatabe();
+
     }
 
     //HASHING USING PBKDF2WithHmacSHA1
 
 
-    private static String generateHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException
-    {
+    private static String generateHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
         int iterations = 1000;
         char[] chars = password.toCharArray();
         byte[] salt = getSalt();
@@ -172,29 +203,25 @@ public class LoginActivity extends AppCompatActivity {
         return iterations + ":" + toHex(salt) + ":" + toHex(hash);
     }
 
-    private static byte[] getSalt() throws NoSuchAlgorithmException
-    {
+    private static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];
         sr.nextBytes(salt);
         return salt;
     }
 
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException
-    {
+    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
         BigInteger bi = new BigInteger(1, array);
         String hex = bi.toString(16);
         int paddingLength = (array.length * 2) - hex.length();
-        if(paddingLength > 0)
-        {
-            return String.format("%0"  +paddingLength + "d", 0) + hex;
-        }else{
+        if (paddingLength > 0) {
+            return String.format("%0" + paddingLength + "d", 0) + hex;
+        } else {
             return hex;
         }
     }
 
-    private static boolean validatePin(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
-    {
+    private static boolean validatePin(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
         String[] parts = storedPassword.split(":");
         int iterations = Integer.parseInt(parts[0]);
         byte[] salt = fromHex(parts[1]);
@@ -205,18 +232,16 @@ public class LoginActivity extends AppCompatActivity {
         byte[] testHash = skf.generateSecret(spec).getEncoded();
 
         int diff = hash.length ^ testHash.length;
-        for(int i = 0; i < hash.length && i < testHash.length; i++)
-        {
+        for (int i = 0; i < hash.length && i < testHash.length; i++) {
             diff |= hash[i] ^ testHash[i];
         }
         return diff == 0;
     }
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
-    {
+
+    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
         byte[] bytes = new byte[hex.length() / 2];
-        for(int i = 0; i<bytes.length ;i++)
-        {
-            bytes[i] = (byte)Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        for (int i = 0; i < bytes.length; i++) {
+            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return bytes;
     }

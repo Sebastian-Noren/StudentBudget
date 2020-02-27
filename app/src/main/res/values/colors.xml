@@ -6,4 +6,5 @@
     <color name="colorAccent">#2D2576</color>
     <color name="colorExpense">#C62828</color>
     <color name="colorIncome">#558B2F</color>
+    <color name="colorTransGrey">#76444444</color>
 </resources>
