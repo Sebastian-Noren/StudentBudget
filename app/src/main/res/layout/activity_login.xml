@@ -5,13 +5,14 @@
     android:id="@+id/ConstraintLayoutLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img"
     tools:context=".LoginActivity">
 
     <fragment
         android:id="@+id/fragmentPlaceholder"
-        android:name="se.hkr.studentbudget.login.StartFragment"
-        android:layout_width="0dp"
-        android:layout_height="500dp"
+        android:name="se.hkr.studentbudget.login.BlankFragment"
+        android:layout_width="371dp"
+        android:layout_height="489dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,8 +27,10 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragmentPlaceholder" />
+        app:layout_constraintTop_toBottomOf="@+id/fragmentPlaceholder"
+        app:layout_constraintVertical_bias="0.673" />
 
     <TextView
         android:id="@+id/title"

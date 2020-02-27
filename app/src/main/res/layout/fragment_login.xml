@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/gradient_background">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textLogin"
-        android:layout_width="214dp"
-        android:layout_height="126dp"
+        android:layout_width="250dp"
+        android:layout_height="183dp"
         android:layout_marginTop="72dp"
+        android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,17 +20,18 @@
 
     <EditText
         android:id="@+id/textPin"
-        android:layout_width="226dp"
-        android:layout_height="137dp"
+        android:layout_width="176dp"
+        android:layout_height="111dp"
         android:ems="10"
+        android:hint="PIN"
         android:inputType="number"
         android:maxLength="4"
-        android:textAlignment="center"
+        android:textAlignment="gravity"
         android:textSize="75sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textLogin"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.16000003" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

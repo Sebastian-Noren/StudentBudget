@@ -40,6 +40,11 @@ public class DataBaseAccess {
     private static final String TRANSAC_DATETIME_COL7 = "dateTime";
     private static final String TRANSAC_IMG_COL8 = "image";
 
+    //TABLE USER
+    private static final String TABLE_USER = "user";
+    private static final String USER_USERNAME = "username";
+    private static final String USER_PASSWORD = "password";
+
     //private constructor so that object creation rom outside the class is avoided
     private DataBaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
@@ -114,7 +119,7 @@ public class DataBaseAccess {
             } catch (ParseException e) {
                 Log.e(tag, e.getMessage() + "date conversation fail!");
             }
-            m = new Transactions(textDesc,value,category,transactionType,transactionAccount,date,image);
+            m = new Transactions(textDesc, value, category, transactionType, transactionAccount, date, image);
             m.setId(id);
             transactionsFromDatabase.add(m);
         }
@@ -123,11 +128,11 @@ public class DataBaseAccess {
         return transactionsFromDatabase;
     }
 
-    public boolean updateAccountInDatabase(double accountValue,String account){
+    public boolean updateAccountInDatabase(double accountValue, String account) {
         String whereClause = ACCOUNT_NAME_COL1 + "='" + account + "'";
         ContentValues accountContent = new ContentValues();
         accountContent.put(ACCOUNT_VALUE_COL2, accountValue);
-        long result = db.update(TABLE_ACCOUNT, accountContent,whereClause,null);
+        long result = db.update(TABLE_ACCOUNT, accountContent, whereClause, null);
         if (result == -1) {
             Log.e(tag, "Could not insert in database");
             return false;
@@ -152,6 +157,37 @@ public class DataBaseAccess {
             Log.i(tag, "Insert completed");
             return true;
         }
+    }
+
+    public boolean insertPinToDatabase(String hashedPin) {
+        ContentValues pinContent = new ContentValues();
+        pinContent.put(USER_USERNAME, "user");
+        pinContent.put(USER_PASSWORD, hashedPin);
+        long result = db.insert(TABLE_USER, null, pinContent);
+        if (result == -1) {
+            Log.e(tag, "Insert failed");
+            return false;
+        } else {
+            Log.i(tag, "Insert completed");
+            return true;
+        }
+    }
+
+
+    public boolean existingUser() {
+
+        Cursor c;
+        String query = "SELECT count(*) FROM user";
+        c = db.rawQuery(query, null);
+        c.moveToFirst();
+        int count = c.getInt(0);
+
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     //Delete selected account
@@ -188,4 +224,27 @@ public class DataBaseAccess {
         c.close();
         return accountFromDatabase;
     }
+
+    public void readUsers(){
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_USER,null);
+
+        while (c.moveToNext()){
+            String username = c.getString(0);
+            String password = c.getString(1);
+            Log.i(tag,username +" " +password);
+        }
+    }
+
+    public String getPinFromDatabase(){
+
+        Cursor c = db.rawQuery("SELECT * FROM "+TABLE_USER,null);
+
+        c.moveToFirst();
+
+        String password = c.getString(1);
+
+        return password;
+
+    }
+
 }
