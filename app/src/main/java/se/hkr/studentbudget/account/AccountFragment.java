@@ -91,10 +91,29 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
     private void removeAccount() {
         String account = AppConstants.accounts.get(accountRemoveIndex).getAccountName();
+        removeTransactionWithAccount(account);
         AppConstants.accounts.remove(accountRemoveIndex);
         accountAdapter.notifyItemRemoved(accountRemoveIndex);
         countAnimationSaldo();
         deleteAccountInDatabase(account);
+    }
+
+    private void removeTransactionWithAccount(final String account){
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+        Log.e(tag,account + "This account is removed");
+        int size = AppConstants.transactions.size();
+        for (int i = 0; i < size ; i++) {
+            if (AppConstants.transactions.get(i).getTransactionAccount().equals(account)) {
+                Log.i(tag,String.valueOf(AppConstants.transactions.get(i).getValue()));
+                AppConstants.transactions.remove(i);
+                size--;
+            }
+        }
+            }
+        });
+        th.start();
     }
 
     private void countAnimationSaldo() {
@@ -129,7 +148,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
     private void openCreateAccountDialog() {
         dialog = new CreateAccountDialog();
-        dialog.setTargetFragment(this, 1);
+        dialog.setTargetFragment(this, 2);
         dialog.show(getFragmentManager(), "dialog");
     }
 
@@ -139,9 +158,15 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
             public void run() {
                 DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
                 dataBaseAcess.openDatabase();
-                boolean insertData = dataBaseAcess.deleteAccount(input);
-                if (insertData) {
+                boolean removeAccount = dataBaseAcess.deleteAccount(input);
+                if (removeAccount) {
                     Log.i(tag, "Account removed from database!");
+                } else {
+                    Log.e(tag, "Something Went Wrong!");
+                }
+                boolean removeTransactions = dataBaseAcess.deleteAllTransactionsFromAccount(input);
+                if (removeTransactions) {
+                    Log.i(tag, "Transactions removed from database Complete!");
                 } else {
                     Log.e(tag, "Something Went Wrong!");
                 }

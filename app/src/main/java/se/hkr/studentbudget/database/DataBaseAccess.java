@@ -193,8 +193,22 @@ public class DataBaseAccess {
     //Delete selected account
     public boolean deleteAccount(String account) {
 
-        String whereClause = ACCOUNT_NAME_COL1 + "='" + account + "'";
+        String whereClause = TRANSAC_ACCOUNT_NAME_COL6 + "='" + account + "'";
         long result = db.delete(TABLE_ACCOUNT, whereClause, null);
+        if (result == -1) {
+            Log.e(tag, "Could not remove Transactions in database");
+            return false;
+        } else {
+            Log.i(tag, account + " Transactions removed");
+            return true;
+        }
+    }
+
+
+    public boolean deleteAllTransactionsFromAccount(String account) {
+
+        String whereClause = ACCOUNT_NAME_COL1 + "='" + account + "'";
+        long result = db.delete(TABLE_TRANSACTIONS, whereClause, null);
         if (result == -1) {
             Log.e(tag, "Could not remove account in database");
             return false;
