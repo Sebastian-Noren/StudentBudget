@@ -135,7 +135,6 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         double amountValue = 0;
         try {
             date = format.parse(selectedDate);
-            Log.e(tag, selectedDate);
             if (choice == 1) {
                 amountValue = -Double.parseDouble(value);
             } else {
