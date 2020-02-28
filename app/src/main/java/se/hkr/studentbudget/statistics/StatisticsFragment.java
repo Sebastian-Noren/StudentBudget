@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -35,12 +34,11 @@ public class StatisticsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_statistics, container, false);
         Log.d(tag, "In the StatisticsFragment");
+
         // use view to get things from the windows
-        TextView textView = view.findViewById(R.id.textTest);
-        textView.setText("Statistics");
-        mBarChart = view.findViewById(R.id.barchart);
-        mPieChart = view.findViewById(R.id.pieshart);
-        pieChart();
+       // mBarChart = view.findViewById(R.id.barchart);
+       // mPieChart = view.findViewById(R.id.pieshart);
+        //pieChart();
         return view;
     }
 
