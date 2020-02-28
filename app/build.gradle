@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions.cruncherEnabled = false
+        aaptOptions.useNewCruncher = false
     }
     buildTypes {
         release {
