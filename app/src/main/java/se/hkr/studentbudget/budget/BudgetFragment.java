@@ -18,7 +18,8 @@ public class BudgetFragment extends Fragment {
         Log.d(tag, "In the BudgetFragment event");
         // use view to get things from the windows
         TextView textView = view.findViewById(R.id.textTest);
-        textView.setText("Budget");
+        textView.setText("Sebbeking testar");
+
 
         return view;
     }
