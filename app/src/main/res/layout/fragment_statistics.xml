@@ -6,44 +6,173 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <TextView
-        android:id="@+id/textTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="Test fragment"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.449"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="409dp"
-        android:layout_height="769dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        android:paddingLeft="2dp"
+        android:paddingTop="10dp"
+        android:paddingRight="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.github.mikephil.charting.charts.BarChart
-            android:id="@+id/barchart"
+        <TextView
+            android:id="@+id/textView4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:text="Show all categories of:" />
 
-            />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="@string/menu_expenses" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Income" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Both" />
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="134dp"
+                android:layout_height="30dp"
+                android:layout_weight="0"
+                android:gravity="center|left"
+                android:text="From:" />
+
+            <Button
+                android:id="@+id/button3"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="0dp"
+                android:layout_toEndOf="@+id/textView10"
+                android:layout_weight="0"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="22/02/2020" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="134dp"
+                android:layout_height="30dp"
+                android:layout_weight="0"
+                android:gravity="center|left"
+                android:text="To:" />
+
+            <Button
+                android:id="@+id/button4"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="200dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="0dp"
+                android:layout_toEndOf="@+id/textView11"
+                android:layout_weight="0"
+                android:background="@color/colorPrimary"
+                android:gravity="center"
+                android:text="22/02/2020" />
+
+        </RelativeLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="134dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:gravity="left|center"
+                android:text="Graph:" />
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Pie Chart" />
+
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="Bar Chart" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieshart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:visibility="gone" />
+            android:layout_gravity="center">
 
+        </com.github.mikephil.charting.charts.PieChart>
 
     </FrameLayout>
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
