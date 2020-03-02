@@ -22,15 +22,15 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         TextView textView = view.findViewById(R.id.textStart);
-        textView.setText("Welcome!\nPress the button to get started.");
+        textView.setText("Student Budget Boys");
 
 
         return view;
     }
 
-    public void changeToStartText(View view) {
+    public void hideStartText(View view) {
         TextView textView = view.findViewById(R.id.textStart);
 
-        textView.setText("Get started by entering\nEmail and PIN");
+        textView.setText("");
     }
 }

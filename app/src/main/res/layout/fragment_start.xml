@@ -12,16 +12,17 @@
 
         <TextView
             android:id="@+id/textStart"
-            android:layout_width="340dp"
-            android:layout_height="199dp"
+            android:layout_width="329dp"
+            android:layout_height="320dp"
             android:textAlignment="center"
-            android:textSize="30sp"
-            android:textStyle="italic"
+            android:textSize="80sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.26" />
+            app:layout_constraintVertical_bias="0.435"
+            tools:text="Student Budget App" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

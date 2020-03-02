@@ -29,10 +29,12 @@ This is made for testing shit out
 public class LoginFragment extends Fragment {
 
     boolean showEmail;
+    String helpText;
 
-    public LoginFragment(boolean showEmail) {
+    public LoginFragment(boolean showEmail, String helpText) {
 
         this.showEmail = showEmail;
+        this.helpText = helpText;
 
     }
 
@@ -86,7 +88,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        textView.setText("Enter PIN");
+        textView.setText(helpText);
         EditText textEmail = view.findViewById(R.id.textEmail);
 
         if (showEmail) {

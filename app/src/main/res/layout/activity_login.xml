@@ -5,23 +5,27 @@
     android:id="@+id/ConstraintLayoutLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img"
     tools:context=".LoginActivity">
 
     <fragment
         android:id="@+id/fragmentPlaceholder"
         android:name="se.hkr.studentbudget.login.BlankFragment"
-        android:layout_width="371dp"
-        android:layout_height="489dp"
+        android:layout_width="370dp"
+        android:layout_height="547dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.277" />
 
     <Button
         android:id="@+id/buttonContinue"
-        android:layout_width="330dp"
-        android:layout_height="72dp"
-        android:text="Continue"
+        style="@android:style/Widget.Holo.Button"
+        android:layout_width="328dp"
+        android:layout_height="82dp"
+        android:text="Next"
         android:textAllCaps="false"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,16 +35,4 @@
         app:layout_constraintTop_toBottomOf="@+id/fragmentPlaceholder"
         app:layout_constraintVertical_bias="0.673" />
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Student Budget"
-        android:textColor="@color/colorBlack"
-        android:textSize="42sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/fragmentPlaceholder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
