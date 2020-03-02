@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/textLogin"
-        android:layout_width="250dp"
-        android:layout_height="183dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="297dp"
+        android:layout_height="152dp"
+        android:layout_marginTop="28dp"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="28sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,39 @@
         android:hint="PIN"
         android:inputType="number"
         android:maxLength="4"
-        android:textAlignment="gravity"
+        android:textAlignment="center"
         android:textSize="75sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textLogin"
-        app:layout_constraintVertical_bias="0.16000003" />
+        app:layout_constraintTop_toBottomOf="@+id/textEmail"
+        app:layout_constraintVertical_bias="0.075" />
+
+    <EditText
+        android:id="@+id/textEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="EMAIL"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textLogin" />
+
+    <TextView
+        android:id="@+id/textForgot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="false"
+        android:text="Forgot Password?"
+        app:layout_constraintEnd_toEndOf="@+id/textPin"
+        app:layout_constraintStart_toStartOf="@+id/textPin"
+        app:layout_constraintTop_toBottomOf="@+id/textPin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

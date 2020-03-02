@@ -4,9 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +21,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
 import se.hkr.studentbudget.database.DataBaseAccess;
+import se.hkr.studentbudget.login.Hash;
 import se.hkr.studentbudget.login.LoginFragment;
 import se.hkr.studentbudget.login.StartFragment;
 
@@ -35,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //currentFragments explained:
         //New User
-        //1. Enter email
-        //2. Enter new PIN
+        //1. Click to continue
+        //2. Enter new Email and PIN
         //3. Log in with Pin
         //Existing users start on 3.
 
@@ -56,9 +57,9 @@ public class LoginActivity extends AppCompatActivity {
             setCurrentFragment(1);
         } else {
             //Display Login Fragment to login
-            changeFragment(new LoginFragment());
+            LoginFragment loginFragment = new LoginFragment(false);
+            changeFragment(loginFragment);
             setCurrentFragment(3);
-
         }
 
         buttonContinue.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (getCurrentFragment() == 1) {
 
                     //Display Login Fragment to create Pin
-                    changeFragment(new LoginFragment());
+                    LoginFragment loginFragment = new LoginFragment(true);
+                    changeFragment(loginFragment);
+
                     setCurrentFragment(2);
 
                 } else if (getCurrentFragment() == 2) {
@@ -79,9 +82,14 @@ public class LoginActivity extends AppCompatActivity {
                         //Select Pin as password
                         EditText textPin = findViewById(R.id.textPin);
                         String pin = textPin.getText().toString();
+
+                        //Hide email
+                        EditText textEmail = findViewById(R.id.textEmail);
+                        String email = textEmail.getText().toString();
+
                         //Hash and save to database
                         try {
-                            savePinToDatabase(hashPin(pin));
+                            saveUserToDatabase(email, hashPin(pin));
 
                         } catch (Exception e) {
 
@@ -89,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         //Display success msg.
                         view.clearFocus();
                         changeActivity();
-                        Toast.makeText(getApplicationContext(),"Success, welcome!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Success, welcome!", Toast.LENGTH_SHORT).show();
                         //Clear textBox and change guide-text
 
                     } else {
@@ -167,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //temporary
 
-        return validatePin(pinToCheck, pinFromDb);
+        return Hash.validatePin(pinToCheck, pinFromDb);
     }
 
     private boolean checkInputFormat() {
@@ -175,75 +183,17 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private String hashPin(String pin) throws Exception {
+    public static String hashPin(String pin) throws Exception {
 
-        return generateHash(pin);
+        return Hash.generateHash(pin);
     }
 
-    private void savePinToDatabase(String hashedPin) {
+    private void saveUserToDatabase(String email, String hashedPin) {
 
         DataBaseAccess dba = DataBaseAccess.getInstance(getApplicationContext());
         dba.openDatabase();
-        dba.insertPinToDatabase(hashedPin);
+        dba.insertUserToDatabase(email, hashedPin);
         dba.closeDatabe();
 
     }
-
-    //HASHING USING PBKDF2WithHmacSHA1
-
-
-    private static String generateHash(String password) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        int iterations = 1000;
-        char[] chars = password.toCharArray();
-        byte[] salt = getSalt();
-
-        PBEKeySpec spec = new PBEKeySpec(chars, salt, iterations, 64 * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] hash = skf.generateSecret(spec).getEncoded();
-        return iterations + ":" + toHex(salt) + ":" + toHex(hash);
-    }
-
-    private static byte[] getSalt() throws NoSuchAlgorithmException {
-        SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
-        byte[] salt = new byte[16];
-        sr.nextBytes(salt);
-        return salt;
-    }
-
-    private static String toHex(byte[] array) throws NoSuchAlgorithmException {
-        BigInteger bi = new BigInteger(1, array);
-        String hex = bi.toString(16);
-        int paddingLength = (array.length * 2) - hex.length();
-        if (paddingLength > 0) {
-            return String.format("%0" + paddingLength + "d", 0) + hex;
-        } else {
-            return hex;
-        }
-    }
-
-    private static boolean validatePin(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String[] parts = storedPassword.split(":");
-        int iterations = Integer.parseInt(parts[0]);
-        byte[] salt = fromHex(parts[1]);
-        byte[] hash = fromHex(parts[2]);
-
-        PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        byte[] testHash = skf.generateSecret(spec).getEncoded();
-
-        int diff = hash.length ^ testHash.length;
-        for (int i = 0; i < hash.length && i < testHash.length; i++) {
-            diff |= hash[i] ^ testHash[i];
-        }
-        return diff == 0;
-    }
-
-    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
-        byte[] bytes = new byte[hex.length() / 2];
-        for (int i = 0; i < bytes.length; i++) {
-            bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
-        }
-        return bytes;
-    }
-
 }

@@ -159,9 +159,9 @@ public class DataBaseAccess {
         }
     }
 
-    public boolean insertPinToDatabase(String hashedPin) {
+    public boolean insertUserToDatabase(String email, String hashedPin) {
         ContentValues pinContent = new ContentValues();
-        pinContent.put(USER_USERNAME, "user");
+        pinContent.put(USER_USERNAME, email);
         pinContent.put(USER_PASSWORD, hashedPin);
         long result = db.insert(TABLE_USER, null, pinContent);
         if (result == -1) {
@@ -171,6 +171,29 @@ public class DataBaseAccess {
             Log.i(tag, "Insert completed");
             return true;
         }
+    }
+
+    public boolean updatePIN(String HashedNewPin){
+        ContentValues content = new ContentValues();
+        String email = getEmail();
+        content.put(USER_PASSWORD, HashedNewPin);
+        long result = db.update(TABLE_USER,content,"username ='"+email+"'",null);
+        if (result == -1) {
+            Log.e(tag, "Update failed");
+            return false;
+        } else {
+            Log.i(tag, "Update completed");
+            return true;
+        }
+    }
+
+    public String getEmail(){
+        Cursor c;
+        String query = "SELECT * FROM user";
+        c = db.rawQuery(query, null);
+        c.moveToFirst();
+        String email = c.getString(0);
+        return email;
     }
 
 
