@@ -14,10 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import se.hkr.studentbudget.R;
 
-/*
-This is made for testing shit out
- */
-
 
 public class StartFragment extends Fragment {
 
@@ -35,6 +31,6 @@ public class StartFragment extends Fragment {
     public void changeToStartText(View view) {
         TextView textView = view.findViewById(R.id.textStart);
 
-        textView.setText("Create a PIN code and\nwrite it down somewhere..");
+        textView.setText("Get started by entering\nEmail and PIN");
     }
 }
