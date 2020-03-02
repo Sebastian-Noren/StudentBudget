@@ -4,21 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 import se.hkr.studentbudget.database.DataBaseAccess;
 import se.hkr.studentbudget.login.Hash;
@@ -28,11 +20,14 @@ import se.hkr.studentbudget.login.StartFragment;
 public class LoginActivity extends AppCompatActivity {
 
     int currentFragment;
+    int loginAttempts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginAttempts =3;
 
         //currentFragments explained:
         //New User
@@ -52,12 +47,12 @@ public class LoginActivity extends AppCompatActivity {
         if (newUser()) {
             //Display Start Fragment
             StartFragment startFragment = new StartFragment();
-            startFragment.changeToStartText(findViewById(R.id.textStart));
+            startFragment.hideStartText(findViewById(R.id.textStart));
             changeFragment(startFragment);
             setCurrentFragment(1);
         } else {
             //Display Login Fragment to login
-            LoginFragment loginFragment = new LoginFragment(false);
+            LoginFragment loginFragment = new LoginFragment(false, "Enter PIN");
             changeFragment(loginFragment);
             setCurrentFragment(3);
         }
@@ -70,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (getCurrentFragment() == 1) {
 
                     //Display Login Fragment to create Pin
-                    LoginFragment loginFragment = new LoginFragment(true);
+                    LoginFragment loginFragment = new LoginFragment(true, "Create user");
                     changeFragment(loginFragment);
 
                     setCurrentFragment(2);
@@ -79,11 +74,10 @@ public class LoginActivity extends AppCompatActivity {
                     //New user continued
                     if (checkInputFormat()) {
                         //Input entered is according to format
-                        //Select Pin as password
+                        //input Pin
                         EditText textPin = findViewById(R.id.textPin);
                         String pin = textPin.getText().toString();
-
-                        //Hide email
+                        //input Email
                         EditText textEmail = findViewById(R.id.textEmail);
                         String email = textEmail.getText().toString();
 
@@ -98,10 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                         view.clearFocus();
                         changeActivity();
                         Toast.makeText(getApplicationContext(), "Success, welcome!", Toast.LENGTH_SHORT).show();
-                        //Clear textBox and change guide-text
 
                     } else {
-                        //Display what input is wrong format
+                        //Displays what input is wrong format and do nothing
                     }
                 } else if (getCurrentFragment() == 3) {
                     //Existing user, Check so pin is correct
@@ -117,14 +110,21 @@ public class LoginActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if (isValid) {
+                    if (isValid && loginAttempts>0) {
                         //Go to Main Activity
                         view.clearFocus();
                         changeActivity();
                     } else {
                         //Else stay on Login
                         //(Lock login for few minutes on many attempts)
-                        //(Get e-mail for pwd reset)
+                        TextView textView = findViewById(R.id.textLogin);
+                        loginAttempts--;
+                        if (loginAttempts <= 0) {
+                            textView.setText("Locked out,\nRestart to try again.");
+                        } else
+
+                            textView.setText("PIN is invalid\n" + loginAttempts + " attempts left.");
+
                     }
                 }
             }
@@ -180,7 +180,40 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean checkInputFormat() {
         //Check for @ and . in email, True if correct/False if not
-        return true;
+        boolean pinOK;
+        boolean emailOK;
+        String temp = "";
+
+        //Find textView to give feedback.
+        TextView textView = findViewById(R.id.textLogin);
+
+        //input Pin
+        EditText textPin = findViewById(R.id.textPin);
+        String pin = textPin.getText().toString();
+        //Check Pin
+        if (pin.length() == 4) {
+            pinOK = true;
+        } else {
+            temp = "PIN have to be 4 digits";
+            pinOK = false;
+        }
+
+        //input Email
+        EditText textEmail = findViewById(R.id.textEmail);
+        String email = textEmail.getText().toString();
+        if (email.contains("@") && email.contains(".")) {
+            emailOK = true;
+        } else {
+            temp = temp + "\nEmail have to contain @ and .";
+            emailOK = false;
+        }
+
+        if (pinOK && emailOK) {
+            return true;
+        } else {
+            textView.setText(temp);
+            return false;
+        }
     }
 
     public static String hashPin(String pin) throws Exception {
