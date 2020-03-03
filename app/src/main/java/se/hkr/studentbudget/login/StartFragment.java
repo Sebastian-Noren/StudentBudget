@@ -22,7 +22,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         TextView textView = view.findViewById(R.id.textStart);
-        textView.setText("Student Budget Boys");
+        textView.setText("Congratulations!\n\nYou have made a great decision to start saving money.\n\nTap the button below to get started!");
 
 
         return view;

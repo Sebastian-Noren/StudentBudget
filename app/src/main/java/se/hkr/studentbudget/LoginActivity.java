@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (getCurrentFragment() == 1) {
 
                     //Display Login Fragment to create Pin
-                    LoginFragment loginFragment = new LoginFragment(true, "Create user");
+                    LoginFragment loginFragment = new LoginFragment(true, "Enter email and a 4-digit PIN to continue");
                     changeFragment(loginFragment);
 
                     setCurrentFragment(2);
