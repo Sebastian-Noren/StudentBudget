@@ -87,7 +87,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if (!subjectText.equals("") && !messageText.equals("")){
+                if (!(subjectText.getText().toString().equals("") || (messageText.getText().toString().equals("")))){
 
                     DataBaseAccess dba = DataBaseAccess.getInstance(getContext());
                     dba.openDatabase();
