@@ -30,6 +30,7 @@ import androidx.navigation.Navigation;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.StaticStrings;
 import se.hkr.studentbudget.database.DataBaseAccess;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -176,7 +177,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
                         new ColorDrawable(getResources().getColor(R.color.colorExpense)));
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Expense");
-                TRANSACTION_TYPE = "expense";
+                TRANSACTION_TYPE = StaticStrings.EXPENSE;
                 categorySpinner.setAdapter(AppConstants.expenseAdapter);
                 break;
             case 2:
@@ -187,7 +188,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
                         new ColorDrawable(getResources().getColor(R.color.colorIncome)));
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Income");
-                TRANSACTION_TYPE = "income";
+                TRANSACTION_TYPE = StaticStrings.INCOME;
                 categorySpinner.setAdapter(AppConstants.incomeAdapter);
                 break;
             default:

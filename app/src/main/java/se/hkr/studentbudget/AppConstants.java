@@ -24,10 +24,12 @@ public class AppConstants {
     public static AccountOverviewAdapter accountOverviewAdapter;
     public static ArrayList<Account> accounts;
     public static ArrayList<Transactions> transactions;
+    public static ArrayList<CategoryRowItem> expenseList;
+    public static ArrayList<CategoryRowItem> incomeList;
 
     //Initialize the whole foundation of the application.
     static void applicationInitialization(Context context) {
-        Log.d(tag, "AppConstant.Class Initialization");
+        Log.i(tag, "AppConstant.Class Initialization");
         initList(context);
     }
 
@@ -55,27 +57,27 @@ public class AppConstants {
 
     private static void fillIncomeCategorySpinner(Context context){
         Log.i(tag, "Init income category");
-        ArrayList<CategoryRowItem> incomeList = new ArrayList<>();
-        incomeList.add(new CategoryRowItem("CSN", R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem("Salary", R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem("Government help", R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem("Other", R.drawable.ic_placeholder));
+        incomeList = new ArrayList<>();
+        incomeList.add(new CategoryRowItem(StaticStrings.CSN, R.drawable.ic_placeholder));
+        incomeList.add(new CategoryRowItem(StaticStrings.SALARY, R.drawable.ic_placeholder));
+        incomeList.add(new CategoryRowItem(StaticStrings.GOVERMENT_HELP, R.drawable.ic_placeholder));
+        incomeList.add(new CategoryRowItem(StaticStrings.INCOME_OTHER, R.drawable.ic_placeholder));
         incomeAdapter = new CategoryRowAdapter(context, incomeList);
     }
 
     private static void fillExpenseCategorySpinner(Context context){
         Log.i(tag, "Init expense category");
-        ArrayList<CategoryRowItem> expenseList = new ArrayList<>();
-        expenseList.add(new CategoryRowItem("Home", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Food/Drinks", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Alcohol/Tobacco", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Entertainment", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Transportation", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Shopping", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Health", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Travels", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Pets", R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem("Other", R.drawable.ic_placeholder));
+        expenseList = new ArrayList<>();
+        expenseList.add(new CategoryRowItem(StaticStrings.HOME, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.FOOD, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.ALCOHOL, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.ENTERTAINMENT, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.TRANSPORTATION, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.SHOPPING, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.HEALTH, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.TRAVELS, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.PETS, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.EXPENSE_OTHER, R.drawable.ic_placeholder));
         expenseAdapter = new CategoryRowAdapter(context, expenseList);
     }
 

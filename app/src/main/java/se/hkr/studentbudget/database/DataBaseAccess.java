@@ -35,7 +35,7 @@ public class DataBaseAccess {
     private static final String TRANSAC_DESCRIPTION_COL2 = "description";
     private static final String TRANSAC_VALUE_COL3 = "value";
     private static final String TRANSAC_CATEGORY_COL4 = "category";
-    private static final String TRANSAC_TRANSACTYPE_COL5 = "transactionTYPE";
+    private static final String TRANSAC_TRANSACTYPE_COL5 = "transactionType";
     private static final String TRANSAC_ACCOUNT_NAME_COL6 = "account_name";
     private static final String TRANSAC_DATETIME_COL7 = "dateTime";
     private static final String TRANSAC_IMG_COL8 = "image";
@@ -99,7 +99,8 @@ public class DataBaseAccess {
         ArrayList<Transactions> transactionsFromDatabase = new ArrayList<>();
         Cursor c;
         Transactions m;
-        String query = String.format("SELECT * FROM %s", TABLE_TRANSACTIONS);
+     //   String query = String.format("SELECT * FROM %s", TABLE_TRANSACTIONS);
+        String query = String.format("SELECT * FROM %s WHERE DATE(%s) BETWEEN '2020-01-01' AND  '2020-03-31'", TABLE_TRANSACTIONS, TRANSAC_DATETIME_COL7);
         c = db.rawQuery(query, null);
         while (c.moveToNext()) {
 
@@ -141,6 +142,34 @@ public class DataBaseAccess {
             return true;
         }
     }
+
+    //get total sum of categeroy between dates
+    public double getTotalSumCategory(String category, String type, String from, String to) {
+        Cursor c;
+        double value = 0;
+        String query = String.format("SELECT SUM(%s) FROM %s WHERE %s = '%s' AND %s = '%s' AND DATE(%s) BETWEEN '%s' AND  '%s'", TRANSAC_VALUE_COL3, TABLE_TRANSACTIONS, TRANSAC_CATEGORY_COL4, category, TRANSAC_TRANSACTYPE_COL5,type, TRANSAC_DATETIME_COL7, from, to);
+        c = db.rawQuery(query, null);
+        while (c.moveToNext()) {
+             value = c.getDouble(0);
+        }
+        c.close();
+        Log.i(tag, "Reading in total sum " + value);
+        return value;
+    }
+
+    public double getTotalSumTransactionType(String test, String from, String to){
+        Cursor c;
+        double value = 0;
+        String query = String.format("SELECT SUM(%s) FROM %s WHERE %s = '%s' AND DATE(%s) BETWEEN '%s' AND  '%s'", TRANSAC_VALUE_COL3, TABLE_TRANSACTIONS, TRANSAC_TRANSACTYPE_COL5, test, TRANSAC_DATETIME_COL7, from, to);
+        c = db.rawQuery(query, null);
+        while (c.moveToNext()) {
+            value = c.getDouble(0);
+        }
+        c.close();
+        Log.i(tag, "Reading in total sum " + value);
+        return value;
+    }
+
 
     // insert account into the database
     public boolean insertAccountInDatabase(String accountName, double accountValue, String accountNotes, int img) {
@@ -198,7 +227,6 @@ public class DataBaseAccess {
 
 
     public boolean existingUser() {
-
         Cursor c;
         String query = "SELECT count(*) FROM user";
         c = db.rawQuery(query, null);
@@ -226,7 +254,6 @@ public class DataBaseAccess {
             return true;
         }
     }
-
 
     public boolean deleteAllTransactionsFromAccount(String account) {
 
@@ -273,13 +300,9 @@ public class DataBaseAccess {
     }
 
     public String getPinFromDatabase(){
-
         Cursor c = db.rawQuery("SELECT * FROM "+TABLE_USER,null);
-
         c.moveToFirst();
-
         String password = c.getString(1);
-
         return password;
 
     }
