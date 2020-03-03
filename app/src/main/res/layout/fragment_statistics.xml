@@ -28,26 +28,28 @@
             android:text="Show all categories of:" />
 
         <RadioGroup
+            android:id="@+id/radio_group_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radioButton1"
+                android:id="@+id/radioExpense"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:checked="true"
                 android:text="@string/menu_expenses" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/radioIncome"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:text="Income" />
 
             <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/radioBoth"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -69,7 +71,7 @@
                 android:text="From:" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/fromDateBtn"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
@@ -78,6 +80,7 @@
                 android:layout_weight="0"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:clickable="true"
                 android:text="22/02/2020" />
 
         </RelativeLayout>
@@ -97,7 +100,7 @@
                 android:text="To:" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/toDateBtn"
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
@@ -106,15 +109,17 @@
                 android:layout_weight="0"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:clickable="true"
                 android:text="22/02/2020" />
 
         </RelativeLayout>
 
         <RadioGroup
+            android:id="@+id/radiogroup_chart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="5dp">
 
             <TextView
                 android:id="@+id/textView12"
@@ -125,14 +130,15 @@
                 android:text="Graph:" />
 
             <RadioButton
-                android:id="@+id/radioButton4"
+                android:id="@+id/radioPieChart"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:checked="true"
                 android:text="Pie Chart" />
 
             <RadioButton
-                android:id="@+id/radioButton5"
+                android:id="@+id/radioBarChart"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -156,20 +162,29 @@
             android:id="@+id/pieshart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:layout_gravity="center">
 
         </com.github.mikephil.charting.charts.PieChart>
 
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barchart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            />
+
     </FrameLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/showgraphBtn"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Button"
+        android:text="Show Graph"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public int getCurrentFragment() {

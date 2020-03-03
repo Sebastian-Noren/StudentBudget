@@ -60,8 +60,6 @@ public class OverViewFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(multiAdapter);
 
-
-
         initFabMenu(view);
         fabMain.setOnClickListener(new View.OnClickListener() {
             @Override

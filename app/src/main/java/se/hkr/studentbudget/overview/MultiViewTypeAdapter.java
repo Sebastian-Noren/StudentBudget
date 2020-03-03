@@ -239,7 +239,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         xAxis.setGranularity(1f); // minimum axis-step (interval) is 1
         xAxis.setValueFormatter(formatter);
 
-        BarDataSet barDataSet = new BarDataSet(barEntries, "test");
+        BarDataSet barDataSet = new BarDataSet(barEntries, "");
         int[] color = {R.color.colorExpense};
         barDataSet.setColors(color, mContext);
 
@@ -270,7 +270,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         //mPieChart.setUsePercentValues(true);
         mPieChart.setDrawEntryLabels(false);
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Test");
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
         pieDataSet.setSliceSpace(1);
         int[] color = {R.color.colorIncome, R.color.colorExpense};
         pieDataSet.setColors(color, mContext);
