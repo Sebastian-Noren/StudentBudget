@@ -10,7 +10,7 @@ import java.util.Comparator;
 
 import se.hkr.studentbudget.account.Account;
 import se.hkr.studentbudget.database.DataBaseAccess;
-import se.hkr.studentbudget.transactions.AccountOverviewAdapter;
+import se.hkr.studentbudget.overview.AccountOverviewAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowItem;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
@@ -58,26 +58,26 @@ public class AppConstants {
     private static void fillIncomeCategorySpinner(Context context){
         Log.i(tag, "Init income category");
         incomeList = new ArrayList<>();
-        incomeList.add(new CategoryRowItem(StaticStrings.CSN, R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem(StaticStrings.SALARY, R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem(StaticStrings.GOVERMENT_HELP, R.drawable.ic_placeholder));
-        incomeList.add(new CategoryRowItem(StaticStrings.INCOME_OTHER, R.drawable.ic_placeholder));
+        incomeList.add(new CategoryRowItem(StaticStrings.CSN, R.drawable.icons_csn));
+        incomeList.add(new CategoryRowItem(StaticStrings.SALARY, R.drawable.icons_salary));
+        incomeList.add(new CategoryRowItem(StaticStrings.GOVERMENT_HELP, R.drawable.icons_gov));
+        incomeList.add(new CategoryRowItem(StaticStrings.INCOME_OTHER, R.drawable.icons_other_income));
         incomeAdapter = new CategoryRowAdapter(context, incomeList);
     }
 
     private static void fillExpenseCategorySpinner(Context context){
         Log.i(tag, "Init expense category");
         expenseList = new ArrayList<>();
-        expenseList.add(new CategoryRowItem(StaticStrings.HOME, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.FOOD, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.ALCOHOL, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.ENTERTAINMENT, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.TRANSPORTATION, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.SHOPPING, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.HEALTH, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.TRAVELS, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.PETS, R.drawable.ic_placeholder));
-        expenseList.add(new CategoryRowItem(StaticStrings.EXPENSE_OTHER, R.drawable.ic_placeholder));
+        expenseList.add(new CategoryRowItem(StaticStrings.HOME, R.drawable.icons_home));
+        expenseList.add(new CategoryRowItem(StaticStrings.FOOD, R.drawable.icons_food));
+        expenseList.add(new CategoryRowItem(StaticStrings.ALCOHOL, R.drawable.icons_beer));
+        expenseList.add(new CategoryRowItem(StaticStrings.ENTERTAINMENT, R.drawable.icons_entertainment));
+        expenseList.add(new CategoryRowItem(StaticStrings.TRANSPORTATION, R.drawable.icons_transport));
+        expenseList.add(new CategoryRowItem(StaticStrings.SHOPPING, R.drawable.icons_shopping));
+        expenseList.add(new CategoryRowItem(StaticStrings.HEALTH, R.drawable.icons_health));
+        expenseList.add(new CategoryRowItem(StaticStrings.TRAVELS, R.drawable.icons_travel));
+        expenseList.add(new CategoryRowItem(StaticStrings.PETS, R.drawable.icons_pets));
+        expenseList.add(new CategoryRowItem(StaticStrings.EXPENSE_OTHER, R.drawable.icons_other_expense));
         expenseAdapter = new CategoryRowAdapter(context, expenseList);
     }
 

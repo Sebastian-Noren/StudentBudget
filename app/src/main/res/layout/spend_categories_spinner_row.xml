@@ -11,6 +11,7 @@
         android:id="@+id/image_spinner_spend_icon"
         android:layout_width="45dp"
         android:layout_height="45dp"
+        android:padding="3dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_placeholder" />
@@ -22,7 +23,6 @@
         android:gravity="center"
         android:paddingStart="11dp"
         android:text="TextView"
-        android:textAlignment="viewStart"
         android:textColor="@android:color/primary_text_light"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/image_spinner_spend_icon"
