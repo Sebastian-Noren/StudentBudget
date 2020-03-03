@@ -2,6 +2,7 @@ package se.hkr.studentbudget.account;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,6 +99,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         deleteAccountInDatabase(account);
     }
 
+    //TODO this shit is buggy
     private void removeTransactionWithAccount(final String account){
         Thread th = new Thread(new Runnable() {
             @Override
@@ -132,7 +134,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     private void addNewAccount(String input, double value, String notes) {
         accountSize = AppConstants.accounts.size();
         int insertIndex = (accountSize);
-        int icon = R.drawable.ic_placeholder;
+        int icon = R.drawable.icons_wallet;
         Account m = new Account(input, value, notes, icon);
         AppConstants.accounts.add(m);
         accountAdapter.notifyItemInserted(insertIndex);

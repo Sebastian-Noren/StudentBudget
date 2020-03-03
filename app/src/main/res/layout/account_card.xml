@@ -29,6 +29,7 @@
                     android:id="@+id/account_row_img"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
+                    android:padding="3dp"
                     app:srcCompat="@drawable/ic_placeholder" />
 
                 <TextView
