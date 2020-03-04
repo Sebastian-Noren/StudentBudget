@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 
 import androidx.annotation.NonNull;
@@ -62,18 +63,21 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         whitdrawbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view ) {
-                monster=10;
+                monster=300;
                 currentAmount=currentAmount-monster;
-                Log.i(tag,String.valueOf(currentAmount));
-                //budgetAdapter.onNoteClick(currentAmount);
-//                clickMe.onNoteClick(currentAmount);
                 budgetAdapter.notifyDataSetChanged();
+                AppConstants.toastMessage(getContext(),String.valueOf(currentAmount));
                 //TODO fixa så jag kan ta bort pengar från proggebarre
+
+                int updateIndex = 0;
+                budgetItemArrayList.set(updateIndex,new BudgetItem(currentAmount, 500, R.drawable.ic_placeholder, "bajs", "skolbajs"));
+                budgetAdapter.notifyItemChanged(updateIndex);
             }
         });
 
         return view;
     }
+
 
 
     @Override
@@ -96,21 +100,5 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         budgetItemArrayList.add(new BudgetItem(currentAmount, maxAmount, R.drawable.ic_placeholder, categoryTitle, accountName));
         budgetAdapter.notifyDataSetChanged();
     }
-
-    private void amountCalc(){
-
-    }
-//TODO tabort
-//    @Override
-//    public void onAttach(Context context) {
-//        try {
-//            clickMe = (BudgetFragment.OnNoteListener) getTargetFragment();
-//        } catch (ClassCastException e) {
-//            Log.e(tag, e.toString() + " in CreateAccountDialog");
-//        }
-//        super.onAttach(context);
-//    }
-
-
 
 }
