@@ -4,6 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +17,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDateTime;
+
 import se.hkr.studentbudget.database.DataBaseAccess;
 import se.hkr.studentbudget.login.Hash;
 import se.hkr.studentbudget.login.LoginFragment;
 import se.hkr.studentbudget.login.StartFragment;
+import se.hkr.studentbudget.notifications.ReminderBroadcast;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -90,6 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         //Display success msg.
                         view.clearFocus();
+                        ReminderBroadcast.createNotificationChannel(LoginActivity.this,"daily", "channelSB");
+                        ReminderBroadcast.setupRepeatingNotifications(LoginActivity.this,System.currentTimeMillis()+1000*10,1000*60*60*24);
                         changeActivity();
                         Toast.makeText(getApplicationContext(), "Success, welcome!", Toast.LENGTH_SHORT).show();
 
@@ -130,6 +140,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
 
     public int getCurrentFragment() {
         return currentFragment;
