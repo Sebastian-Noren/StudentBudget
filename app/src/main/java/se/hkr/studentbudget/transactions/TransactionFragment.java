@@ -1,5 +1,6 @@
 package se.hkr.studentbudget.transactions;
 
+import android.animation.ValueAnimator;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
@@ -40,7 +42,8 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     private Spinner categorySpinner, accountSpinner;
     private Button saveBtn, cancelBtn, dateCalender;
     private NavController navController;
-    private TextView spendTextInput, spendValueInput;
+    private EditText spendTextInput, spendValueInput;
+    private TextView acountTotal;
     private String clickedCategoryName = "";
     private String clickedAccountName = "";
     private String selectedDate;
@@ -79,6 +82,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 CategoryRowItem clickedItem = (CategoryRowItem) parent.getItemAtPosition(position);
                 clickedAccountName = clickedItem.getmCategoryName();
                 accountChoiceIndex = position;
+                countAnimationSaldo();
             }
 
             @Override
@@ -180,6 +184,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         saveBtn = view.findViewById(R.id.btn_save);
         cancelBtn = view.findViewById(R.id.btn_cancel);
         dateCalender = view.findViewById(R.id.btn_date);
+        acountTotal = view.findViewById(R.id.text_currentValue);
         spendTextInput = view.findViewById(R.id.spendingTextInput);
         spendValueInput = view.findViewById(R.id.spendingValueInput);
         accountSpinner.setAdapter(AppConstants.accountAdapter);
@@ -214,6 +219,19 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             default:
                 break;
         }
+    }
+
+    private void countAnimationSaldo() {
+        AppMathCalc calc = new AppMathCalc();
+        ValueAnimator animator = ValueAnimator.ofFloat(0, (float) AppConstants.accounts.get(accountChoiceIndex).getAccountValue()); //0 is min number, 600 is max number
+        animator.setDuration(1000); //Duration is in milliseconds
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float amount = (float) animation.getAnimatedValue();
+                acountTotal.setText(String.format("Total: %s kr", String.format(Locale.getDefault(),"%,.2f", amount)));
+            }
+        });
+        animator.start();
     }
 
     private void currentDate() {

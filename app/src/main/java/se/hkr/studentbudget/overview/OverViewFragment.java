@@ -94,6 +94,26 @@ public class OverViewFragment extends Fragment {
         });
 
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                if (dy < 0) {
+                    fabMain.show();
+
+                } else if (dy > 2) {
+                    fabMain.hide();
+                }
+            }
+        });
+        // ending recyler view
+
+
         return view;
     }
 
@@ -170,6 +190,7 @@ public class OverViewFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        fabMain.show();
         Log.d(tag, "OverViewFragment: In the onResume() event");
         multiAdapter = new MultiViewTypeAdapter(getContext(),testModels);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // will create recyclerview in linearlayoyt
