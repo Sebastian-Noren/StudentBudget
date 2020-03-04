@@ -34,6 +34,8 @@ public class BudgetDialog extends DialogFragment {
     private String categoryTitle;
     private String clickedAccountName;
 
+
+    // the one method to rule them all
     public interface SaveInput {
         void save(String value, String categoryTitle, String clickedAccountName);
     }
