@@ -14,10 +14,12 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import se.hkr.studentbudget.account.Account;
+import se.hkr.studentbudget.budget.BudgetAdapter;
 import se.hkr.studentbudget.database.DataBaseAccess;
 import se.hkr.studentbudget.transactions.CategoryRowAdapter;
 import se.hkr.studentbudget.transactions.CategoryRowItem;
 import se.hkr.studentbudget.transactions.Transactions;
+import se.hkr.studentbudget.budget.BudgetItem;
 
 public class AppConstants {
 
@@ -28,6 +30,8 @@ public class AppConstants {
     public static ArrayList<Transactions> currentMonthTransaction;
     public static ArrayList<CategoryRowItem> expenseList;
     public static ArrayList<CategoryRowItem> incomeList;
+    public static ArrayList<BudgetItem> budgetProgressBar;
+    public static BudgetAdapter budgetAdapter;
     public static double CURRENT_MONTH_EXPENSE = 0;
     public static double CURRENT_MONTH_INCOME = 0;
 
@@ -45,6 +49,8 @@ public class AppConstants {
         fillExpenseCategorySpinner(context);
         fillIncomeCategorySpinner(context);
         Log.i(tag, "AppConstant.Class Initialization Complete!");
+        budgetProgressBar = new ArrayList<>();
+        //budgetProgressbarFiller();
     }
 
     private static void initAccounts(Context context) {
@@ -164,5 +170,17 @@ public class AppConstants {
 
     public static boolean accountExist() {
         return accounts.size() > 0;
+    }
+
+    public static void budgetProgressbarFiller(Context context){
+        ArrayList<BudgetItem> budgetList = new ArrayList<>();
+        if(budgetProgressBar.size()>0){
+            for (int i = 0; i < budgetProgressBar.size(); i++) {
+                budgetList.add(new BudgetItem(budgetProgressBar.get(i).getCurrentValue(),budgetProgressBar.get(i).getMaxValue(),budgetProgressBar.get(i).getImage(),budgetProgressBar.get(i).getProgressBarTitle(),budgetProgressBar.get(i).getAccountName()));
+            }
+        }
+//        budgetAdapter = new BudgetAdapter(context, budgetList);
+//        budgetAdapter.notifyDataSetChanged();
+
     }
 }
