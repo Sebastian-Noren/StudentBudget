@@ -39,4 +39,8 @@
         <item name="colorAccent">@color/colorIncome</item>
     </style>
 
+    <style name="colorPickerStyle" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
 </resources>
