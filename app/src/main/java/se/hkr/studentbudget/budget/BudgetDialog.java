@@ -89,6 +89,7 @@ public class BudgetDialog extends DialogFragment {
                 String inputAmount = inputAmountText.getText().toString().trim();
                 getDialog().dismiss();
                 saveInput.save(inputAmount, categoryTitle, clickedAccountName);
+                AppConstants.hideSoftKeyboard(getActivity());
             }
         });
 
@@ -107,9 +108,13 @@ public class BudgetDialog extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d(tag, "In the onDestroyView() event");
-        if (!AppConstants.accountExist()) Objects.requireNonNull(getActivity()).finish();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.colorPickerStyle);
+        // this setStyle is VERY important.
+        // STYLE_NO_FRAME means that I will provide my own layout and style for the whole dialog
+        // so for example the size of the default dialog will not get in my way
+        // the style extends the default one. see bellow.
     }
+
 }
