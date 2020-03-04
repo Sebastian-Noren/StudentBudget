@@ -154,8 +154,8 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     break;
                 case TestModel.CARD1:
                     AppMathCalc math = new AppMathCalc();
-                    float expense = (float) math.countTransactionsExpense();
-                    float income = (float) math.countTransactionsIncome();
+                    float expense = (float) AppConstants.CURRENT_MONTH_EXPENSE;
+                    float income = (float) AppConstants.CURRENT_MONTH_INCOME;
                     float total = income + expense;
                     ((SummaryTypeViewHolder) holder).currentMonth.setText(currentMonth());
                     ((SummaryTypeViewHolder) holder).income.setText(String.format(Locale.getDefault(),"%,.2f kr", income));
@@ -210,6 +210,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM", Locale.US);
         AppMathCalc mathCalc = new AppMathCalc();
+
         String currentDay = dateFormatter.format(c.getTime());
         int currentDayValue = Math.abs(mathCalc.countTransactionExpense(c.getTime()));
 

@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +28,8 @@ public class AppConstants {
     public static ArrayList<Transactions> currentMonthTransaction;
     public static ArrayList<CategoryRowItem> expenseList;
     public static ArrayList<CategoryRowItem> incomeList;
+    public static double CURRENT_MONTH_EXPENSE = 0;
+    public static double CURRENT_MONTH_INCOME = 0;
 
     //Initialize the whole foundation of the application.
     static void applicationInitialization(Context context) {
@@ -85,10 +90,23 @@ public class AppConstants {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(context);
-                dataBaseAcess.openDatabase();
-                currentMonthTransaction = dataBaseAcess.getAllTransactions();
-                dataBaseAcess.closeDatabe();
+                LocalDate startMonth = YearMonth.now().atDay(1);
+                LocalDate startTransaction = LocalDate.now().minusDays(14);
+                LocalDate today = LocalDate.now();
+
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String strDateFrom = startTransaction.format(dateFormatter);
+                String strDateTo = today.format(dateFormatter);
+
+                DataBaseAccess dataBaseAccess = DataBaseAccess.getInstance(context);
+                dataBaseAccess.openDatabase();
+
+                currentMonthTransaction = dataBaseAccess.getAllTransactionsBetweenDates(strDateFrom,strDateTo);
+                strDateFrom = startMonth.format(dateFormatter);
+
+                CURRENT_MONTH_EXPENSE = dataBaseAccess.getTotalSumTransactionType(StaticStrings.EXPENSE, strDateFrom, strDateTo);
+                CURRENT_MONTH_INCOME = Math.abs(dataBaseAccess.getTotalSumTransactionType(StaticStrings.INCOME, strDateFrom, strDateTo));
+                dataBaseAccess.closeDatabe();
                 sortTransactions(currentMonthTransaction);
                 Log.i(tag, "READ: current months transactions Complete!");
             }
@@ -99,7 +117,7 @@ public class AppConstants {
     public static void fillTransactions(Context context) {
         DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(context);
         dataBaseAcess.openDatabase();
-        transactions = dataBaseAcess.getAllTransactions();
+       // transactions = dataBaseAcess.getAllTransactionsBetweenDates();
         dataBaseAcess.closeDatabe();
         sortTransactions(transactions);
 

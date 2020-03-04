@@ -10,15 +10,6 @@ public class AppMathCalc {
 
     private static String tag = "Info";
 
-    public double countTransactionsExpense() {
-        double saldo = 0;
-        for (int i = 0; i < currentMonthTransaction.size(); i++) {
-            if (currentMonthTransaction.get(i).getTransactionType().equals(StaticStrings.EXPENSE)) {
-                saldo = saldo + currentMonthTransaction.get(i).getValue();
-            }
-        }
-        return saldo;
-    }
 
     public int countTransactionExpense(Date currentDay) {
         double saldo = 0;
@@ -39,16 +30,6 @@ public class AppMathCalc {
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
-    }
-
-    public double countTransactionsIncome() {
-        double saldo = 0;
-        for (int i = 0; i < currentMonthTransaction.size(); i++) {
-            if (currentMonthTransaction.get(i).getTransactionType().equals(StaticStrings.INCOME)) {
-                saldo = saldo + currentMonthTransaction.get(i).getValue();
-            }
-        }
-        return saldo;
     }
 
     //count total amount for all accounts.

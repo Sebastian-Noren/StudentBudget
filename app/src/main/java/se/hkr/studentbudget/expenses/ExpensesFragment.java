@@ -22,7 +22,7 @@ import se.hkr.studentbudget.transactions.TransactionAdapter;
 public class ExpensesFragment extends Fragment {
     private String tag = "Info";
     private RecyclerView recyclerView;
-    private TransactionAdapter transactionAdapter;
+    private TransactionGroupAdapter transactionGroupAdapter;
     private Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,12 +32,9 @@ public class ExpensesFragment extends Fragment {
         handler = new Handler();
         recyclerView = view.findViewById(R.id.transaction_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        TransactionGroupAdapter transactionGroupAdapter = new TransactionGroupAdapter(getContext(),buildItemList());
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(transactionGroupAdapter);
 
-
-      //  fillTransactionsThread(recyclerView);
+        fillTransactionsThread(recyclerView);
         return view;
     }
 
@@ -60,20 +57,24 @@ public class ExpensesFragment extends Fragment {
         return subItemList;
     }
 
-    /*
     //TODO add headers each months
     private void fillTransactionsThread(final RecyclerView recyclerView) {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                AppConstants.fillTransactions(getContext());
-                transactionAdapter = new EXpensesMultiViewAdapter(getContext(),);
+                transactionGroupAdapter = new TransactionGroupAdapter(getContext(),buildItemList());
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("Info", "print transactions inside filltransaction");
-                        recyclerView.setAdapter(transactionAdapter);
-                        transactionAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(transactionGroupAdapter);
+                        transactionGroupAdapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -81,5 +82,5 @@ public class ExpensesFragment extends Fragment {
         th.start();
     }
 
-     */
+
 }
