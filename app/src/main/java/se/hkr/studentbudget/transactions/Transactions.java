@@ -13,7 +13,6 @@ public class Transactions {
     private Date transactionDate;
     private int image;
 
-
     public Transactions(String description, double value, String category,
                         String transactionType, String transactionAccount, Date transactionDate, int image) {
         this.description = description;
