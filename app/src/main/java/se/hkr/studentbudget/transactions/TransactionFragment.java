@@ -1,6 +1,7 @@
 package se.hkr.studentbudget.transactions;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -30,6 +32,7 @@ import androidx.navigation.Navigation;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.StaticStrings;
 import se.hkr.studentbudget.database.DataBaseAccess;
 
 public class TransactionFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -46,13 +49,12 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     private int datePickerStyle;
     private int choice;
     private int accountChoiceIndex;
-    AppMathCalc calc = new AppMathCalc();
 
     private String tag = "Info";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transactions, container, false);
-        Log.d(tag, "In the TransactionFragment");
+        Log.d(tag, "TransactionFragment: In the OnCreateView Event()");
         // init view elements
         initFragmentView(view);
 
@@ -93,15 +95,16 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 String text = spendTextInput.getText().toString().trim();
 
                 if (value.isEmpty()) {
-                    AppConstants.toastMessage(getContext(), "Chose a value");
+                    AppConstants.toastMessage(getContext(), "Chose a value!");
                 } else {
-                    if ((AppConstants.accounts.get(accountChoiceIndex).getAccountValue() - Double.parseDouble(value)) <=0 && TRANSACTION_TYPE.equals("expense")){
+                    if ((AppConstants.accounts.get(accountChoiceIndex).getAccountValue() - Double.parseDouble(value)) < 0 && TRANSACTION_TYPE.equals(StaticStrings.EXPENSE)) {
                         AppConstants.toastMessage(getContext(), "No money in this account!");
-                    }else {
+                    } else {
                         addNewTransaction(text, value, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
                         navController.navigate(R.id.nav_overView);
                     }
                 }
+                AppConstants.hideSoftKeyboard(getActivity());
             }
         });
 
@@ -120,6 +123,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.nav_overView);
+                AppConstants.hideSoftKeyboard(getActivity());
 
             }
         });
@@ -129,28 +133,43 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
 
     //Main method for adding new transactions
     private void addNewTransaction(String text, String value, String clickedCategoryName, String TRANSACTION_TYPE, String clickedAccountName, String selectedDate, int clickedCategoryImage) {
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = null;
+        Log.i(tag, "Saving and adding new transaction!");
         double amountValue = 0;
-        try {
-            date = format.parse(selectedDate);
-            if (choice == 1) {
-                amountValue = -Double.parseDouble(value);
-            } else {
-                amountValue = Double.parseDouble(value);
-            }
-        } catch (ParseException e) {
-            Log.e(tag, e.getMessage() + "date/amount conversation fail!");
+        if (choice == 1) {
+            amountValue = -Double.parseDouble(value);
+        } else {
+            amountValue = Double.parseDouble(value);
         }
-
-        insertInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
-        Transactions m = new Transactions(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, date, clickedCategoryImage);
-        AppConstants.transactions.add(m);
-
-        calc.updateAccountAmount(accountChoiceIndex, amountValue, clickedAccountName, getContext());
-
+        double updateAccountValue = updateAccountAmount(accountChoiceIndex, amountValue);
+        insertInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage, updateAccountValue);
     }
+
+    private void insertInDatabase(final String text, final double amountValue, final String clickedCategoryName, final String TRANSACTION_TYPE, final String clickedAccountName, final String selectedDate, final int clickedCategoryImage,final double v) {
+                Log.i(tag, "Transaction save Thread starting!");
+                DataBaseAccess dataBaseAcess = new DataBaseAccess(getContext());
+                dataBaseAcess.openDatabase();
+                boolean insertTransactionData = dataBaseAcess.insertTransactionInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
+                if (insertTransactionData) {
+                    Log.i(tag, "Transaction saved in database!");
+                } else {
+                    Log.e(tag, "Something went Wrong!");
+                }
+                boolean updateAccountData = dataBaseAcess.updateAccountInDatabase(v, clickedAccountName);
+                if (updateAccountData) {
+                    Log.i(tag, "Account update saved in database!");
+                } else {
+                    Log.e(tag, "Something went Wrong!");
+                }
+                dataBaseAcess.closeDatabe();
+                Log.i(tag, "Transaction save Thread Ended!");
+    }
+
+    private double updateAccountAmount(int accountChoiceIndex, double amountValue) {
+        double newValue = AppConstants.accounts.get(accountChoiceIndex).getAccountValue() + amountValue;
+        AppConstants.accounts.get(accountChoiceIndex).setAccountValue(newValue);
+        return newValue;
+    }
+
 
     private void initFragmentView(View view) {
         //Get navvontroler
@@ -168,6 +187,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         choice = getArguments().getInt("choice");
         switch (choice) {
             case 1:
+                //New expense style
                 saveBtn.setBackgroundColor(getResources().getColor(R.color.colorExpense));
                 cancelBtn.setBackgroundColor(getResources().getColor(R.color.colorExpense));
                 datePickerStyle = R.style.DatePickerExpenseTheme;
@@ -175,19 +195,20 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
                 //Change the color and text of titlebar
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
                         new ColorDrawable(getResources().getColor(R.color.colorExpense)));
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Expense");
-                TRANSACTION_TYPE = "expense";
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.menu_newexpense);
+                TRANSACTION_TYPE = StaticStrings.EXPENSE;
                 categorySpinner.setAdapter(AppConstants.expenseAdapter);
                 break;
             case 2:
+                //New income style
                 saveBtn.setBackgroundColor(getResources().getColor(R.color.colorIncome));
                 cancelBtn.setBackgroundColor(getResources().getColor(R.color.colorIncome));
                 datePickerStyle = R.style.DatePickerIncomeTheme;
                 //Change the color and text of titlebar
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setBackgroundDrawable(
                         new ColorDrawable(getResources().getColor(R.color.colorIncome)));
-                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("New Income");
-                TRANSACTION_TYPE = "income";
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.menu_newincome);
+                TRANSACTION_TYPE = StaticStrings.INCOME;
                 categorySpinner.setAdapter(AppConstants.incomeAdapter);
                 break;
             default:
@@ -229,24 +250,64 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
     public void onDestroyView() {
         resetToolbarColor();
         super.onDestroyView();
+        Log.d(tag, "TransactionFragment: In the onDestroyView() event");
     }
 
-    private void insertInDatabase(final String text, final double amountValue, final String clickedCategoryName, final String TRANSACTION_TYPE, final String clickedAccountName, final String selectedDate, final int clickedCategoryImage) {
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(getContext());
-                dataBaseAcess.openDatabase();
-                boolean insertData = dataBaseAcess.insertTransactionInDatabase(text, amountValue, clickedCategoryName, TRANSACTION_TYPE, clickedAccountName, selectedDate, clickedCategoryImage);
-                if (insertData) {
-                    Log.i(tag, "Transaction saved in database!");
-                } else {
-                    Log.e(tag, "Something Went Wrong!");
-                }
-                dataBaseAcess.closeDatabe();
-            }
-        });
-        th.start();
+    // 1
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(tag, "TransactionFragment: In the onAttach() event");
     }
+    //2
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(tag, "TransactionFragment: In the OnCreate event()");
+    }
+    //4
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(tag, "TransactionFragment: In the onActivityCreated() event");
+    }
+    //5
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(tag, "TransactionFragment: In the onStart() event");
+    }
+    //6
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(tag, "TransactionFragment: In the onResume() event");
+    }
+    //7
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(tag, "TransactionFragment: In the onPause() event");
+    }
+    //8
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(tag, "TransactionFragment: In the onStop() event");
+    }
+
+    //10
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(tag, "TransactionFragment: In the onDestroy() event");
+    }
+    //11
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(tag, "TransactionFragment: In the onDetach() event");
+    }
+
 
 }

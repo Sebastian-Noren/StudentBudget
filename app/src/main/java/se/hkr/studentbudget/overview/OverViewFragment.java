@@ -1,5 +1,6 @@
 package se.hkr.studentbudget.overview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,11 +17,13 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -44,23 +47,15 @@ public class OverViewFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
-        Log.d(tag, "In the OverViewFragment");
+
+        Log.d(tag, "OverViewFragment: In the OnCreateView event()");
         navController = Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.nav_host_fragment);
         testModels = new ArrayList<>();
-
+        recyclerView = view.findViewById(R.id.overview_recycler);
         testModels.add(new TestModel(TestModel.CARD1));
         testModels.add(new TestModel(TestModel.CARD0));
         testModels.add(new TestModel(TestModel.CARD2));
         testModels.add(new TestModel(TestModel.CARD3));
-
-        multiAdapter = new MultiViewTypeAdapter(getContext(),testModels);
-
-        recyclerView = view.findViewById(R.id.overview_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // will create recyclerview in linearlayoyt
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(multiAdapter);
-
-
 
         initFabMenu(view);
         fabMain.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +138,73 @@ public class OverViewFragment extends Fragment {
         textMinus.setTranslationY(translationY);
         textPlus.setTranslationY(translationY);
 
+    }
+
+    // 1
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.d(tag, "OverViewFragment: In the onAttach() event");
+    }
+    //2
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(tag, "OverViewFragment: In the OnCreate event() - Start read in current month.");
+        AppConstants.initCurrentMonthsTransactions(getContext());
+    }
+    //4
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.d(tag, "OverViewFragment: In the onActivityCreated() event");
+
+    }
+    //5
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(tag, "OverViewFragment: In the onStart() event");
+    }
+    //6
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(tag, "OverViewFragment: In the onResume() event");
+        multiAdapter = new MultiViewTypeAdapter(getContext(),testModels);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext())); // will create recyclerview in linearlayoyt
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(multiAdapter);
+    }
+    //7
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(tag, "OverViewFragment: In the onPause() event");
+    }
+    //8
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(tag, "OverViewFragment: In the onStop() event");
+    }
+    //9
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(tag, "OverViewFragment: In the onDestroyView() event");
+    }
+    //10
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(tag, "OverViewFragment: In the onDestroy() event");
+    }
+    //11
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(tag, "OverViewFragment: In the onDetach() event");
     }
 
 }

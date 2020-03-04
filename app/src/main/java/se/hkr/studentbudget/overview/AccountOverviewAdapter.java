@@ -1,20 +1,16 @@
-package se.hkr.studentbudget.transactions;
+package se.hkr.studentbudget.overview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
 import se.hkr.studentbudget.account.Account;
 

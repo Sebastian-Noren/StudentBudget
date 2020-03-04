@@ -25,11 +25,22 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="DatePickerStanTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="progressBarColor" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/colorIncome</item>
+    </style>
+
+    <style name="colorPickerStyle" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
 </resources>

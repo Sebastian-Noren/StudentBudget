@@ -2,6 +2,7 @@ package se.hkr.studentbudget.account;
 
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,29 +92,11 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
     private void removeAccount() {
         String account = AppConstants.accounts.get(accountRemoveIndex).getAccountName();
-        removeTransactionWithAccount(account);
+        //removeTransactionWithAccount(account);
         AppConstants.accounts.remove(accountRemoveIndex);
         accountAdapter.notifyItemRemoved(accountRemoveIndex);
         countAnimationSaldo();
         deleteAccountInDatabase(account);
-    }
-
-    private void removeTransactionWithAccount(final String account){
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-        Log.e(tag,account + "This account is removed");
-        int size = AppConstants.transactions.size();
-        for (int i = 0; i < size ; i++) {
-            if (AppConstants.transactions.get(i).getTransactionAccount().equals(account)) {
-                Log.i(tag,String.valueOf(AppConstants.transactions.get(i).getValue()));
-                AppConstants.transactions.remove(i);
-                size--;
-            }
-        }
-            }
-        });
-        th.start();
     }
 
     private void countAnimationSaldo() {
@@ -132,7 +115,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
     private void addNewAccount(String input, double value, String notes) {
         accountSize = AppConstants.accounts.size();
         int insertIndex = (accountSize);
-        int icon = R.drawable.ic_placeholder;
+        int icon = R.drawable.icons_wallet;
         Account m = new Account(input, value, notes, icon);
         AppConstants.accounts.add(m);
         accountAdapter.notifyItemInserted(insertIndex);
@@ -148,6 +131,7 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
 
     private void openCreateAccountDialog() {
         dialog = new CreateAccountDialog();
+        dialog.getDialog();
         dialog.setTargetFragment(this, 2);
         dialog.show(getFragmentManager(), "dialog");
     }

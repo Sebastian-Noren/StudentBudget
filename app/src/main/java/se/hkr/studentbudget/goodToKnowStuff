@@ -10,3 +10,9 @@ fragmentTransaction.commit();
 
 
 AppConstants is the foundation of the application that initialize everything in the beginning.
+
+                LocalDate start = YearMonth.now().atDay(1).minusMonths(1);
+                LocalDate end   = YearMonth.now().atEndOfMonth();
+
+                Log.i(tag,start.toString());
+                Log.i(tag, end.toString());

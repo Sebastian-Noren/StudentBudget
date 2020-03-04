@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(tag, "In the onCreate() event");
+        Log.d(tag, "MainActivity: In the onCreate() event");
         AppConstants.applicationInitialization(this.getApplicationContext());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -84,32 +84,32 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        Log.d(tag, "In the onStart() event");
+        Log.d(tag, "MainActivity: In the onStart() event");
     }
 
     protected void onRestart() {
         super.onRestart();
-        Log.d(tag, "In the onRestart() event");
+        Log.d(tag, "MainActivity: In the onRestart() event");
     }
 
     protected void onResume() {
         super.onResume();
-        Log.d(tag, "In the onResume() event");
+        Log.d(tag, "MainActivity: In the onResume() event");
     }
 
     protected void onPause() {
         super.onPause();
-        Log.d(tag, "In the onPause() event");
+        Log.d(tag, "MainActivity: In the onPause() event");
     }
 
     protected void onStop() {
         super.onStop();
-        Log.d(tag, "In the onStop() event");
+        Log.d(tag, "MainActivity: In the onStop() event");
     }
 
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(tag, "In the onDestroy() event");
+        Log.d(tag, "MainActivity: In the onDestroy() event");
     }
 
 }

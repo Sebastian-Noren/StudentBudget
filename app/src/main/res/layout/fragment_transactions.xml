@@ -83,7 +83,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                app:srcCompat="@drawable/ic_placeholder" />
+                app:srcCompat="@drawable/ui_calender" />
 
             <Button
                 android:id="@+id/btn_date"

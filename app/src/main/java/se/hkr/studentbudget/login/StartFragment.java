@@ -14,10 +14,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import se.hkr.studentbudget.R;
 
-/*
-This is made for testing shit out
- */
-
 
 public class StartFragment extends Fragment {
 
@@ -26,15 +22,15 @@ public class StartFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_start, container, false);
         TextView textView = view.findViewById(R.id.textStart);
-        textView.setText("Welcome!\nPress the button to get started.");
+        textView.setText("Congratulations!\n\nYou have made a great decision to start saving money.\n\nTap the button below to get started!");
 
 
         return view;
     }
 
-    public void changeToStartText(View view) {
+    public void hideStartText(View view) {
         TextView textView = view.findViewById(R.id.textStart);
 
-        textView.setText("Create a PIN code and\nwrite it down somewhere..");
+        textView.setText("");
     }
 }
