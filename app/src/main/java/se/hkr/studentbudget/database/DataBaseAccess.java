@@ -96,14 +96,13 @@ public class DataBaseAccess {
         }
     }
 
-    //TODO decide dates
     //get all saved accounts and return them to app constants
-    public ArrayList<Transactions> getAllTransactions() {
+    public ArrayList<Transactions> getAllTransactionsBetweenDates(String from, String to) {
         ArrayList<Transactions> transactionsFromDatabase = new ArrayList<>();
         Cursor c;
         Transactions m;
      //   String query = String.format("SELECT * FROM %s", TABLE_TRANSACTIONS);
-        String query = String.format("SELECT * FROM %s WHERE DATE(%s) BETWEEN '2020-01-01' AND  '2020-03-31'", TABLE_TRANSACTIONS, TRANSAC_DATETIME_COL7);
+        String query = String.format("SELECT * FROM %s WHERE DATE(%s) BETWEEN '%s' AND  '%s'", TABLE_TRANSACTIONS, TRANSAC_DATETIME_COL7, from, to);
         c = db.rawQuery(query, null);
         Log.d(tag, "DATABASE: EXECUTE QUERY");
         while (c.moveToNext()) {

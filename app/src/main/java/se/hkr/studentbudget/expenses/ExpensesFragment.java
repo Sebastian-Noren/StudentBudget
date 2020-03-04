@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.AppConstants;
@@ -18,7 +22,7 @@ import se.hkr.studentbudget.transactions.TransactionAdapter;
 public class ExpensesFragment extends Fragment {
     private String tag = "Info";
     private RecyclerView recyclerView;
-    private TransactionAdapter transactionAdapter;
+    private TransactionGroupAdapter transactionGroupAdapter;
     private Handler handler;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,11 +31,30 @@ public class ExpensesFragment extends Fragment {
 
         handler = new Handler();
         recyclerView = view.findViewById(R.id.transaction_recycler);
-        //  AppConstants.fillTransactions(getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(null);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         fillTransactionsThread(recyclerView);
         return view;
+    }
+
+    //TODO alot of shit here
+    private ArrayList<TransactionGroup> buildItemList() {
+        ArrayList<TransactionGroup> transactionGroups = new ArrayList<>();
+        for (int i=0; i<12; i++) {
+            TransactionGroup transactionGroup = new TransactionGroup("Month "+i, 25, AppConstants.currentMonthTransaction);
+            transactionGroups.add(transactionGroup);
+        }
+        return transactionGroups;
+    }
+
+    private List<SubItem> buildSubItemList() {
+        List<SubItem> subItemList = new ArrayList<>();
+        for (int i=0; i<3; i++) {
+            SubItem subItem = new SubItem("Sub Item "+i, "Description "+i);
+            subItemList.add(subItem);
+        }
+        return subItemList;
     }
 
     //TODO add headers each months
@@ -39,18 +62,25 @@ public class ExpensesFragment extends Fragment {
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
-                AppConstants.fillTransactions(getContext());
-                transactionAdapter = new TransactionAdapter(getContext(), AppConstants.transactions);
+                transactionGroupAdapter = new TransactionGroupAdapter(getContext(),buildItemList());
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.e("Info", "print transactions inside filltransaction");
-                        recyclerView.setAdapter(transactionAdapter);
-                        transactionAdapter.notifyDataSetChanged();
+                        recyclerView.setAdapter(transactionGroupAdapter);
+                        transactionGroupAdapter.notifyDataSetChanged();
                     }
                 });
             }
         });
         th.start();
     }
+
+
 }

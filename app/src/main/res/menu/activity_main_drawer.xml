@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_expenses"
             android:icon="@drawable/ui_transactions"
-            android:title="@string/menu_expenses" />
+            android:title="@string/transactions" />
         <item
             android:id="@+id/nav_statistics"
             android:icon="@drawable/ui_chart"
