@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 import se.hkr.studentbudget.R;
 
-public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHolder> implements BudgetFragment.OnNoteListener {
+public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHolder> {
 
     private Context context;
     private ArrayList<BudgetItem> budgetItems;
@@ -45,14 +45,12 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
         return budgetItems.size();
     }
 
-    @Override
-    public void onNoteClick(int changeCurrentValue) {
 
-    }
+
 
     //innerclass
     //TODO tabort implements
-    class BudgetHolder extends RecyclerView.ViewHolder  /*implements BudgetFragment.OnNoteListener*/ {
+    class BudgetHolder extends RecyclerView.ViewHolder {
         TextView title, amountprogress, totalAmountText, accountName;
         ImageView image;
         ProgressBar progressBar;
@@ -78,23 +76,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
             amountprogress.setText(String.valueOf(budgetItem.getCurrentValue()));
         }
     }
-
-//TODO idgaf
-//        @Override
-//        public void onNoteClick(int changeCurrentValue) {
-//            amountprogress.setText(String.valueOf(changeCurrentValue));
-//        }
-
-//        public void saveMeOneMoreTime(int changeCurrentValue){
-//            amountprogress.setText(String.valueOf(changeCurrentValue));
-//        }
-//TODO idgaf
-//        @Override
-//        public void onNoteClick(int changeCurrentValue) {
-//            amountprogress.setText(String.valueOf(changeCurrentValue));
-//        }
-//    }
-
 
 
 }
