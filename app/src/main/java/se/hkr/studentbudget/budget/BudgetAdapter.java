@@ -15,11 +15,12 @@ import java.util.ArrayList;
 
 import se.hkr.studentbudget.R;
 
-public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHolder> {
+public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHolder> implements BudgetFragment.OnNoteListener {
 
     private Context context;
     private ArrayList<BudgetItem> budgetItems;
 
+    //constructor
     public BudgetAdapter(Context context, ArrayList<BudgetItem> budgetItems) {
         this.context = context;
         this.budgetItems = budgetItems;
@@ -44,7 +45,14 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
         return budgetItems.size();
     }
 
-    class BudgetHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onNoteClick(int changeCurrentValue) {
+
+    }
+
+    //innerclass
+    //TODO tabort implements
+    class BudgetHolder extends RecyclerView.ViewHolder  /*implements BudgetFragment.OnNoteListener*/ {
         TextView title, amountprogress, totalAmountText, accountName;
         ImageView image;
         ProgressBar progressBar;
@@ -59,8 +67,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
             this.totalAmountText = itemView.findViewById(R.id.amount_leftTotal);
             this.accountName = itemView.findViewById(R.id.accountName);
 
-
-
         }
 
         public void setDetails(BudgetItem budgetItem) {
@@ -69,8 +75,27 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
             progressBar.setProgress((int) budgetItem.getCurrentValue());
             totalAmountText.setText(String.valueOf(budgetItem.getMaxValue()));
             accountName.setText(String.valueOf(budgetItem.getAccountName()));
+            amountprogress.setText(String.valueOf(budgetItem.getCurrentValue()));
         }
     }
+
+//TODO idgaf
+//        @Override
+//        public void onNoteClick(int changeCurrentValue) {
+//            amountprogress.setText(String.valueOf(changeCurrentValue));
+//        }
+
+//        public void saveMeOneMoreTime(int changeCurrentValue){
+//            amountprogress.setText(String.valueOf(changeCurrentValue));
+//        }
+//TODO idgaf
+//        @Override
+//        public void onNoteClick(int changeCurrentValue) {
+//            amountprogress.setText(String.valueOf(changeCurrentValue));
+//        }
+//    }
+
+
 
 }
 
