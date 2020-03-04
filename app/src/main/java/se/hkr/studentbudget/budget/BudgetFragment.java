@@ -46,6 +46,7 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         whitdrawbtn = view.findViewById(R.id.testingWhitdraw);
 
         budgetItemArrayList = new ArrayList<>();
+
         budgetAdapter = new BudgetAdapter(getContext(), budgetItemArrayList);
 
         addBtn.setOnClickListener(new View.OnClickListener() {

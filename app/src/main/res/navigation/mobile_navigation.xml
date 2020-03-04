@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/nav_expenses"
         android:name="se.hkr.studentbudget.expenses.ExpensesFragment"
-        android:label="@string/menu_expenses"
+        android:label="@string/transactions"
         tools:layout="@layout/fragment_expenses" />
 
     <fragment
