@@ -57,12 +57,15 @@
 
         <TextView
             android:id="@+id/textForgot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="171dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
             android:clickable="true"
             android:focusable="false"
-            android:text="Forgot Password?"
+            android:text="Forgot PIN?"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/textPin"
+            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="@+id/textPin"
             app:layout_constraintTop_toBottomOf="@+id/textPin" />
 
