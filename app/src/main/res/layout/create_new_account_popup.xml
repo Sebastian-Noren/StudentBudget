@@ -37,9 +37,9 @@
             android:backgroundTint="@color/design_default_color_primary"
             android:ems="10"
             android:gravity="center"
-            android:hint="***"
-            android:maxLength="20"
-            android:inputType="textPersonName" />
+            android:hint="wallet name"
+            android:inputType="textPersonName"
+            android:maxLength="20" />
 
     </LinearLayout>
 
@@ -106,7 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/design_default_color_primary"
-            android:text="@string/cancel_button" />
+            android:text="@string/cancel_button"
+            android:textColor="@android:color/white" />
 
         <Space
             android:layout_width="15dp"

@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
+import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 
 
-public class DeleteAccountDialog extends DialogFragment {
+public class DeleteAccountDialog extends AppCompatDialogFragment {
     private String tag = "Info";
     private TextView headline;
 
@@ -36,6 +38,7 @@ public class DeleteAccountDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.delete_account_popup, container, false);
+
         Log.d(tag, "DeleteAccount dialog open");
 
         headline = view.findViewById(R.id.deleteAccountHeadline);
@@ -49,6 +52,7 @@ public class DeleteAccountDialog extends DialogFragment {
             public void onClick(View v) {
                 Log.i(tag, "Cancel clicked");
                 getDialog().dismiss();
+                AppConstants.hideSoftKeyboard(getActivity());
             }
         });
 
@@ -59,11 +63,22 @@ public class DeleteAccountDialog extends DialogFragment {
                 Log.i(tag, "Accept clicked");
                 onDelectClick.deleteAccountClick();
                 getDialog().dismiss();
+                AppConstants.hideSoftKeyboard(getActivity());
 
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.colorPickerStyle);
+        // this setStyle is VERY important.
+        // STYLE_NO_FRAME means that I will provide my own layout and style for the whole dialog
+        // so for example the size of the default dialog will not get in my way
+        // the style extends the default one. see bellow.
     }
 
     @Override

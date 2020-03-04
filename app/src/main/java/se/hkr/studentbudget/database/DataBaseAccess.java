@@ -46,7 +46,7 @@ public class DataBaseAccess {
     private static final String USER_PASSWORD = "password";
 
     //private constructor so that object creation rom outside the class is avoided
-    private DataBaseAccess(Context context) {
+    public DataBaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
@@ -60,12 +60,14 @@ public class DataBaseAccess {
 
     //Open conection to the database
     public void openDatabase() {
+        Log.d(tag,"DATABASE: OPEN DATABASE!");
         this.db = openHelper.getWritableDatabase();
     }
 
     //closing connection to database
     public void closeDatabe() {
         if (db != null) {
+            Log.d(tag,"DATABASE: CLOSING DATABASE!");
             this.db.close();
         }
     }
@@ -86,14 +88,15 @@ public class DataBaseAccess {
         long result = db.insert(TABLE_TRANSACTIONS, null, accountContent);
 
         if (result == -1) {
-            Log.e(tag, "Could not insert transaction in database");
+            Log.e(tag, "DATABASE: FAILED TO INSERT");
             return false;
         } else {
-            Log.i(tag, "Insert completed");
+            Log.d(tag, "DATABASE: INSERT SUCCESSFULLY");
             return true;
         }
     }
 
+    //TODO decide dates
     //get all saved accounts and return them to app constants
     public ArrayList<Transactions> getAllTransactions() {
         ArrayList<Transactions> transactionsFromDatabase = new ArrayList<>();
@@ -102,8 +105,8 @@ public class DataBaseAccess {
      //   String query = String.format("SELECT * FROM %s", TABLE_TRANSACTIONS);
         String query = String.format("SELECT * FROM %s WHERE DATE(%s) BETWEEN '2020-01-01' AND  '2020-03-31'", TABLE_TRANSACTIONS, TRANSAC_DATETIME_COL7);
         c = db.rawQuery(query, null);
+        Log.d(tag, "DATABASE: EXECUTE QUERY");
         while (c.moveToNext()) {
-
             int id = c.getInt(0);
             String textDesc = c.getString(1);
             double value = c.getDouble(2);
@@ -125,7 +128,6 @@ public class DataBaseAccess {
             transactionsFromDatabase.add(m);
         }
         c.close();
-        Log.i(tag, "Reading in Transaction completed without problem");
         return transactionsFromDatabase;
     }
 
@@ -135,10 +137,10 @@ public class DataBaseAccess {
         accountContent.put(ACCOUNT_VALUE_COL2, accountValue);
         long result = db.update(TABLE_ACCOUNT, accountContent, whereClause, null);
         if (result == -1) {
-            Log.e(tag, "Could not insert in database");
+            Log.e(tag, "DATABASE: FAILED TO UPDATE");
             return false;
         } else {
-            Log.i(tag, "update completed in database");
+            Log.d(tag, "DATABASE: UPDATE SUCCESSFULLY");
             return true;
         }
     }
@@ -149,11 +151,11 @@ public class DataBaseAccess {
         double value = 0;
         String query = String.format("SELECT SUM(%s) FROM %s WHERE %s = '%s' AND %s = '%s' AND DATE(%s) BETWEEN '%s' AND  '%s'", TRANSAC_VALUE_COL3, TABLE_TRANSACTIONS, TRANSAC_CATEGORY_COL4, category, TRANSAC_TRANSACTYPE_COL5,type, TRANSAC_DATETIME_COL7, from, to);
         c = db.rawQuery(query, null);
+        Log.d(tag, "DATABASE: EXECUTE QUERY");
         while (c.moveToNext()) {
              value = c.getDouble(0);
         }
         c.close();
-        Log.i(tag, "Reading in total sum " + value);
         return value;
     }
 
@@ -162,11 +164,11 @@ public class DataBaseAccess {
         double value = 0;
         String query = String.format("SELECT SUM(%s) FROM %s WHERE %s = '%s' AND DATE(%s) BETWEEN '%s' AND  '%s'", TRANSAC_VALUE_COL3, TABLE_TRANSACTIONS, TRANSAC_TRANSACTYPE_COL5, test, TRANSAC_DATETIME_COL7, from, to);
         c = db.rawQuery(query, null);
+        Log.d(tag, "DATABASE: EXECUTE QUERY");
         while (c.moveToNext()) {
             value = c.getDouble(0);
         }
         c.close();
-        Log.i(tag, "Reading in total sum " + value);
         return value;
     }
 
@@ -180,10 +182,10 @@ public class DataBaseAccess {
         accountContent.put(ACCOUNT_IMG_COL4, img);
         long result = db.insert(TABLE_ACCOUNT, null, accountContent);
         if (result == -1) {
-            Log.e(tag, "Could not insert in database");
+            Log.e(tag, "DATABASE: FAILED TO INSERT");
             return false;
         } else {
-            Log.i(tag, "Insert completed");
+            Log.i(tag, "DATABASE: UPDATE SUCCESSFULLY");
             return true;
         }
     }
@@ -194,10 +196,10 @@ public class DataBaseAccess {
         pinContent.put(USER_PASSWORD, hashedPin);
         long result = db.insert(TABLE_USER, null, pinContent);
         if (result == -1) {
-            Log.e(tag, "Insert failed");
+            Log.e(tag, "DATABASE: FAILED TO INSERT");
             return false;
         } else {
-            Log.i(tag, "Insert completed");
+            Log.i(tag, "DATABASE: INSERT SUCCESSFULLY");
             return true;
         }
     }
@@ -208,10 +210,10 @@ public class DataBaseAccess {
         content.put(USER_PASSWORD, HashedNewPin);
         long result = db.update(TABLE_USER,content,"username ='"+email+"'",null);
         if (result == -1) {
-            Log.e(tag, "Update failed");
+            Log.e(tag, "DATABASE: FAILED TO UPDATE");
             return false;
         } else {
-            Log.i(tag, "Update completed");
+            Log.i(tag, "DATABASE: UPDATE SUCCESSFULLY");
             return true;
         }
     }

@@ -14,6 +14,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.StaticStrings;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionHolder> {
 
@@ -68,7 +69,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             txtAccount.setText(details.getTransactionAccount());
             txtDate.setText(strDate);
 
-            if (details.getTransactionType().equals("expense")) {
+            if (details.getTransactionType().equals(StaticStrings.EXPENSE)) {
                 sds.setBackgroundColor(context.getColor(R.color.colorExpense));
             }else {
                 sds.setBackgroundColor(context.getColor(R.color.colorIncome));

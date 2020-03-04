@@ -21,7 +21,8 @@
     <string name="transactions">Transactions</string>
     <string name="summary">Summary</string>
     <string name="delete_account_text">All income and expenses associated with this account will be erased</string>
+    <string name="menu_newexpense">New Expense</string>
+    <string name="menu_newincome">New Income</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

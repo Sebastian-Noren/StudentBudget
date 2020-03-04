@@ -11,13 +11,14 @@ import android.widget.TextView;
 
 import java.util.Objects;
 
+import androidx.appcompat.app.AppCompatDialogFragment;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class CreateAccountDialog extends DialogFragment {
+public class CreateAccountDialog extends AppCompatDialogFragment {
     private String tag = "Info";
     private TextView inputAccountName, inputAccountNotes, inputAccountValue;
 
@@ -48,6 +49,7 @@ public class CreateAccountDialog extends DialogFragment {
                     Objects.requireNonNull(getActivity()).finish();
                     Log.i(tag, "Exit application");
                 }
+                AppConstants.hideSoftKeyboard(getActivity());
                 getDialog().dismiss();
             }
         });
@@ -77,10 +79,21 @@ public class CreateAccountDialog extends DialogFragment {
                 } else {
                     AppConstants.toastMessage(getContext(), "Must enter a Account name!");
                 }
+                AppConstants.hideSoftKeyboard(getActivity());
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.colorPickerStyle);
+        // this setStyle is VERY important.
+        // STYLE_NO_FRAME means that I will provide my own layout and style for the whole dialog
+        // so for example the size of the default dialog will not get in my way
+        // the style extends the default one. see bellow.
     }
 
     @Override
