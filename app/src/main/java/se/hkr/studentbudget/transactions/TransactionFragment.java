@@ -228,7 +228,7 @@ public class TransactionFragment extends Fragment implements DatePickerDialog.On
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float amount = (float) animation.getAnimatedValue();
-                acountTotal.setText(String.format("Total: %s kr", String.format(Locale.getDefault(),"%,.2f", amount)));
+                acountTotal.setText(String.format("%s kr", String.format(Locale.getDefault(),"%,.2f", amount)));
             }
         });
         animator.start();

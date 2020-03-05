@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.DialogFragment;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.Category;
@@ -62,11 +63,13 @@ public class StatisticsFragment extends Fragment implements DatePickerDialog.OnD
     private Handler handler;
     private ArrayList<Category> categories;
     private ValueFormatter formatter;
+    private CardView graphCard;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_statistics, container, false);
         Log.d(tag, "In the StatisticsFragment");
         handler = new Handler();
+        graphCard = view.findViewById(R.id.grahCard);
         mBarChart = view.findViewById(R.id.barchart);
         mainBtn = view.findViewById(R.id.showgraphBtn);
         fromBtn = view.findViewById(R.id.fromDateBtn);
@@ -135,6 +138,7 @@ public class StatisticsFragment extends Fragment implements DatePickerDialog.OnD
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        graphCard.setVisibility(View.GONE);
                         mBarChart.setVisibility(View.GONE);
                         mPieChart.setVisibility(View.GONE);
                         switch (radioIdGraph) {
@@ -226,6 +230,7 @@ public class StatisticsFragment extends Fragment implements DatePickerDialog.OnD
         mBarChart.setFitBars(true);
         mBarChart.getLegend().setEnabled(false);
         mBarChart.getDescription().setEnabled(false);
+        graphCard.setVisibility(View.VISIBLE);
         mBarChart.setVisibility(View.VISIBLE);
         mBarChart.animateY(1000);
         mBarChart.invalidate();
@@ -256,6 +261,7 @@ public class StatisticsFragment extends Fragment implements DatePickerDialog.OnD
         mPieChart.setData(pieData);
         mPieChart.getLegend().setEnabled(false);
         mPieChart.getDescription().setEnabled(false);
+        graphCard.setVisibility(View.VISIBLE);
         mPieChart.setVisibility(View.VISIBLE);
         mPieChart.animateXY(1000, 1000);
         mPieChart.invalidate();

@@ -1,5 +1,6 @@
 package se.hkr.studentbudget.expenses;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,11 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.overview.MultiViewTypeAdapter;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
 
 public class TransactionGroupAdapter extends RecyclerView.Adapter<TransactionGroupAdapter.ItemViewHolder> {
@@ -37,8 +40,19 @@ public class TransactionGroupAdapter extends RecyclerView.Adapter<TransactionGro
         TransactionGroup item = itemList.get(i);
         itemViewHolder.tvItemTitle.setText(item.getItemTitle());
 
-        //TODO set value in sek and change color depending on
-        itemViewHolder.monthValue.setText(String.valueOf(item.getValue()));
+        float total = (float) item.getValue();
+        if (total < 0) {
+            itemViewHolder.monthValue.setTextColor(mContext.getColor(R.color.colorExpense));
+        }
+        ValueAnimator animator = ValueAnimator.ofFloat(0, total); //0 is min number, 600 is max number
+        animator.setDuration(1000); //Duration is in milliseconds
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float amount = (float) animation.getAnimatedValue();
+                itemViewHolder.monthValue.setText(String.format("%s kr", String.format(Locale.getDefault(),"%,.2f", amount)));
+            }
+        });
+        animator.start();
 
         // Create layout manager with initial prefetch item count
         LinearLayoutManager layoutManager = new LinearLayoutManager(
