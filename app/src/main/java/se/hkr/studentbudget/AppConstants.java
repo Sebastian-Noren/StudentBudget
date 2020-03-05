@@ -45,7 +45,7 @@ public class AppConstants {
         currentMonthTransaction = new ArrayList<>();
         budgetProgressBar = new ArrayList<>();
         initAccounts(context);
-        initProgressBars(context);
+      //  initProgressBars(context);
         //Fills expense and income category
         fillExpenseCategorySpinner(context);
         fillIncomeCategorySpinner(context);

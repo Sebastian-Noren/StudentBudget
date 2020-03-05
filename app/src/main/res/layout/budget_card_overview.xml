@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="3dp"
     app:cardElevation="3dp"
+    android:longClickable="true"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout
@@ -22,13 +23,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/menu_account"
+                android:text="Budgets"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/accoun_rec_overview"
+                android:id="@+id/budget_rec_overview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

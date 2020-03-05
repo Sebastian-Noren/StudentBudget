@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.AppMathCalc;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.budget.BudgetAdapter;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
 
 
@@ -50,7 +51,6 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         this.mContext = context;
         this.handler = new Handler();
     }
-
 
     public static class SummaryTypeViewHolder extends RecyclerView.ViewHolder {
 
@@ -91,6 +91,20 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    public static class BudgetTypeViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView txtType;
+        private RecyclerView accountRecyclerView;
+
+
+        public BudgetTypeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.txtType = itemView.findViewById(R.id.textView5);
+            this.accountRecyclerView = itemView.findViewById(R.id.budget_rec_overview);
+
+        }
+    }
+
     public static class TransTypeViewHolder extends RecyclerView.ViewHolder {
 
         private RecyclerView recyclerView;
@@ -106,22 +120,26 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case TestModel.CARD0:
+            case TestModel.EXPENSES_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.expenses_seven_day_card_overview, parent, false);
                 Log.d(tag,"ExpenseBarChart view created.");
                 return new ExpenseBarChart(view);
-            case TestModel.CARD1:
+            case TestModel.SUMMARY_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.summary_card_overview, parent, false);
                 Log.d(tag,"SummaryTypeViewHolder view created.");
                 return new SummaryTypeViewHolder(view);
-            case TestModel.CARD2:
+            case TestModel.ACCOUNT_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_overview, parent, false);
                 Log.d(tag,"AccountTypeViewHolder( view created.");
                 return new AccountTypeViewHolder(view);
-            case TestModel.CARD3:
+            case TestModel.TRANSACTIONS_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.transaction_card_overview, parent, false);
                 Log.d(tag,"TransTypeViewHolder view created.");
                 return new TransTypeViewHolder(view);
+                case TestModel.BUDGET_CARD:
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.budget_card_overview, parent, false);
+                    Log.d(tag,"AccountTypeViewHolder( view created.");
+                    return new BudgetTypeViewHolder(view);
         }
         return null;
     }
@@ -131,13 +149,15 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         switch (dataSet.get(position).getType()) {
             case 0:
-                return TestModel.CARD0;
+                return TestModel.EXPENSES_CARD;
             case 1:
-                return TestModel.CARD1;
+                return TestModel.SUMMARY_CARD;
             case 2:
-                return TestModel.CARD2;
+                return TestModel.ACCOUNT_CARD;
             case 3:
-                return TestModel.CARD3;
+                return TestModel.TRANSACTIONS_CARD;
+            case 4:
+                return TestModel.BUDGET_CARD;
             default:
                 return -1;
         }
@@ -149,10 +169,10 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         TestModel object = dataSet.get(listPosition);
         if (object != null) {
             switch (object.getType()) {
-                case TestModel.CARD0:
+                case TestModel.EXPENSES_CARD:
                     barchar((((ExpenseBarChart) holder).mBarChart));
                     break;
-                case TestModel.CARD1:
+                case TestModel.SUMMARY_CARD:
                     AppMathCalc math = new AppMathCalc();
                     float expense = (float) AppConstants.CURRENT_MONTH_EXPENSE;
                     float income = (float) AppConstants.CURRENT_MONTH_INCOME;
@@ -167,36 +187,26 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
                     expense = Math.abs(expense);
                     pieChart(((SummaryTypeViewHolder) holder).mPieChart, expense, income);
                     break;
-                case TestModel.CARD2:
+                case TestModel.ACCOUNT_CARD:
                     AccountOverviewAdapter accountOverviewAdapter = new AccountOverviewAdapter(mContext, AppConstants.accounts);
                     accountOverviewAdapter.notifyDataSetChanged();
                     ((AccountTypeViewHolder) holder).accountRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
                     ((AccountTypeViewHolder) holder).accountRecyclerView.setAdapter(accountOverviewAdapter);
                     break;
-                case TestModel.CARD3:
+                case TestModel.TRANSACTIONS_CARD:
+                    transactionAdapter = new TransactionAdapter(mContext, AppConstants.currentMonthTransaction);
                     ((TransTypeViewHolder) holder).recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-                    fillTransactionsThread(((TransTypeViewHolder) holder).recyclerView);
+                    ((TransTypeViewHolder) holder).recyclerView.setAdapter(transactionAdapter);
+                    transactionAdapter.notifyDataSetChanged();
+                    break;
+                case TestModel.BUDGET_CARD:
+                    BudgetAdapter budgetAdapter = new BudgetAdapter(mContext,AppConstants.budgetProgressBar);
+                    budgetAdapter.notifyDataSetChanged();
+                    ((BudgetTypeViewHolder) holder).accountRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+                    ((BudgetTypeViewHolder) holder).accountRecyclerView.setAdapter(budgetAdapter);
                     break;
             }
         }
-    }
-
-    private void fillTransactionsThread(final RecyclerView recyclerView){
-        Thread th = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                transactionAdapter = new TransactionAdapter(mContext, AppConstants.currentMonthTransaction);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.i(tag,"Set adapter transaction adapter.");
-                        recyclerView.setAdapter(transactionAdapter);
-                        transactionAdapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
-        th.start();
     }
 
     private String currentMonth() {
@@ -205,7 +215,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         return dateFormatter.format(c.getTime());
     }
 
-    private void barchar(BarChart mBarChart) {
+    private void barchar(@NonNull BarChart mBarChart) {
 
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM", Locale.US);
@@ -279,7 +289,7 @@ public class MultiViewTypeAdapter extends RecyclerView.Adapter<RecyclerView.View
         mBarChart.invalidate();
     }
 
-    private void pieChart(PieChart mPieChart, float expense, float income) {
+    private void pieChart(@NonNull PieChart mPieChart, float expense, float income) {
         List<PieEntry> pieEntries = new ArrayList<>();
 
         // first entry data value, second is data descriptor

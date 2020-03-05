@@ -6,9 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="3dp"
     app:cardElevation="3dp"
-    android:foreground="?attr/selectableItemBackground"
-    android:stateListAnimator="@anim/card_animiation"
-    android:longClickable="true"
     app:cardUseCompatPadding="true">
 
     <RelativeLayout

@@ -160,6 +160,8 @@ public class AccountFragment extends Fragment implements CreateAccountDialog.OnS
         th.start();
     }
 
+
+
     private void insertInDatabase(final String input, final double value, final String notes, final int icon) {
         Thread th = new Thread(new Runnable() {
             @Override

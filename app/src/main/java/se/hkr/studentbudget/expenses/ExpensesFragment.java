@@ -140,7 +140,6 @@ public class ExpensesFragment extends Fragment {
             public void run() {
                 transactionGroupAdapter = new TransactionGroupAdapter(getContext(), buildItemList());
 
-
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
