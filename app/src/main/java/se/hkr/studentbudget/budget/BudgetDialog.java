@@ -33,6 +33,7 @@ public class BudgetDialog extends DialogFragment {
     private String catName;
     private String categoryTitle;
     private String clickedAccountName;
+    private BudgetItem budgetItem;
 
 
     // the one method to rule them all
@@ -85,10 +86,16 @@ public class BudgetDialog extends DialogFragment {
         saveBtnB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO tänkte göra om textfield är tom - savebtn.clickable(false)
+               // if(inputAmountText.getText().equals())
                 //This is the totalamount money
                 String inputAmount = inputAmountText.getText().toString().trim();
                 getDialog().dismiss();
                 saveInput.save(inputAmount, categoryTitle, clickedAccountName);
+                //TODO fixa inputAMount till double
+              //  double inputMaxValue =
+                //TODO uppdatera maxvalue i budgetItem
+                //budgetItem.setMaxValue(inputAmount);
                 AppConstants.hideSoftKeyboard(getActivity());
             }
         });

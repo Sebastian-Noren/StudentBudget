@@ -31,6 +31,7 @@ public class AppConstants {
     public static ArrayList<CategoryRowItem> expenseList;
     public static ArrayList<CategoryRowItem> incomeList;
     public static ArrayList<BudgetItem> budgetProgressBar;
+    //TODO denna används inte
     public static BudgetAdapter budgetAdapter;
     public static double CURRENT_MONTH_EXPENSE = 0;
     public static double CURRENT_MONTH_INCOME = 0;
@@ -50,7 +51,6 @@ public class AppConstants {
         fillIncomeCategorySpinner(context);
         Log.i(tag, "AppConstant.Class Initialization Complete!");
         budgetProgressBar = new ArrayList<>();
-        //budgetProgressbarFiller();
     }
 
     private static void initAccounts(Context context) {
@@ -172,15 +172,123 @@ public class AppConstants {
         return accounts.size() > 0;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public static void budgetProgressbarFiller(Context context){
         ArrayList<BudgetItem> budgetList = new ArrayList<>();
         if(budgetProgressBar.size()>0){
             for (int i = 0; i < budgetProgressBar.size(); i++) {
                 budgetList.add(new BudgetItem(budgetProgressBar.get(i).getCurrentValue(),budgetProgressBar.get(i).getMaxValue(),budgetProgressBar.get(i).getImage(),budgetProgressBar.get(i).getProgressBarTitle(),budgetProgressBar.get(i).getAccountName()));
             }
+
         }
+
+        for (int i = 0; i < budgetProgressBar.size(); i++) {
+            int index = i;
+            switch (budgetProgressBar.get(i).getProgressBarTitle()/* budgetProgressBar.get(i).getAccountName()*/){
+                case "Home":
+                   // switch (budgetProgressBar.get(i))
+                    Log.i(tag,"nu är proggebarre inne i switchen och han är la hemma?");
+                    break;
+                case "Food/Drinks":
+                    Log.i(tag, "nu är proggebarre på Food/Drinks i switchen INIT");
+                    budgetProgressBar.set(index,new BudgetItem(budgetProgressBar.get(i).getMaxValue()-testDate(context),budgetProgressBar.get(i).getMaxValue(),budgetProgressBar.get(i).getImage(),budgetProgressBar.get(i).getProgressBarTitle(),budgetProgressBar.get(i).getAccountName()));
+                    break;
+
+            }
+            Log.i(tag,String.valueOf(budgetProgressBar.get(i).getCurrentValue()) +"JA DET ÄR JAG" + String.valueOf(budgetProgressBar.get(i).getProgressBarTitle()));
+        }
+        //budgetAdapter.notifyDataSetChanged();
+
+
+
+
+        //TODO nya tag.
+
+
 //        budgetAdapter = new BudgetAdapter(context, budgetList);
 //        budgetAdapter.notifyDataSetChanged();
 
+    }
+
+    private static double testDate(Context context) {
+        LocalDate startMonth = YearMonth.now().atDay(1);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String strDateFrom = startMonth.format(dateFormatter);
+        String strDateTo = today.format(dateFormatter);
+        DataBaseAccess dataBaseAccess = DataBaseAccess.getInstance(context);
+        dataBaseAccess.openDatabase();
+        double value = Math.abs(dataBaseAccess.getTotalSumCategory("Food/Drinks", StaticStrings.EXPENSE, strDateFrom, strDateTo));
+
+
+        dataBaseAccess.closeDatabe();
+       // AppConstants.toastMessage(context, String.valueOf(value));
+        return value;
     }
 }
