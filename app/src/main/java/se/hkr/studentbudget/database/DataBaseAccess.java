@@ -171,6 +171,19 @@ public class DataBaseAccess {
         return value;
     }
 
+    public double getTotalSumTransactionMonth(String from, String to){
+        Cursor c;
+        double value = 0;
+        String query = String.format("SELECT SUM(%s) FROM %s WHERE DATE(%s) BETWEEN '%s' AND  '%s'", TRANSAC_VALUE_COL3, TABLE_TRANSACTIONS,  TRANSAC_DATETIME_COL7, from, to);
+        c = db.rawQuery(query, null);
+        Log.d(tag, "DATABASE: EXECUTE QUERY");
+        while (c.moveToNext()) {
+            value = c.getDouble(0);
+        }
+        c.close();
+        return value;
+    }
+
 
     // insert account into the database
     public boolean insertAccountInDatabase(String accountName, double accountValue, String accountNotes, int img) {

@@ -6,162 +6,180 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="409dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="2dp"
-        android:paddingTop="10dp"
-        android:paddingRight="2dp"
+        app:cardCornerRadius="3dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="409dp"
             android:layout_height="wrap_content"
-            android:text="Show all categories of:" />
-
-        <RadioGroup
-            android:id="@+id/radio_group_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioExpense"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:checked="true"
-                android:text="@string/menu_expenses" />
-
-            <RadioButton
-                android:id="@+id/radioIncome"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="Income" />
-
-            <RadioButton
-                android:id="@+id/radioBoth"
-                android:layout_width="110dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="Both" />
-        </RadioGroup>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp">
+            android:orientation="vertical"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/textView10"
-                android:layout_width="134dp"
-                android:layout_height="30dp"
-                android:layout_weight="0"
-                android:gravity="center|left"
-                android:text="From:" />
-
-            <Button
-                android:id="@+id/fromDateBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="0dp"
-                android:layout_toEndOf="@+id/textView10"
-                android:layout_weight="0"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="22/02/2020" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp">
-
-            <TextView
-                android:id="@+id/textView11"
-                android:layout_width="134dp"
-                android:layout_height="30dp"
-                android:layout_weight="0"
-                android:gravity="center|left"
-                android:text="To:" />
-
-            <Button
-                android:id="@+id/toDateBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="0dp"
-                android:layout_toEndOf="@+id/textView11"
-                android:layout_weight="0"
-                android:background="@color/colorPrimary"
-                android:clickable="true"
-                android:gravity="center"
-                android:text="22/02/2020" />
-
-        </RelativeLayout>
-
-        <RadioGroup
-            android:id="@+id/radiogroup_chart"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="5dp">
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="134dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0"
-                android:gravity="left|center"
-                android:text="Graph:" />
-
-            <RadioButton
-                android:id="@+id/radioPieChart"
-                android:layout_width="110dp"
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:checked="true"
-                android:text="Pie Chart" />
+                android:text="Show all categories of:" />
 
-            <RadioButton
-                android:id="@+id/radioBarChart"
-                android:layout_width="110dp"
+            <RadioGroup
+                android:id="@+id/radio_group_main"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="Bar Chart" />
+                android:orientation="horizontal">
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioExpense"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:text="@string/menu_expenses" />
 
-    </LinearLayout>
+                <RadioButton
+                    android:id="@+id/radioIncome"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Income" />
 
-    <FrameLayout
+                <RadioButton
+                    android:id="@+id/radioBoth"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Both" />
+            </RadioGroup>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="134dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:gravity="center|left"
+                    android:text="From:" />
+
+                <Button
+                    android:id="@+id/fromDateBtn"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_toEndOf="@+id/textView10"
+                    android:layout_weight="0"
+                    android:background="@color/colorPrimary"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="22/02/2020" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="134dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="0"
+                    android:gravity="center|left"
+                    android:text="To:" />
+
+                <Button
+                    android:id="@+id/toDateBtn"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="200dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_toEndOf="@+id/textView11"
+                    android:layout_weight="0"
+                    android:background="@color/colorPrimary"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="22/02/2020" />
+
+            </RelativeLayout>
+
+            <RadioGroup
+                android:id="@+id/radiogroup_chart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="5dp">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="134dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:gravity="left|center"
+                    android:text="Graph:" />
+
+                <RadioButton
+                    android:id="@+id/radioPieChart"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:checked="true"
+                    android:text="Pie Chart" />
+
+                <RadioButton
+                    android:id="@+id/radioBarChart"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="Bar Chart" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/grahCard"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="420dp"
+        app:cardCornerRadius="3dp"
+        app:cardUseCompatPadding="true"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:padding="10dp"
+            android:layout_height="match_parent">
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieshart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:visibility="gone">
 
         </com.github.mikephil.charting.charts.PieChart>
 
@@ -169,23 +187,32 @@
             android:id="@+id/barchart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_gravity="center"
-            />
+            android:visibility="gone" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/showgraphBtn"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:text="Show Graph"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="23dp"
+        app:cardCornerRadius="3dp"
+        app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/showgraphBtn"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Show Graph"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

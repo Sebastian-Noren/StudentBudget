@@ -26,7 +26,6 @@ public class AppConstants {
     private static String tag = "Info";
     public static CategoryRowAdapter expenseAdapter, accountAdapter, incomeAdapter;
     public static ArrayList<Account> accounts;
-    public static ArrayList<Transactions> transactions;
     public static ArrayList<Transactions> currentMonthTransaction;
     public static ArrayList<CategoryRowItem> expenseList;
     public static ArrayList<CategoryRowItem> incomeList;
@@ -42,7 +41,6 @@ public class AppConstants {
     }
 
     private static void initList(Context context) {
-        transactions = new ArrayList<>();
         currentMonthTransaction = new ArrayList<>();
         initAccounts(context);
         //Fills expense and income category
@@ -118,15 +116,6 @@ public class AppConstants {
             }
         });
         th.start();
-    }
-
-    public static void fillTransactions(Context context) {
-        DataBaseAccess dataBaseAcess = DataBaseAccess.getInstance(context);
-        dataBaseAcess.openDatabase();
-       // transactions = dataBaseAcess.getAllTransactionsBetweenDates();
-        dataBaseAcess.closeDatabe();
-        sortTransactions(transactions);
-
     }
 
     public static void fillAccountSpinner(Context context) {
