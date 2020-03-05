@@ -1,6 +1,8 @@
 package se.hkr.studentbudget.budget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,15 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
 
     private Context context;
     private ArrayList<BudgetItem> budgetItems;
+    private OnCardItemLongClickListener onCardItemLongClickListener;
 
+    public interface OnCardItemLongClickListener {
+        void onCardItemLongClick(int pos);
+    }
+
+    public void setOnCardItemLongClickListener(OnCardItemLongClickListener listener) {
+        onCardItemLongClickListener = listener;
+    }
     //constructor
     public BudgetAdapter(Context context, ArrayList<BudgetItem> budgetItems) {
         this.context = context;
@@ -30,7 +40,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
     @Override
     public BudgetHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.progessbar_budget, parent, false);
-        return new BudgetHolder(view);
+        return new BudgetHolder(view, onCardItemLongClickListener);
     }
 
 
@@ -46,16 +56,13 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
     }
 
 
-
-
     //innerclass
-    //TODO tabort implements
     class BudgetHolder extends RecyclerView.ViewHolder {
         TextView title, amountprogress, totalAmountText, accountName;
         ImageView image;
         ProgressBar progressBar;
 
-        BudgetHolder(View itemView) {
+        BudgetHolder(View itemView, final BudgetAdapter.OnCardItemLongClickListener listener) {
 
             super(itemView);
             this.image = itemView.findViewById(R.id.progressbar_image);
@@ -65,18 +72,39 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetHold
             this.totalAmountText = itemView.findViewById(R.id.amount_leftTotal);
             this.accountName = itemView.findViewById(R.id.accountName);
 
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onCardItemLongClick(position);
+                        }
+                    }
+                    return false;
+                }
+            });
         }
 
-        public void setDetails(BudgetItem budgetItem) {
+        private void setDetails(BudgetItem budgetItem) {
+            int maxValue = (int) budgetItem.getMaxValue();
+            int setCurrentProgress = (int) budgetItem.getCurrentValue();
+
+            if (setCurrentProgress>(maxValue/3) &&(setCurrentProgress < (maxValue / 2))) {
+                progressBar.setProgressTintList(ColorStateList.valueOf(Color.YELLOW));
+            } else if (setCurrentProgress < (maxValue / 3)) {
+                progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+            }
+
+            image.setImageResource(budgetItem.getImage());
             title.setText(budgetItem.getProgressBarTitle());
-            progressBar.setMax((int) budgetItem.getMaxValue());
-            progressBar.setProgress((int) budgetItem.getCurrentValue());
+            progressBar.setMax(maxValue);
+            progressBar.setProgress(setCurrentProgress);
             totalAmountText.setText(String.valueOf(budgetItem.getMaxValue()));
             accountName.setText(String.valueOf(budgetItem.getAccountName()));
             amountprogress.setText(String.valueOf(budgetItem.getCurrentValue()));
         }
     }
-
-
 }
 

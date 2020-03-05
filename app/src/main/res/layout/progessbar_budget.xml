@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="3dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:stateListAnimator="@anim/card_animiation"
+    android:longClickable="true"
+    app:cardUseCompatPadding="true">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="top"
@@ -41,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="end"
-            android:progress="20"
+            android:progress="25"
             android:progressTint="@color/colorIncome"
             android:progressBackgroundTint="@color/cardview_shadow_start_color"
             />
@@ -57,9 +67,8 @@
 
         <TextView
             android:id="@+id/accountName"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="iyyiyiy"
             android:paddingLeft="5dp"/>
 
 
@@ -70,7 +79,6 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:paddingRight="5dp"
-            android:text="hihi"
             android:textSize="15dp"
             android:textStyle="italic"
             android:layout_weight="1"/>
@@ -92,7 +100,6 @@
             android:layout_gravity="end"
             android:gravity="end"
             android:paddingRight="5dp"
-            android:text="200"
             android:textSize="15dp"
             android:textStyle="italic" />
 
@@ -100,3 +107,5 @@
 
 
 </LinearLayout>
+
+</androidx.cardview.widget.CardView>
