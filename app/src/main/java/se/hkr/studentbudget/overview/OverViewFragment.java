@@ -38,12 +38,9 @@ public class OverViewFragment extends Fragment {
     private float translationY = 100f;
     private boolean isMenuOpen = false;
     private OvershootInterpolator interpolator = new OvershootInterpolator();
-
     private RecyclerView recyclerView;
     private MultiViewTypeAdapter multiAdapter;
     private ArrayList<TestModel> testModels;
-
-
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_overview, container, false);
@@ -52,10 +49,11 @@ public class OverViewFragment extends Fragment {
         navController = Navigation.findNavController(Objects.requireNonNull(getActivity()), R.id.nav_host_fragment);
         testModels = new ArrayList<>();
         recyclerView = view.findViewById(R.id.overview_recycler);
-        testModels.add(new TestModel(TestModel.CARD1));
-        testModels.add(new TestModel(TestModel.CARD0));
-        testModels.add(new TestModel(TestModel.CARD2));
-        testModels.add(new TestModel(TestModel.CARD3));
+        testModels.add(new TestModel(TestModel.SUMMARY_CARD));
+        testModels.add(new TestModel(TestModel.EXPENSES_CARD));
+        testModels.add(new TestModel(TestModel.ACCOUNT_CARD));
+        testModels.add(new TestModel(TestModel.BUDGET_CARD));
+        testModels.add(new TestModel(TestModel.TRANSACTIONS_CARD));
 
         initFabMenu(view);
         fabMain.setOnClickListener(new View.OnClickListener() {
@@ -103,10 +101,10 @@ public class OverViewFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-                if (dy < 0) {
+                if (dy < 3) {
                     fabMain.show();
 
-                } else if (dy > 2) {
+                } else if (dy > 3) {
                     fabMain.hide();
                 }
             }
@@ -171,6 +169,7 @@ public class OverViewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(tag, "OverViewFragment: In the OnCreate event() - Start read in current month.");
+        AppConstants.initProgressBars(getContext());
         AppConstants.initCurrentMonthsTransactions(getContext());
     }
     //4

@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import se.hkr.studentbudget.R;
-import se.hkr.studentbudget.overview.MultiViewTypeAdapter;
 import se.hkr.studentbudget.transactions.TransactionAdapter;
 
 public class TransactionGroupAdapter extends RecyclerView.Adapter<TransactionGroupAdapter.ItemViewHolder> {
