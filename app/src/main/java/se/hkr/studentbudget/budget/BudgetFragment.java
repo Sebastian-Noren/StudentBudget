@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import se.hkr.studentbudget.AppConstants;
 import se.hkr.studentbudget.R;
+import se.hkr.studentbudget.StaticStrings;
 import se.hkr.studentbudget.database.DataBaseAccess;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,8 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
     //TODO 3. Progressbarsen ska resetas efter varje månad - kolla på dates och någon slags reset.
     //TODO 4. ska inte kunna gå under 0 för progressbar
     //TODO 5. fixa savebtn - ha något slags "safenet"
-    //TODO 6.
+    //TODO 6. fixa så man kan bara lägga till en progressbar för en kategori
+    //TODO 7. fixa så att när man skapar en progressbar man hämtar hem rätt data från databasen
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,16 +53,12 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         addBtn = view.findViewById(R.id.addBtn);
         whitdrawbtn = view.findViewById(R.id.testingWhitdraw);
 
-
-
-        //TODO detta fungerar inte
         init();
         budgetAdapter = new BudgetAdapter(getContext(), AppConstants.budgetProgressBar);
         budgetRecycle = view.findViewById(R.id.budget_frame);
         budgetRecycle.setLayoutManager(new LinearLayoutManager(getContext()));
         budgetRecycle.setAdapter(budgetAdapter);
-        size= AppConstants.budgetProgressBar.size();
-
+        size = AppConstants.budgetProgressBar.size();
 
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,22 +72,20 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         //TODO detta tar minskar progressbar men ska inte användas.
         whitdrawbtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view ) {
-                monster=300;
-                currentAmount=currentAmount-monster;
-                AppConstants.toastMessage(getContext(),String.valueOf(currentAmount));
+            public void onClick(View view) {
+                monster = 300;
+                currentAmount = currentAmount - monster;
+                AppConstants.toastMessage(getContext(), String.valueOf(currentAmount));
 
                 int updateIndex = 0;
-                AppConstants.budgetProgressBar.set(updateIndex,new BudgetItem(currentAmount, 500, R.drawable.ic_placeholder, "bajs", "skolbajs"));
+                AppConstants.budgetProgressBar.set(updateIndex, new BudgetItem(currentAmount, 500, R.drawable.ic_placeholder, "bajs", "skolbajs"));
                 budgetAdapter.notifyItemChanged(updateIndex);
             }
         });
 
 
-
         return view;
     }
-
 
 
     @Override
@@ -112,26 +108,35 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput {
         currentAmount = Integer.parseInt(value);
         Log.i(tag, String.valueOf(maxAmount));
         Log.i(tag, String.valueOf(currentAmount));
-        AppConstants.budgetProgressBar.add(new BudgetItem(currentAmount, maxAmount, R.drawable.ic_placeholder, categoryTitle, accountName));
+        AppConstants.budgetProgressBar.add(new BudgetItem(maxAmount-testDate(), maxAmount, R.drawable.ic_placeholder, categoryTitle, accountName));
         budgetAdapter.notifyItemInserted(updateIndex);
 
+
     }
-private void init(){
-//        int updateIndex = 0;
-//        budgetItemArrayList.set(updateIndex,new BudgetItem(currentAmount, 200, R.drawable.ic_placeholder, "bajs", "skolbajs"));
-//        budgetAdapter.notifyItemChanged(updateIndex);
 
-    AppConstants.budgetProgressbarFiller(getContext());
-}
+    private void init() {
+        AppConstants.budgetProgressbarFiller(getContext());
+        //int siezeTest = AppConstants.budgetProgressBar.size();
+       // budgetAdapter.notifyItemInserted(0);
+        budgetAdapter.notifyDataSetChanged();
+       // testDate();
+    }
 
-private void testDate(){
-    LocalDate startMonth = YearMonth.now().atDay(1);
-    LocalDate today = LocalDate.now();
+    private double testDate() {
+        LocalDate startMonth = YearMonth.now().atDay(1);
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String strDateFrom = startMonth.format(dateFormatter);
+        String strDateTo = today.format(dateFormatter);
+        DataBaseAccess dataBaseAccess = DataBaseAccess.getInstance(getContext());
+        dataBaseAccess.openDatabase();
+        double value = Math.abs(dataBaseAccess.getTotalSumCategory("Food/Drinks", StaticStrings.EXPENSE, strDateFrom, strDateTo));
 
-    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    String strDateFrom = startMonth.format(dateFormatter);
-    String strDateTo = today.format(dateFormatter);
-}
+
+        dataBaseAccess.closeDatabe();
+        AppConstants.toastMessage(getContext(), String.valueOf(value));
+        return value;
+    }
 
 
 }
