@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 
-import java.util.Objects;
-
 import se.hkr.studentbudget.AppConstants;
 
 import se.hkr.studentbudget.R;
@@ -30,15 +28,14 @@ public class BudgetDialog extends DialogFragment {
     private Spinner spinnerBudget;
     private Spinner spinnerAccountSelect;
     private Button saveBtnB;
-    private String catName;
     private String categoryTitle;
     private String clickedAccountName;
-    private BudgetItem budgetItem;
+    private int image;
 
 
     // the one method to rule them all
     public interface SaveInput {
-        void save(String value, String categoryTitle, String clickedAccountName);
+        void save(String value, int image, String categoryTitle, String clickedAccountName);
     }
 
     private SaveInput saveInput;
@@ -61,8 +58,8 @@ public class BudgetDialog extends DialogFragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 CategoryRowItem clickedItem = (CategoryRowItem) adapterView.getItemAtPosition(i);
-                catName = clickedItem.getmCategoryName();
                 categoryTitle = clickedItem.getmCategoryName();
+                image = clickedItem.getmCategoryIcon();
             }
 
             @Override
@@ -86,16 +83,19 @@ public class BudgetDialog extends DialogFragment {
         saveBtnB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO tänkte göra om textfield är tom - savebtn.clickable(false)
-               // if(inputAmountText.getText().equals())
-                //This is the totalamount money
+                //This is the total amount money
                 String inputAmount = inputAmountText.getText().toString().trim();
-                getDialog().dismiss();
-                saveInput.save(inputAmount, categoryTitle, clickedAccountName);
-                //TODO fixa inputAMount till double
-              //  double inputMaxValue =
-                //TODO uppdatera maxvalue i budgetItem
-                //budgetItem.setMaxValue(inputAmount);
+                if(!checkExistingProgressBar(categoryTitle)){
+                    if (!inputAmount.isEmpty()){
+                        saveInput.save(inputAmount, image, categoryTitle, clickedAccountName);
+                        getDialog().dismiss();
+                    }else{
+                        AppConstants.toastMessage(getContext(), "Enter amount!");
+                    }
+                }else{
+                    AppConstants.toastMessage(getContext(), "budget already exists!");
+                }
+
                 AppConstants.hideSoftKeyboard(getActivity());
             }
         });
@@ -122,6 +122,15 @@ public class BudgetDialog extends DialogFragment {
         // STYLE_NO_FRAME means that I will provide my own layout and style for the whole dialog
         // so for example the size of the default dialog will not get in my way
         // the style extends the default one. see bellow.
+    }
+
+    private boolean checkExistingProgressBar(String input){
+        for (int i = 0; i < AppConstants.budgetProgressBar.size(); i++) {
+            if (AppConstants.budgetProgressBar.get(i).getProgressBarTitle().equals(input)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

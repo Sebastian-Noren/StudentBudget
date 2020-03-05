@@ -7,8 +7,7 @@ public class BudgetItem {
     String progressBarTitle;
     String accountName;
 
-    public BudgetItem(double currentValue, double maxValue, int image, String progressBarTitle, String accountName) {
-        this.currentValue = currentValue;
+    public BudgetItem(double maxValue, int image, String progressBarTitle, String accountName) {
         this.maxValue = maxValue;
         this.image = image;
         this.progressBarTitle = progressBarTitle;
@@ -53,5 +52,16 @@ public class BudgetItem {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    @Override
+    public String toString() {
+        return "BudgetItem{" +
+                "currentValue=" + currentValue +
+                ", maxValue=" + maxValue +
+                ", image=" + image +
+                ", progressBarTitle='" + progressBarTitle + '\'' +
+                ", accountName='" + accountName + '\'' +
+                '}';
     }
 }
