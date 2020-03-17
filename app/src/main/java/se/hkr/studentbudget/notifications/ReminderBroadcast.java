@@ -58,5 +58,4 @@ public class ReminderBroadcast extends BroadcastReceiver {
         notificationManager.createNotificationChannel(channel);
 
     }
-
 }
