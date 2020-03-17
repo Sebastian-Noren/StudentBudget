@@ -43,7 +43,7 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput, 
         budgetAdapter.setOnCardItemLongClickListener(new BudgetAdapter.OnCardItemLongClickListener() {
             @Override
             public void onCardItemLongClick(int pos) {
-                index =pos;
+                index = pos;
                 openDeleteBudget(pos);
             }
         });
@@ -79,15 +79,15 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput, 
         currentAmount = Integer.parseInt(value);
         Log.i(tag, String.valueOf(maxAmount));
         Log.i(tag, String.valueOf(currentAmount));
-        BudgetItem budgetItem = new BudgetItem( maxAmount, image, categoryTitle, accountName);
-        budgetItem.setCurrentValue(maxAmount-testDate(getContext(), categoryTitle));
+        BudgetItem budgetItem = new BudgetItem(maxAmount, image, categoryTitle, accountName);
+        budgetItem.setCurrentValue(maxAmount - testDate(getContext(), categoryTitle));
         AppConstants.budgetProgressBar.add(budgetItem);
         insertToDatabase(maxAmount, image, categoryTitle, accountName);
         budgetAdapter.notifyItemInserted(updateIndex);
     }
 
     private void init() {
-     AppConstants.initProgressBars(getContext());
+        AppConstants.initProgressBars(getContext());
     }
 
     private double testDate(Context context, String categoryTitle) {
@@ -164,16 +164,8 @@ public class BudgetFragment extends Fragment implements BudgetDialog.SaveInput, 
 
         budgetAdapter.notifyItemRemoved(index);
         deleteBudgetInDatabase(budgetToDelete);
-
-        //TODO radera i databasen ajajaj....
     }
 
 }
 
 
-
-
-//TODO VIKTIGT
-// int updateIndex = 0;
-// AppConstants.budgetProgressBar.set(updateIndex, new BudgetItem(currentAmount, 500, R.drawable.ic_placeholder, "bajs", "skolbajs"));
-// budgetAdapter.notifyItemChanged(updateIndex);
